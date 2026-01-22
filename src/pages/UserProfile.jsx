@@ -47,7 +47,7 @@ const UserProfile = () => {
     return (
       <div className="user-loading">
         <img
-        src={LoaderSVG}
+          src={LoaderSVG}
           className="loader-icon"
           style={{ width: "60px", height: "60px" }}
         />
