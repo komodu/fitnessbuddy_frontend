@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { useActiveLink } from "../context/NavbarContext";
+import { ActiveLinkContext } from "../context/Context";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProfileDropDown from "./ProfileDropdown";
 
 const Navigation = () => {
-  const { active, setActive } = useActiveLink();
+  const { active, setActive } = useContext(ActiveLinkContext);
   const [expanded, setExpanded] = useState(false);
   const location = useLocation();
 

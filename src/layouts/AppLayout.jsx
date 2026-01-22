@@ -1,9 +1,10 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
-import { ActiveLinkProvider } from "@/context/NavbarContext";
 import Navigation from "@/components/Navigation";
-import { AuthContext } from "@/context/AuthContext";
-import { UserProvider } from "@/context/UserContext";
+import { AuthContext } from "@/context/Context";
+import { ActiveLinkProvider } from "@/context/provider/ActiveLinkProvider";
+
+import { UserProvider } from "@/context/provider/UserProvider";
 import LoaderSVG from "@/assets/img/loader.svg";
 
 const AppLayout = () => {

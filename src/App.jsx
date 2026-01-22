@@ -5,24 +5,24 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-//Components
 
+//Components
 import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
-
-// Context
-import { ModalContextProvider } from "./context/ModalContext";
-import { AuthProvider } from "./context/AuthContext";
-import { ExercisesContextProvider } from "./context/ExerciseContext";
 import UserProfile from "./pages/UserProfile";
+
+// Provider
+import AuthProvider from "@/context/provider/AuthProvider";
+import ExercisesProvider from "@/context/provider/ExercisesProvider";
+import ModalProvider from "@/context/provider/ModalProvider";
 function App() {
   return (
     <div className="App">
       <div className="container-fluid px-0">
         <AuthProvider>
           <BrowserRouter>
-            <ExercisesContextProvider>
-              <ModalContextProvider>
+            <ExercisesProvider>
+              <ModalProvider>
                 <Routes>
                   {/* Public routes (login, register) */}
                   <Route element={<AuthLayout />}>
@@ -38,8 +38,8 @@ function App() {
                     <Route path="/user-profile" element={<UserProfile />} />
                   </Route>
                 </Routes>
-              </ModalContextProvider>
-            </ExercisesContextProvider>
+              </ModalProvider>
+            </ExercisesProvider>
           </BrowserRouter>
         </AuthProvider>
       </div>

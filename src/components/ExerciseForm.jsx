@@ -1,5 +1,5 @@
 import { useReducer, useEffect, useContext } from "react";
-import { ExercisesContext } from "../context/ExerciseContext";
+import { ExercisesContext } from "../context/Context";
 import Form from "react-bootstrap/Form";
 import Input from "./Input";
 

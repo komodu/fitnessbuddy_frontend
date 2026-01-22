@@ -1,9 +1,8 @@
-import { createContext, useState } from "react";
-
-export const ModalContext = createContext();
+import { useState } from "react";
+import { ModalContext } from "../Context";
 
 // export const useModalContext = () => useContext(ModalContext);
-export const ModalContextProvider = ({ children }) => {
+const ModalProvider = ({ children }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState(null);
   const [show, setShow] = useState(false);
@@ -24,3 +23,5 @@ export const ModalContextProvider = ({ children }) => {
     </ModalContext.Provider>
   );
 };
+
+export default ModalProvider;

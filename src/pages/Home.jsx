@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { ExercisesContext } from "@/context/ExerciseContext";
-import { ModalContext } from "@/context/ModalContext";
+import { ExercisesContext, ModalContext } from "@/context/Context";
 import ExerciseDetails from "@/components/ExerciseDetails";
 import UniversalModal from "@/components/UniversalModal";
 import ExerciseForm from "@/components/ExerciseForm";
@@ -26,6 +25,20 @@ const Home = () => {
         setLoading(false);
       }
     };
+
+    const fetchWorkoutTypes = async () => {
+      try {
+        const response = await fetch("/api/workouttypes");
+        const json = await response.json();
+
+        if (response.ok) {
+          dispatch({ type: "SET_WORKOUTS", payload: json });
+        }
+      } catch (err) {
+        console.err(err);
+      }
+    };
+    fetchWorkoutTypes();
     fetchExercises();
   }, [dispatch]);
 

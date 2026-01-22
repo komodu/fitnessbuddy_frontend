@@ -1,8 +1,7 @@
 import { useState, useContext, useEffect } from "react";
-import { AuthContext } from "@/context/AuthContext";
+import { AuthContext, ModalContext } from "@/context/Context";
 import DisplayProfile from "../assets/img/user-placeholder.png";
 import LoaderSVG from "@/assets/img/loader.svg";
-import { ModalContext } from "../context/ModalContext";
 import UpdateProfileForm from "../components/UpdateProfileForm";
 import UniversalModal from "../components/UniversalModal";
 

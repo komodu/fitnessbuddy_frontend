@@ -1,6 +1,5 @@
-import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
-import { ModalContext } from "../context/ModalContext";
+import { ModalContext } from "../context/Context";
 import { useContext } from "react";
 function UniversalModal() {
   const { closeModal, title, content, show } = useContext(ModalContext);

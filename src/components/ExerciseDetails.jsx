@@ -1,6 +1,7 @@
-import { ExercisesContext } from "../context/ExerciseContext";
+import { ExercisesContext } from "../context/Context";
 import { useContext } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+
 const ExerciseDetails = ({ exercise }) => {
   const { dispatch } = useContext(ExercisesContext);
   const handleClick = async () => {

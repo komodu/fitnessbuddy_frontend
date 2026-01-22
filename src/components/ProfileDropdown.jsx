@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect } from "react";
-import { UserContext } from "../context/UserContext";
-import { AuthContext } from "../context/AuthContext";
+import { UserContext, AuthContext } from "../context/Context";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
 const ProfileDropDown = () => {
   const { user } = useContext(UserContext);
   const { logout } = useContext(AuthContext);
