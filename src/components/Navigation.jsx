@@ -15,7 +15,7 @@ const Navigation = () => {
     setActive(current);
   }, [location.pathname, setActive]);
 
-  const navItems = ["dashboard", "exercise"];
+  const navItems = ["dashboard", "exercise", "workout-plan"];
 
   return (
     <Navbar expand="md" className="navbar-root">
@@ -64,7 +64,7 @@ const Navigation = () => {
           <div className="d-flex align-items-center">
             <div className="brand-desktop me-4">Fitness Buddy</div>
             <Nav className="d-flex">
-              {["dashboard", "exercise"].map((item) => (
+              {navItems.map((item) => (
                 <Nav.Link
                   as={Link}
                   key={item}

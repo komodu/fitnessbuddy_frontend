@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/context/Context";
 
 import LoaderSVG from "@/assets/img/loader.svg";
+
 const AuthLayout = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const [showLoader, setShowLoader] = useState(true);

@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
+import WorkoutPlan from "./pages/WorkoutPlan";
 //Components
 import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
@@ -36,6 +36,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/exercise" element={<Home />} />
                     <Route path="/user-profile" element={<UserProfile />} />
+                    <Route path="/workout-plan" element={<WorkoutPlan />} />
                   </Route>
                 </Routes>
               </ModalProvider>
