@@ -23,10 +23,6 @@ const UserProfile = () => {
           credentials: "include",
         });
 
-        if (!resp.ok) {
-          throw new Error(`HTTP Error: ${resp.status}`);
-        }
-
         const result = await resp.json();
         console.log("Fetch User Result:", result);
         setUser(result);
@@ -76,13 +72,13 @@ const UserProfile = () => {
           <div className="col-12 col-md-8">
             <div className="mb-3">
               <h4>Name:</h4>
-              <p>{user.name}</p>
+              {user && <p>{user.name}</p>}
 
               <h4>Email:</h4>
-              <p>{user.email}</p>
+              {user && <p>{user.email}</p>}
 
               <h4>Age:</h4>
-              <p>{user.age}</p>
+              {user && <p>{user.age}</p>}
             </div>
 
             {/* Workout Card */}
@@ -92,10 +88,10 @@ const UserProfile = () => {
               </div>
               <div className="card-body">
                 <p>
-                  <strong>Day:</strong> {user.address}
+                  <strong>Day:</strong>
                 </p>
                 <p>
-                  <strong>Split:</strong> {user.phone}
+                  <strong>Split:</strong>
                 </p>
                 <p>
                   <strong>Rest</strong>
