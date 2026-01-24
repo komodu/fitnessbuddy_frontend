@@ -6,7 +6,6 @@ import ExerciseForm from "@/components/ExerciseForm";
 import LoaderSVG from "@/assets/img/loader.svg";
 
 const Home = () => {
-  const [form] = useState(false);
   const { exercises, dispatch } = useContext(ExercisesContext);
   const { openModal } = useContext(ModalContext);
   const [loading, setLoading] = useState(true);
@@ -87,8 +86,6 @@ const Home = () => {
           ))}
         </div>
       )}
-
-      {form && <UniversalModal show={form} />}
     </div>
   );
 };
