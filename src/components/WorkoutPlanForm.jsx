@@ -1,48 +1,44 @@
-import { useState } from "react";
+// import { useState } from "react";
 import Input from "./Input";
 
 const WorkoutPlanForm = () => {
-  const [type, setType] = useState("");
-
-  const [date, setDate] = useState(new Date());
-  const [off, setOff] = useState(false);
-  const [day, setDay] = useState(0);
-
   return (
-    <form>
-      <Input
-        type="text"
-        value={type}
-        label="Type"
-        placeholder="Type"
-        onChange={(e) => setType(e.target.value)}
-      />
-      <Input
-        type="date"
-        label="Date"
-        placeholder="Date"
-        value={date}
-        onChange={(e) => {
-          console.log(e.target.value);
-          setDate(e.target.value);
-        }}
-      />
-      <label for="restday">Rest Day:</label>
-      {/* ! */}
-      <input
-        id="restday"
-        type="checkbox"
-        value={off}
-        onChange={(e) => setOff(e.target.value)}
-      />
-      <Input
-        value={day}
-        type="number"
-        onChange={(e) => setDay(e.target.value)}
-        label="Day"
-        placeholder="Day"
-      />
-      <button type="submit">Save</button>
+    <form className="card p-4 shadow-sm">
+      <h4 className="mb-3">Create User Workout Plan</h4>
+
+      <div className="mb-3">
+        <label className="form-label" htmlFor="planTemplate">
+          Plan Template
+        </label>
+        <select id="planTemplate" name="planTemplate" className="form-select">
+          <option value="">Select Template</option>
+        </select>
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label" htmlFor="startDate">
+          Start Date
+        </label>
+        <input id="startDate" type="date" className="form-control" />
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label" htmlFor="durationWeeks">
+          Duration (Weeks)
+        </label>
+        <input
+          id="durationWeeks"
+          type="number"
+          min={1}
+          className="form-control"
+        />
+      </div>
+
+      <div className="d-grid">
+        <button type="submit" className="btn btn-primary">
+          Save Plan
+        </button>
+      </div>
     </form>
   );
 };

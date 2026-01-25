@@ -31,7 +31,7 @@ const Home = () => {
         const json = await response.json();
 
         if (response.ok) {
-          dispatch({ type: "SET_WORKOUTS", payload: json });
+          dispatch({ type: "SET_WORKOUT_TYPES", payload: json });
         }
       } catch (err) {
         console.err(err);
@@ -52,9 +52,8 @@ const Home = () => {
   return (
     <div className="container-fluid home px-3 px-md-5">
       <UniversalModal />
-
       {/* Action Button */}
-      <div className="row mb-4">
+      <div className="row mb-4 ">
         <div className="col d-flex justify-content-center justify-content-md-end">
           <button
             className="btn btn-primary btn-lg w-100 w-md-auto"
@@ -64,28 +63,29 @@ const Home = () => {
           </button>
         </div>
       </div>
-
-      {/* Empty State */}
-      {!exercises || exercises.length === 0 ? (
-        <div className="row text-center">
-          <div className="col">
-            <img src="./images/warning.png" height="80" alt="No data" />
-            <p className="mt-2">No Data fetched</p>
-          </div>
-        </div>
-      ) : (
-        /* Exercise Grid */
-        <div className="row g-3">
-          {exercises.map((exercise) => (
-            <div
-              key={exercise._id}
-              className="col-12 col-sm-6 col-lg-4 col-xl-3"
-            >
-              <ExerciseDetails exercise={exercise} />
+      <div className="card p-4 shadow-sm">
+        {/* Empty State */}
+        {!exercises || exercises.length === 0 ? (
+          <div className="row text-center">
+            <div className="col">
+              <img src="./images/warning.png" height="80" alt="No data" />
+              <p className="mt-2">No Data fetched</p>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ) : (
+          /* Exercise Grid */
+          <div className="row g-3">
+            {exercises.map((exercise) => (
+              <div
+                key={exercise._id}
+                className="col-12 col-sm-6 col-lg-4 col-xl-3"
+              >
+                <ExerciseDetails exercise={exercise} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

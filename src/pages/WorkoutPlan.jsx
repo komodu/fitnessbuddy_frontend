@@ -1,9 +1,17 @@
-import { useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import WorkoutPlanForm from "../components/WorkoutPlanForm";
 import { ModalContext } from "../context/Context";
 import UniversalModal from "@/components/UniversalModal";
+import WorkoutPlanTemplateForm from "../components/WorkoutTemplateForm";
+
 const WorkoutPlan = () => {
   const { openModal } = useContext(ModalContext);
+  const [disable, setDisabled] = useState(false);
+
+  useEffect(() => {
+    // ! Work on Routings for checking
+    // ! if there is existing templates
+  }, []);
   return (
     <div>
       <UniversalModal />
@@ -14,10 +22,22 @@ const WorkoutPlan = () => {
             <button
               className="btn btn-primary"
               onClick={() =>
-                openModal("Workout Plan Form", <WorkoutPlanForm />)
+                openModal("Create User Workout Plan", <WorkoutPlanForm />)
+              }
+              disabled={disable ? "true" : ""}
+            >
+              <span>Add Workout Plan </span>
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={() =>
+                openModal(
+                  "Create User Workout Plan Template",
+                  <WorkoutPlanTemplateForm />,
+                )
               }
             >
-              <span className="material-symbols-outlined flex-end">add</span>
+              <span>Add Workout Plan Template</span>
             </button>
           </div>
         </div>
@@ -31,6 +51,9 @@ const WorkoutPlan = () => {
             </p>
             <p>1 day ago</p>
             <span class="material-symbols-outlined">delete</span>
+          </div>
+          <div>
+            <WorkoutPlanTemplateForm />
           </div>
           {/* {exercises.map((exercise) => (
             <div
