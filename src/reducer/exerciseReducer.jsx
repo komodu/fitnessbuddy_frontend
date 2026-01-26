@@ -28,7 +28,7 @@ const exercisesReducer = (state, action) => {
   }
 };
 
-function formReducer(state, action) {
+const formReducer = (state, action) => {
   switch (action.type) {
     case "SET_FIELD":
       return { ...state, [action.field]: action.value };
@@ -51,6 +51,7 @@ function formReducer(state, action) {
     default:
       return state;
   }
-}
-
+};
+// ! TODO: Workout Plan Template Reducer
+// ! TODO: Workout Plan  Reducer
 export { initialStates, formReducer, exercisesReducer };

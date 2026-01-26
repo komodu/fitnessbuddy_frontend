@@ -9,11 +9,10 @@ const WorkoutPlan = () => {
   const [disable, setDisabled] = useState(false);
 
   useEffect(() => {
-    // ! Work on Routings for checking
-    // ! if there is existing templates
+    // ! Work on Routings for validation
   }, []);
   return (
-    <div>
+    <>
       <UniversalModal />
       <div className="container-fluid home px-3 px-md-5">
         <div>
@@ -52,9 +51,7 @@ const WorkoutPlan = () => {
             <p>1 day ago</p>
             <span class="material-symbols-outlined">delete</span>
           </div>
-          <div>
-            <WorkoutPlanTemplateForm />
-          </div>
+
           {/* {exercises.map((exercise) => (
             <div
               key={exercise._id}
@@ -65,7 +62,7 @@ const WorkoutPlan = () => {
           ))} */}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

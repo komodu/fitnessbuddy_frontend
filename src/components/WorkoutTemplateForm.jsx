@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import { useState, useEffect, useReducer } from "react";
+import { formReducer } from "../reducer/exerciseReducer";
 const days = [
   "monday",
   "tuesday",
@@ -9,10 +9,12 @@ const days = [
   "saturday",
   "sunday",
 ];
-
+//! Optimize this
 // workoutTypes prop shape:
 // [{ _id: "...", name: "Chest" }]
-const WorkoutPlanTemplateForm = ({ workoutTypes = [], onSubmit }) => {
+const WorkoutPlanTemplateForm = ({ onSubmit }) => {
+  const initState = { workoutTypes: [] };
+  const [state, dispatchForm] = useReducer(formReducer, initState);
   const [form, setForm] = useState(() => {
     const initialSchedule = {};
     days.forEach((day) => {
@@ -25,7 +27,25 @@ const WorkoutPlanTemplateForm = ({ workoutTypes = [], onSubmit }) => {
       weeklySchedule: initialSchedule,
     };
   });
+  useEffect(() => {
+    const fetchWorkoutTypes = async () => {
+      try {
+        const response = await fetch("/api/workout-types");
+        const data = await response.json();
+        console.log("templateform: ", data);
+        console.log("wkout: ", initState);
+        if (response.ok) {
+          dispatchForm({ type: "SET_WORKOUT_TYPES", payload: data });
+        } else {
+          console.error("Failed to fetch workout types:", data.error);
+        }
+      } catch (err) {
+        console.error("Error fetching workout types:", err);
+      }
+    };
 
+    fetchWorkoutTypes();
+  }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -98,7 +118,7 @@ const WorkoutPlanTemplateForm = ({ workoutTypes = [], onSubmit }) => {
                 required
               >
                 <option value="">Select workout type</option>
-                {workoutTypes.map((wt) => (
+                {state.workoutTypes.map((wt) => (
                   <option key={wt._id} value={wt._id}>
                     {wt.name}
                   </option>
