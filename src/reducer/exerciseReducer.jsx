@@ -1,4 +1,15 @@
-export const exercisesReducer = (state, action) => {
+// Form Reducer Initial State
+const initialStates = {
+  title: "",
+  load: "",
+  reps: "",
+  workoutType: "",
+  workoutTypes: [],
+  error: null,
+  emptyFields: [],
+};
+
+const exercisesReducer = (state, action) => {
   switch (action.type) {
     case "SET_EXERCISES":
       return {
@@ -16,3 +27,30 @@ export const exercisesReducer = (state, action) => {
       return state;
   }
 };
+
+function formReducer(state, action) {
+  switch (action.type) {
+    case "SET_FIELD":
+      return { ...state, [action.field]: action.value };
+    case "SET_ERROR":
+      return {
+        ...state,
+        error: action.error,
+        emptyFields: action.emptyFields || [],
+      };
+    case "SET_WORKOUT_TYPES":
+      return { ...state, workoutTypes: action.payload };
+    case "RESET_FORM":
+      return {
+        ...state,
+        title: "",
+        load: "",
+        reps: "",
+        workoutType: "",
+      };
+    default:
+      return state;
+  }
+}
+
+export { initialStates, formReducer, exercisesReducer };

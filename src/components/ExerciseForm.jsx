@@ -2,45 +2,10 @@ import { useReducer, useEffect, useContext } from "react";
 import { ExercisesContext } from "../context/Context";
 import Form from "react-bootstrap/Form";
 import Input from "./Input";
-
+import { initialStates, formReducer } from "../reducer/exerciseReducer";
+//! Work on this!! Messy Dispatch
 const ExerciseForm = () => {
   const { dispatch } = useContext(ExercisesContext);
-
-  const initialStates = {
-    title: "",
-    load: "",
-    reps: "",
-    workoutType: "",
-    workoutTypes: [],
-    error: null,
-    emptyFields: [],
-  };
-
-  function formReducer(state, action) {
-    switch (action.type) {
-      case "SET_FIELD":
-        return { ...state, [action.field]: action.value };
-      case "SET_ERROR":
-        return {
-          ...state,
-          error: action.error,
-          emptyFields: action.emptyFields || [],
-        };
-      case "SET_WORKOUT_TYPES":
-        return { ...state, workoutTypes: action.payload };
-      case "RESET_FORM":
-        return {
-          ...state,
-          title: "",
-          load: "",
-          reps: "",
-          workoutType: "",
-        };
-      default:
-        return state;
-    }
-  }
-
   const [formState, dispatchForm] = useReducer(formReducer, initialStates);
   const { title, load, reps, workoutType, workoutTypes, error, emptyFields } =
     formState;

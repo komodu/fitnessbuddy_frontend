@@ -5,7 +5,6 @@ import { ExercisesContext } from "../Context";
 const ExercisesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(exercisesReducer, {
     exercises: null,
-    workout_types: null,
   });
 
   return (
