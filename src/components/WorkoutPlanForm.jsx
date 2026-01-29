@@ -4,8 +4,6 @@ import Input from "./Input";
 const WorkoutPlanForm = () => {
   return (
     <form className="card p-4 shadow-sm">
-      <h4 className="mb-3">Create User Workout Plan</h4>
-
       <div className="mb-3">
         <label className="form-label" htmlFor="planTemplate">
           Plan Template

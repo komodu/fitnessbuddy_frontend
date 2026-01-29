@@ -27,7 +27,7 @@ const Home = () => {
 
     const fetchWorkoutTypes = async () => {
       try {
-        const response = await fetch("/api/workouttypes");
+        const response = await fetch("/api/workout-types");
         const json = await response.json();
 
         if (response.ok) {
