@@ -6,29 +6,13 @@ const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // IMPORTANT
 
-  // Restore auth state on page load
   useEffect(() => {
-    const restoreSession = async () => {
-      try {
-        const res = await fetch("/api/auth/me", {
-          credentials: "include",
-        });
+    const token = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
 
-        if (!res.ok) throw new Error("Not authenticated");
-
-        const data = await res.json();
-        console.log("data123: ", data);
-        setUser(data.user);
-        setIsAuthenticated(true);
-      } catch {
-        setUser(null);
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false); // 🔥 Stops flicker
-      }
-    };
-
-    restoreSession();
+    setUser(token && storedUser ? JSON.parse(storedUser) : null);
+    setIsAuthenticated(Boolean(token));
+    setLoading(false);
   }, []);
 
   // Login
@@ -46,10 +30,12 @@ const AuthProvider = ({ children }) => {
 
     const data = await res.json();
     console.log("Login Profile Data: ", data);
-    // localStorage.setItem("token", data.data.token);
+    console.log(data.data.token);
+    localStorage.setItem("token", data.data.token);
     localStorage.setItem("user", JSON.stringify(data.data.user));
     setUser(data.user);
     setIsAuthenticated(true);
+    setLoading(false);
   };
 
   // Logout
@@ -58,7 +44,8 @@ const AuthProvider = ({ children }) => {
       method: "POST",
       credentials: "include",
     });
-
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setUser(null);
     setIsAuthenticated(false);
   };

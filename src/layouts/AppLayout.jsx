@@ -10,7 +10,6 @@ import LoaderSVG from "@/assets/img/loader.svg";
 const AppLayout = () => {
   const { isAuthenticated, loading } = useContext(AuthContext);
   const [showLoader, setShowLoader] = useState(true); // start as true
-
   // Hide loader after 3 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,8 +31,6 @@ const AppLayout = () => {
       </div>
     );
   }
-
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   return isAuthenticated ? (
     <UserProvider>

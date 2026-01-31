@@ -35,7 +35,7 @@ function App() {
                     <Route path="/" element={<Navigate to="/dashboard" />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/exercise" element={<Home />} />
-                    <Route path="/user-profile" element={<UserProfile />} />
+                    {/* <Route path="/user-profile" element={<UserProfile />} /> */}
                     <Route path="/workout-plan" element={<WorkoutPlan />} />
                   </Route>
                 </Routes>
