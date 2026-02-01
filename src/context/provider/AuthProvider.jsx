@@ -6,7 +6,6 @@ const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // IMPORTANT
-  console.log("AuthProvider");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -22,8 +21,7 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
       return;
     }
-    console.log("stored: ", storedUsername);
-    console.log("toekn  : ", token);
+
     fetch("/api/auth/me", { credentials: "include" })
       .then((resp) => {
         if (!resp.ok) throw new Error("Failed to fetch user");

@@ -9,7 +9,8 @@ const Home = () => {
   const { exercises, dispatch } = useContext(ExercisesContext);
   const { openModal } = useContext(ModalContext);
   const [loading, setLoading] = useState(true);
-
+  const [input, setInput] = useState("");
+  const [dropdown, setDropdown] = useState(false);
   useEffect(() => {
     const fetchExercises = async () => {
       try {
@@ -63,6 +64,50 @@ const Home = () => {
           </button>
         </div>
       </div>
+      <div className="card p-4 shadow-md">
+        <div className="input-group w-100">
+          <input
+            type="text"
+            className="form-control flex-grow-1"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+
+          <div className="dropdown">
+            <button
+              className="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setDropdown((v) => !v);
+              }}
+            >
+              Dropdown
+            </button>
+
+            {dropdown && (
+              <ul className="dropdown-menu dropdown-menu-end show">
+                <li>
+                  <button className="dropdown-item">Action</button>
+                </li>
+                <li>
+                  <button className="dropdown-item">Another action</button>
+                </li>
+                <li>
+                  <button className="dropdown-item">Something else here</button>
+                </li>
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <button className="dropdown-item">Separated link</button>
+                </li>
+              </ul>
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="card p-4 shadow-sm">
         {/* Empty State */}
         {!exercises || exercises.length === 0 ? (
