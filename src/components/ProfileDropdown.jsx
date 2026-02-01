@@ -1,11 +1,10 @@
 import { useContext, useState, useEffect } from "react";
-import { UserContext, AuthContext } from "../context/Context";
+import { AuthContext } from "../context/Context";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const ProfileDropDown = () => {
-  const { user } = useContext(UserContext);
-  const { logout } = useContext(AuthContext);
+  const { username, logout } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -16,7 +15,8 @@ const ProfileDropDown = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!user) return <p style={{ color: "white", margin: 0 }}>Not logged in</p>;
+  if (!username)
+    return <p style={{ color: "white", margin: 0 }}>Not logged in</p>;
 
   const handleLogout = () => logout();
 

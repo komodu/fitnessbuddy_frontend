@@ -19,8 +19,8 @@ function App() {
   return (
     <div className="App">
       <div className="container-fluid px-0">
-        <AuthProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <AuthProvider>
             <ExercisesProvider>
               <ModalProvider>
                 <Routes>
@@ -35,14 +35,14 @@ function App() {
                     <Route path="/" element={<Navigate to="/dashboard" />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/exercise" element={<Home />} />
-                    {/* <Route path="/user-profile" element={<UserProfile />} /> */}
+                    <Route path="/user-profile" element={<UserProfile />} />
                     <Route path="/workout-plan" element={<WorkoutPlan />} />
                   </Route>
                 </Routes>
               </ModalProvider>
             </ExercisesProvider>
-          </BrowserRouter>
-        </AuthProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </div>
     </div>
   );

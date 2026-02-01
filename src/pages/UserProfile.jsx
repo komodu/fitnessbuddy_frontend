@@ -6,39 +6,41 @@ import UpdateProfileForm from "../components/UpdateProfileForm";
 import UniversalModal from "../components/UniversalModal";
 
 const UserProfile = () => {
-  const { isAuthenticated, loading } = useContext(AuthContext);
+  const { username, userInfo, isAuthenticated, loading } =
+    useContext(AuthContext);
   const { openModal } = useContext(ModalContext);
-  const [showLoader, setShowLoader] = useState(true);
-  const [user, setUser] = useState(null);
+  // const [showLoader, setShowLoader] = useState(true);
   const [error, setError] = useState(null);
   const [form] = useState(false);
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoader(false);
-    }, 2000);
-    const fetchUser = async () => {
-      try {
-        const resp = await fetch("/api/auth/profile", {
-          method: "GET",
-          credentials: "include",
-        });
+    console.log(userInfo);
+    // const timer = setTimeout(() => {
+    //   setShowLoader(false);
+    // }, 2000);
+    // const fetchUser = async () => {
+    //   try {
+    //     const resp = await fetch("/api/auth/profile", {
+    //       method: "GET",
+    //       credentials: "include",
+    //     });
 
-        const result = await resp.json();
-        console.log("Fetch User Result:", result);
-        setUser(result);
-      } catch (error) {
-        console.error("Error in User Profile:", error);
-        setError(error.message);
-      }
-    };
-    fetchUser();
-    return () => clearTimeout(timer);
+    //     const result = await resp.json();
+    //     console.log("Fetch User Result:", result);
+    //     setUser(result);
+    //   } catch (error) {
+    //     console.error("Error in User Profile:", error);
+    //     setError(error.message);
+    //   }
+    // };
+    // fetchUser();
+    // return () => clearTimeout(timer);
   }, []);
   const handleClick = () => {
     openModal("Edit Profile", <UpdateProfileForm />);
   };
+  console.log("username: ", username);
   if (!isAuthenticated || error) return <p>{error}</p>;
-  if (loading || showLoader) {
+  if (loading) {
     return (
       <div className="user-loading">
         <img
@@ -72,13 +74,13 @@ const UserProfile = () => {
           <div className="col-12 col-md-8">
             <div className="mb-3">
               <h4>Name:</h4>
-              {user && <p>{user.name}</p>}
+              {userInfo && <p>{userInfo.name}</p>}
 
               <h4>Email:</h4>
-              {user && <p>{user.email}</p>}
+              {userInfo && <p>{userInfo.email}</p>}
 
               <h4>Age:</h4>
-              {user && <p>{user.age}</p>}
+              {userInfo && <p>{userInfo.age}</p>}
             </div>
 
             {/* Workout Card */}

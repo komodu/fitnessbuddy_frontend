@@ -2,17 +2,50 @@ import { useState, useEffect } from "react";
 import { AuthContext } from "../Context";
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [username, setUsername] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // IMPORTANT
+  console.log("AuthProvider");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
+    const storedUsername = localStorage.getItem("username");
+    // const storedUserInfo = localStorage.getItem("userInfo");
+    // const storedUserId = localStorage.getItem("userId");
+    if (token && storedUsername) {
+      setUsername(JSON.parse(storedUsername));
+      setLoading(false);
+    }
 
-    setUser(token && storedUser ? JSON.parse(storedUser) : null);
-    setIsAuthenticated(Boolean(token));
-    setLoading(false);
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    console.log("stored: ", storedUsername);
+    console.log("toekn  : ", token);
+    fetch("/api/auth/me", { credentials: "include" })
+      .then((resp) => {
+        if (!resp.ok) throw new Error("Failed to fetch user");
+        return resp.json();
+      })
+      .then((data) => {
+        console.log("datasz: ", data);
+        setUsername(data.user.username);
+        setUserInfo(data.userInfo);
+        localStorage.setItem("username", JSON.stringify(data.user.username));
+        // localStorage.setItem("userInfo", JSON.stringify(data.data.user_info));
+        setIsAuthenticated(true);
+      })
+      .catch(() => {
+        setUsername(null);
+        setUserInfo(null);
+        setIsAuthenticated(false);
+        localStorage.removeItem("username");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("token");
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   // Login
@@ -29,11 +62,14 @@ const AuthProvider = ({ children }) => {
     }
 
     const data = await res.json();
+
     console.log("Login Profile Data: ", data);
-    console.log(data.data.token);
+
     localStorage.setItem("token", data.data.token);
-    localStorage.setItem("user", JSON.stringify(data.data.user));
-    setUser(data.user);
+    localStorage.setItem("userId", data.data.userid);
+    localStorage.setItem("username", JSON.stringify(data.data.username));
+
+    setUsername(data.data.username);
     setIsAuthenticated(true);
     setLoading(false);
   };
@@ -46,14 +82,16 @@ const AuthProvider = ({ children }) => {
     });
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    setUser(null);
+    setUsername(null);
+    setUserInfo(null);
     setIsAuthenticated(false);
   };
 
   return (
     <AuthContext.Provider
       value={{
-        user,
+        username,
+        userInfo,
         isAuthenticated,
         loading, // expose loading
         login,

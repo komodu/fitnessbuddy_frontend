@@ -4,7 +4,6 @@ import Navigation from "@/components/Navigation";
 import { AuthContext } from "@/context/Context";
 import { ActiveLinkProvider } from "@/context/provider/ActiveLinkProvider";
 
-import { UserProvider } from "@/context/provider/UserProvider";
 import LoaderSVG from "@/assets/img/loader.svg";
 
 const AppLayout = () => {
@@ -33,14 +32,12 @@ const AppLayout = () => {
   }
 
   return isAuthenticated ? (
-    <UserProvider>
-      <ActiveLinkProvider>
-        <Navigation />
-        <div className="pages">
-          <Outlet />
-        </div>
-      </ActiveLinkProvider>
-    </UserProvider>
+    <ActiveLinkProvider>
+      <Navigation />
+      <div className="pages">
+        <Outlet />
+      </div>
+    </ActiveLinkProvider>
   ) : (
     <Navigate to="/login" />
   );
