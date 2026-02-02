@@ -12,7 +12,7 @@ const days = [
 //! Optimize this
 // workoutTypes prop shape:
 // [{ _id: "...", name: "Chest" }]
-const WorkoutPlanTemplateForm = ({ onSubmit }) => {
+const WorkoutPlanTemplateForm = () => {
   const initState = { workoutTypes: [] };
   const [state, dispatchForm] = useReducer(formReducer, initState);
   const [form, setForm] = useState(() => {
@@ -61,16 +61,27 @@ const WorkoutPlanTemplateForm = ({ onSubmit }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const payload = {
       name: form.name,
       daysPerWeek: Number(form.daysPerWeek),
-      weeklySchedule: form.weeklySchedule,
+      workoutTypeIds: form.weeklySchedule,
     };
-
-    onSubmit(payload);
+    console.log("payload: ", JSON.stringify(payload));
+    const response = await fetch("/api/workoutplan/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      console.log("ERROR: ", response);
+    }
+    console.log("success submission: ", data);
   };
 
   return (
