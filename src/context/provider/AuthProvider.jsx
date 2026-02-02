@@ -69,6 +69,7 @@ const AuthProvider = ({ children }) => {
 
     setUsername(data.data.username);
     setIsAuthenticated(true);
+    setUserInfo(data.data.userInfo);
     setLoading(false);
   };
 

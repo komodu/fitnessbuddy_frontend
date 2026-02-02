@@ -79,7 +79,7 @@ const Home = () => {
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                setDropdown((v) => !v);
+                setDropdown((x) => !x);
               }}
             >
               Dropdown
