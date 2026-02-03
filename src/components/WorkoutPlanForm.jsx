@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 
 const WorkoutPlanForm = () => {
   const [template, setTemplates] = useState([]);
+  const [selectedTemplate, setSelectedTemplate] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [duration, setDuration] = useState(0);
+  const payload = {
+    planTemplate: selectedTemplate,
+    startDate: date,
+    durationWeeks: duration,
+  };
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
@@ -22,14 +30,37 @@ const WorkoutPlanForm = () => {
 
     fetchTemplates();
   }, []);
-
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const response = await fetch("/api/workoutplan/userplan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error("Error in submitting new Plan");
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log("error: ", error.message);
+    }
+  };
+  console.log(payload);
   return (
-    <form className="card p-4 shadow-sm">
+    <form className="card p-4 shadow-sm" onSubmit={handleSubmit}>
       <div className="mb-3">
         <label className="form-label" htmlFor="planTemplate">
           Plan Template
         </label>
-        <select id="planTemplate" name="planTemplate" className="form-select">
+        <select
+          id="planTemplate"
+          name="planTemplate"
+          className="form-select"
+          value={selectedTemplate}
+          onChange={(e) => setSelectedTemplate(e.target.value)}
+        >
           <option value="">Select Template</option>
 
           {template.map((temp) => (
@@ -44,7 +75,13 @@ const WorkoutPlanForm = () => {
         <label className="form-label" htmlFor="startDate">
           Start Date
         </label>
-        <input id="startDate" type="date" className="form-control" />
+        <input
+          id="startDate"
+          type="date"
+          className="form-control"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
       </div>
 
       <div className="mb-3">
@@ -56,6 +93,8 @@ const WorkoutPlanForm = () => {
           type="number"
           min={1}
           className="form-control"
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
         />
       </div>
 
