@@ -1,7 +1,28 @@
-// import { useState } from "react";
-import Input from "./Input";
+import { useState, useEffect } from "react";
 
 const WorkoutPlanForm = () => {
+  const [template, setTemplates] = useState([]);
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      try {
+        const response = await fetch("/api/workoutplan");
+
+        if (!response.ok) {
+          throw new Error("Error fetching templates");
+        }
+
+        const json = await response.json();
+        console.log("API response:", json);
+
+        setTemplates(json);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchTemplates();
+  }, []);
+
   return (
     <form className="card p-4 shadow-sm">
       <div className="mb-3">
@@ -10,6 +31,12 @@ const WorkoutPlanForm = () => {
         </label>
         <select id="planTemplate" name="planTemplate" className="form-select">
           <option value="">Select Template</option>
+
+          {template.map((temp) => (
+            <option key={temp._id} value={temp._id}>
+              {temp.name}
+            </option>
+          ))}
         </select>
       </div>
 
