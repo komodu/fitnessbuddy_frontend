@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Calendar from "../components/Calendar";
-
 
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
 
 const Dashboard = () => {
   const [value, onChange] = useState(new Date());
+  useEffect(() => {
+    const fetchTodayWorkout = async () => {
+      const response = await fetch("/api/today");
+      if (!response.ok) throw new Error("Failed to get Workout for Today.");
+      const result = await response.json();
 
+      console.log("today workout:", result);
+    };
+    fetchTodayWorkout();
+  }, []);
   return (
     <div className="home d-flex justify-content-center py-4">
       <div

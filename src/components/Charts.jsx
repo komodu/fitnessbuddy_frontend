@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { CDBContainer } from "cdbreact";
 import { Line, Radar } from "react-chartjs-2";
-import '@/ChartConfig';
+import "@/ChartConfig";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,7 +26,6 @@ ChartJS.register(
 );
 
 export const DynamicBarChart = () => {
-  console.log("test");
   const [data, setData] = useState({
     labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [

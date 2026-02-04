@@ -52,6 +52,7 @@ const WorkoutPlanTemplateForm = () => {
   };
 
   const handleDayChange = (day, value) => {
+    console.log("day: ", day, " value: ", value);
     setForm((prev) => ({
       ...prev,
       weeklySchedule: {
@@ -59,6 +60,7 @@ const WorkoutPlanTemplateForm = () => {
         [day]: value,
       },
     }));
+    console.log("day: ", day, " value: ", value);
   };
 
   const handleSubmit = async (e) => {
