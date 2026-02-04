@@ -5,13 +5,19 @@ import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
 
 const Dashboard = () => {
   const [value, onChange] = useState(new Date());
+  const [todayWorkout, setTodayWorkout] = useState(null);
   useEffect(() => {
     const fetchTodayWorkout = async () => {
-      const response = await fetch("/api/today");
-      if (!response.ok) throw new Error("Failed to get Workout for Today.");
-      const result = await response.json();
+      try {
+        const response = await fetch("/api/today");
+        if (!response.ok) throw new Error("Failed to get Workout for Today.");
+        const result = await response.json();
 
-      console.log("today workout:", result);
+        console.log("today workout:", result);
+        setTodayWorkout(result);
+      } catch (err) {
+        console.err("Error fetching: ", err);
+      }
     };
     fetchTodayWorkout();
   }, []);
@@ -24,6 +30,26 @@ const Dashboard = () => {
         {/* Left Column: Charts */}
         <div className="col-12 col-lg-8 d-flex flex-column">
           <section className="charts p-3 shadow-sm rounded bg-light flex-grow-1 d-flex flex-column">
+            <h1 className="mb-4 text-center text-lg-start">Todays Workout</h1>
+            <div className="d-flex flex-column justify-content-center align-items-center">
+              {todayWorkout && (
+                <>
+                  <div className="d-flex justify-content-center align-items-center">
+                    <h3>
+                      {new Date(todayWorkout.date).toLocaleDateString()} :{" "}
+                    </h3>
+                    <h4 className="text-capitalize">{todayWorkout.name} : </h4>
+                    <h4 className="text-capitalize">{todayWorkout.day}</h4>
+                  </div>
+
+                  <ul>
+                    {todayWorkout.exercisesForTheDay.map((exercise) => (
+                      <li key={exercise._id}>{exercise.title}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
             <h1 className="mb-4 text-center text-lg-start">
               Dashboard Analytics
             </h1>

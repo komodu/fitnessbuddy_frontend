@@ -9,7 +9,7 @@ const days = [
   "saturday",
   "sunday",
 ];
-//! Optimize this
+//! TODO Final Touches : Add Error Handlers, Remove Console logs, Double Check every single functionalities
 // workoutTypes prop shape:
 // [{ _id: "...", name: "Chest" }]
 const WorkoutPlanTemplateForm = () => {
