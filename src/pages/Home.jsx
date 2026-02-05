@@ -5,19 +5,27 @@ import UniversalModal from "@/components/UniversalModal";
 import ExerciseForm from "@/components/ExerciseForm";
 import LoaderSVG from "@/assets/img/loader.svg";
 
-//! TODO: Check Validations, possible crashes (null values)
-//! TODO: Check Error Handlers
 const Home = () => {
   const { exercises, dispatch } = useContext(ExercisesContext);
   const { openModal } = useContext(ModalContext);
+
   const [loading, setLoading] = useState(true);
-  const [input, setInput] = useState("");
   const [dropdown, setDropdown] = useState(false);
+
+  //! Search Bar
+  const [searchTerm, setSearchTerm] = useState("");
+
+  //! Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+
+  // Fetch Data once on mount
   useEffect(() => {
     const fetchExercises = async () => {
       try {
         const response = await fetch("/api/exercise");
         const json = await response.json();
+
         if (response.ok) {
           dispatch({ type: "SET_EXERCISES", payload: json });
         }
@@ -37,12 +45,31 @@ const Home = () => {
           dispatch({ type: "SET_WORKOUT_TYPES", payload: json });
         }
       } catch (err) {
-        console.err(err);
+        console.error(err);
       }
     };
+
     fetchWorkoutTypes();
     fetchExercises();
-  }, [dispatch]);
+  }, [dispatch]); // <-- FIXED dependency
+
+  // Filter based on search
+  const filteredExercises = (exercises || []).filter((ex) =>
+    (ex.title || "").toLowerCase().includes((searchTerm || "").toLowerCase()),
+  );
+
+  // Reset to page 1 whenever user searches
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+  // Pagination logic
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+  const currentExercises = filteredExercises.slice(indexOfFirst, indexOfLast);
+
+  // Total pages for pagination
+  const totalPages = Math.ceil(filteredExercises.length / itemsPerPage);
 
   if (loading) {
     return (
@@ -55,6 +82,7 @@ const Home = () => {
   return (
     <div className="container-fluid home px-3 px-md-5">
       <UniversalModal />
+
       {/* Action Button */}
       <div className="row mb-4 ">
         <div className="col d-flex justify-content-center justify-content-md-end">
@@ -66,13 +94,16 @@ const Home = () => {
           </button>
         </div>
       </div>
+
+      {/* Search Input */}
       <div className="card p-4 shadow-md">
         <div className="input-group w-100">
           <input
             type="text"
             className="form-control flex-grow-1"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
+            placeholder="Search exercise..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
 
           <div className="dropdown">
@@ -110,9 +141,9 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Exercise Grid */}
       <div className="card p-4 shadow-sm">
-        {/* Empty State */}
-        {!exercises || exercises.length === 0 ? (
+        {!filteredExercises || filteredExercises.length === 0 ? (
           <div className="row text-center">
             <div className="col">
               <img src="./images/warning.png" height="80" alt="No data" />
@@ -120,16 +151,27 @@ const Home = () => {
             </div>
           </div>
         ) : (
-          /* Exercise Grid */
           <div className="row g-3">
-            {exercises.map((exercise) => (
-              <div
-                key={exercise._id}
-                className="col-12 col-sm-6 col-lg-4 col-xl-3"
-              >
-                <ExerciseDetails exercise={exercise} />
+            {currentExercises.map((ex) => (
+              <div key={ex._id} className="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <ExerciseDetails exercise={ex} />
               </div>
             ))}
+
+            {/* Pagination Buttons */}
+            <div className="mt-4 d-flex justify-content-center align-items-center">
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(i + 1)}
+                  className={`btn btn-outline-primary me-2 ${
+                    currentPage === i + 1 ? "active" : ""
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </div>
