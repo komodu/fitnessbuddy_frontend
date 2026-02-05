@@ -30,9 +30,9 @@ const Dashboard = () => {
         {/* Left Column: Charts */}
         <div className="col-12 col-lg-8 d-flex flex-column">
           <section className="charts p-3 shadow-sm rounded bg-light flex-grow-1 d-flex flex-column">
-            <h1 className="mb-4 text-center text-lg-start">Todays Workout</h1>
-            <div className="d-flex flex-column justify-content-center align-items-center">
-              {todayWorkout && (
+            <div className="d-flex flex-column justify-content-center align-items-center border border-lightsubtle">
+              <h1 className="mb-4 text-center text-lg-start">Todays Workout</h1>
+              {todayWorkout && todayWorkout.exercisesForTheDay.length == 0 ? (
                 <>
                   <div className="d-flex justify-content-center align-items-center">
                     <h3>
@@ -42,12 +42,23 @@ const Dashboard = () => {
                     <h4 className="text-capitalize">{todayWorkout.day}</h4>
                   </div>
 
-                  <ul>
-                    {todayWorkout.exercisesForTheDay.map((exercise) => (
-                      <li key={exercise._id}>{exercise.title}</li>
-                    ))}
-                  </ul>
+                  <div className="row text-center">
+                    <div className="col">
+                      <img
+                        src="./images/warning.png"
+                        height="80"
+                        alt="No data"
+                      />
+                      <p className="mt-2">
+                        <strong>No Data fetched</strong>
+                        <br />
+                        There are no Exercise assigned with {todayWorkout.name}
+                      </p>
+                    </div>
+                  </div>
                 </>
+              ) : (
+                <></>
               )}
             </div>
             <h1 className="mb-4 text-center text-lg-start">
@@ -62,8 +73,8 @@ const Dashboard = () => {
               <div className="d-flex flex-column">
                 <RadarChart />
               </div>
-              <div className="d-flex flex-column">
-                <LineChart />
+              <div className="d-flex flex-column align-items-center">
+                <LineChart style={{ width: "475px", height: "270px" }} />
               </div>
             </div>
           </section>

@@ -204,6 +204,7 @@ div.error {
 
 /* Ensure columns are equal height */
 .dashboard-row {
+  justify-content: center;
   align-items: stretch;
 }
 
