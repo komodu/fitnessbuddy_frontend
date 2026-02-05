@@ -7,24 +7,12 @@ const Dashboard = () => {
   const [value, onChange] = useState(new Date());
   const [todayWorkout, setTodayWorkout] = useState(null);
   useEffect(() => {
-    const fetchTodayWorkout = async () => {
-      try {
-        const response = await fetch("/api/today");
-        if (!response.ok) throw new Error("Failed to get Workout for Today.");
-        const result = await response.json();
-
-        console.log("today workout:", result);
-        setTodayWorkout(result);
-      } catch (err) {
-        console.err("Error fetching: ", err);
-      }
-    };
-    fetchTodayWorkout();
+    console.log("Update the Todays workout fetching and its routing!");
   }, []);
   return (
     <div className="home d-flex justify-content-center py-4">
       <div
-        className="dashboard-row row g-4"
+        className="dashboard-row row g-4 justify-content-center"
         style={{ maxWidth: "1200px", width: "100%" }}
       >
         {/* Left Column: Charts */}

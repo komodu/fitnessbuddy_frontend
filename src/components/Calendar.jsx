@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-
+  const [userPlan, setUserPlan] = useState(null);
+  useEffect(() => {
+    const fetchUserPlan = async () => {
+      try {
+        const response = await fetch("/api/workoutplan/userplan");
+        if (!response.ok) throw new Error("Error In fetching UserWorkoutPlans");
+        const data = await response.json();
+        setUserPlan(data);
+      } catch (error) {
+        console.error("Error fetching: ", error);
+      }
+    };
+    fetchUserPlan();
+  }, []);
+  console.log("data calendar: ", userPlan);
   // Get the current month and year
   const getCurrentMonthYear = () => {
     const month = currentDate.getMonth();
@@ -60,6 +74,22 @@ const Calendar = () => {
     );
   };
 
+  //! This is for dynamic Calendar from backend =========================
+  const buildDateFromDay = (day) => {
+    const date = new Date(year, month, Number(day));
+    date.setHours(0, 0, 0, 0);
+    return date;
+  };
+
+  if (!userPlan) {
+    return <div> Calendar Loading..</div>;
+  }
+  const planStart = new Date(userPlan.startDate);
+  planStart.setHours(0, 0, 0, 0);
+
+  const planEnd = new Date(userPlan.endDate);
+  planEnd.setHours(0, 0, 0, 0);
+
   return (
     <div className="calendar-container">
       <div className="calendar-header">
@@ -87,14 +117,40 @@ const Calendar = () => {
           <div>Sat</div>
         </div>
         <div className="days-grid">
-          {daysArray.map((day, index) => {
-            console.log("day: ", day);
+          {daysArray.map((day) => {
+            const date = buildDateFromDay(day);
+            const hasWorkout = userPlan && date >= planStart && date <= planEnd;
+
+            let workout = null;
+            if (hasWorkout) {
+              const weekday = date
+                .toLocaleDateString("en-US", { weekday: "long" })
+                .toLowerCase();
+              workout = userPlan.planTemplate.weeklySchedule[weekday];
+            }
+
             return (
               <div
-                key={index}
-                className={`day ${isToday(day) ? "current-day" : ""} ${day === null ? "empty-day" : ""}`}
+                key={day ?? Math.random()}
+                className={`day 
+                  ${day === null ? "empty-day" : ""} 
+                  ${isToday(day) ? "current-day" : ""} 
+                  ${hasWorkout ? "workout-day" : ""}`}
               >
-                {day}
+                {day && (
+                  <>
+                    <span className="day-number">{day}</span>
+
+                    {hasWorkout && workout && (
+                      <span
+                        className="workout-tooltip"
+                        style={{ backgroundColor: workout.color || "#333" }} // dynamic color
+                      >
+                        {workout.name}
+                      </span>
+                    )}
+                  </>
+                )}
               </div>
             );
           })}

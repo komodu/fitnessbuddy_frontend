@@ -204,7 +204,6 @@ div.error {
 
 /* Ensure columns are equal height */
 .dashboard-row {
-  justify-content: center;
   align-items: stretch;
 }
 
@@ -265,7 +264,7 @@ div.error {
 
 .days-grid div {
   text-align: center;
-  padding: 15px;
+  padding: 12px;
   cursor: pointer;
   border-radius: 50%;
 }
@@ -306,5 +305,193 @@ h1 {
 
   h2 {
     font-size: 1.6rem;
+  }
+}
+/* ================================
+   Calendar Container & Header
+================================ */
+.calendar-container {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 10px;
+  position: inherit;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: var(--primary);
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.calendar-header button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.calendar-header button:hover {
+  color: var(--primary-hover);
+}
+
+/* Weekday labels */
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: #f7f7f7;
+  text-align: center;
+  padding: 10px 0;
+  font-weight: bold;
+  color: var(--text-dark);
+}
+
+.calendar-container,
+.calendar-body,
+.days-grid {
+  position: relative; /* base stacking context */
+  overflow: visible; /* allow tooltip to overflow */
+}
+/* Calendar grid */
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 5px;
+  padding: 10px 0;
+}
+
+/* ================================
+   Calendar Days
+================================ */
+.day {
+  position: relative; /* for tooltip */
+  /* width: 50px;
+  height: 50px; */
+  border: 1px solid #ddd;
+  /* margin: 2px; */
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.day:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Today highlight */
+.current-day {
+  border: 2px solid var(--primary);
+  background-color: #e6f0ff;
+  color: var(--text-dark);
+  z-index: 1;
+}
+
+/* Empty day placeholder */
+.empty-day {
+  z-index: 1;
+  background-color: transparent;
+  border: none;
+  cursor: default;
+}
+
+/* Workout day */
+.workout-day {
+  border: 1px solid #28a745;
+  background-color: #d4edda; /* default; override dynamically if needed */
+}
+
+/* Day number */
+.day-number {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+/* ================================
+   Tooltip for workout
+================================ */
+.workout-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  background-color: #333; /* fallback, can be dynamic */
+  color: #fff;
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  position: absolute;
+  top: 110%; /* below the day */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  white-space: nowrap;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+}
+
+/* Arrow pointing up to day */
+.workout-tooltip::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #333 transparent;
+}
+.day.workout-day:hover {
+  z-index: 9999;
+}
+/* Show tooltip on hover */
+.day.workout-day:hover .workout-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Optional small label inside day (if using) */
+.workout-label {
+  font-size: 10px;
+  color: #155724;
+  text-align: center;
+  background-color: #c3e6cb;
+  border-radius: 4px;
+  padding: 2px 4px;
+  margin-top: 2px;
+  display: block;
+}
+
+/* ================================
+   Responsive Adjustments
+================================ */
+@media (max-width: 600px) {
+  .day {
+    width: 40px;
+    height: 40px;
+  }
+
+  .day-number {
+    font-size: 12px;
+  }
+
+  .workout-tooltip {
+    font-size: 10px;
+    padding: 3px 6px;
   }
 }
