@@ -9,3 +9,5 @@ export const ModalContext = createContext();
 export const ActiveLinkContext = createContext();
 
 export const UserContext = createContext();
+
+export const CurrentContext = createContext();

@@ -1,21 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
+import { CurrentContext } from "../context/Context";
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [userPlan, setUserPlan] = useState(null);
-  useEffect(() => {
-    const fetchUserPlan = async () => {
-      try {
-        const response = await fetch("/api/workoutplan/userplan");
-        if (!response.ok) throw new Error("Error In fetching UserWorkoutPlans");
-        const data = await response.json();
-        setUserPlan(data);
-      } catch (error) {
-        console.error("Error fetching: ", error);
-      }
-    };
-    fetchUserPlan();
-  }, []);
+  const { userPlan } = useContext(CurrentContext);
+  const workoutPlan = userPlan.userPlan;
   console.log("data calendar: ", userPlan);
   // Get the current month and year
   const getCurrentMonthYear = () => {
@@ -81,13 +70,13 @@ const Calendar = () => {
     return date;
   };
 
-  if (!userPlan) {
+  if (!workoutPlan) {
     return <div> Calendar Loading..</div>;
   }
-  const planStart = new Date(userPlan.startDate);
+  const planStart = new Date(workoutPlan.startDate);
   planStart.setHours(0, 0, 0, 0);
 
-  const planEnd = new Date(userPlan.endDate);
+  const planEnd = new Date(workoutPlan.endDate);
   planEnd.setHours(0, 0, 0, 0);
 
   return (
@@ -119,23 +108,24 @@ const Calendar = () => {
         <div className="days-grid">
           {daysArray.map((day) => {
             const date = buildDateFromDay(day);
-            const hasWorkout = userPlan && date >= planStart && date <= planEnd;
+            const hasWorkout =
+              workoutPlan && date >= planStart && date <= planEnd;
 
             let workout = null;
             if (hasWorkout) {
               const weekday = date
                 .toLocaleDateString("en-US", { weekday: "long" })
                 .toLowerCase();
-              workout = userPlan.planTemplate.weeklySchedule[weekday];
+              workout = workoutPlan.planTemplate.weeklySchedule[weekday];
             }
 
             return (
               <div
-                key={day ?? Math.random()}
+                key={day}
                 className={`day 
                   ${day === null ? "empty-day" : ""} 
                   ${isToday(day) ? "current-day" : ""} 
-                  ${hasWorkout ? "workout-day" : ""}`}
+                  ${hasWorkout && !isToday(day) ? "workout-day" : ""}`}
               >
                 {day && (
                   <>

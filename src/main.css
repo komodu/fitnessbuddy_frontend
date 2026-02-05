@@ -274,7 +274,7 @@ div.error {
 }
 
 .current-day {
-  background-color: var(--primary);
+  background: #e65309;
   color: white;
 }
 
@@ -397,8 +397,8 @@ h1 {
 /* Today highlight */
 .current-day {
   border: 2px solid var(--primary);
-  background-color: #e6f0ff;
-  color: var(--text-dark);
+  background: #16a34a;
+  color: white;
   z-index: 1;
 }
 

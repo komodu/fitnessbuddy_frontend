@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Calendar from "../components/Calendar";
-import warningLogo from "../assets/img/warning.png";
+import warningLogo from "../assets/img/warning.png"; //!
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
+import { CurrentContext } from "../context/Context";
 
 const Dashboard = () => {
   const [value, onChange] = useState(new Date());
-  const [todayWorkout, setTodayWorkout] = useState(null);
-  useEffect(() => {
-    console.log("Update the Todays workout fetching and its routing!");
-  }, []);
+  const { userPlan } = useContext(CurrentContext);
+  const exercises = userPlan.exercises;
   return (
     <div className="home d-flex justify-content-center py-4">
       <div
@@ -19,41 +18,24 @@ const Dashboard = () => {
         <div className="col-12 col-lg-8 d-flex flex-column">
           <section className="charts p-3 shadow-sm rounded bg-light flex-grow-1 d-flex flex-column">
             <div className="d-flex flex-column justify-content-center align-items-center border border-lightsubtle">
-              <h1 className="mb-4 text-center text-lg-start">Todays Workout</h1>
-
-              {/* Returns if theres workout in that date */}
-              {todayWorkout && (
+              {userPlan.date && (
                 <>
-                  {/* TODO: Need to put some space here  */}
-                  <div className="d-flex justify-content-center align-items-center gap-3">
-                    <h3> {new Date(todayWorkout.date).toLocaleDateString()}</h3>{" "}
-                    <h4 className="text-capitalize">{todayWorkout.name}</h4>{" "}
-                    <h4 className="text-capitalize">{todayWorkout.day}</h4>{" "}
-                  </div>
-                  <div className="row text-center">
-                    <div className="col">
-                      {/* Returns workout for the day */}
-                      {todayWorkout.exercisesForTheDay.length !== 0 ? (
-                        <ul>
-                          {todayWorkout.exercisesForTheDay.map(
-                            (exercise, index) => {
-                              return <li key={index}>{exercise.title}</li>;
-                            },
-                          )}
-                        </ul>
-                      ) : (
-                        <>
-                          <img src={warningLogo} alt="No data" height="80px" />
-                          <p className="mt-2">
-                            <strong>No data fetched</strong>
-                            <br />
-                            There are no exercises assigned in{" "}
-                            {todayWorkout.name}
-                          </p>
-                        </>
-                      )}
+                  <h1 className="mb-4 text-center text-lg-start">
+                    Todays Workout (
+                    <strong className="text-capitalize">{userPlan.day}</strong>)
+                  </h1>
+                  {exercises.length === 0 ? (
+                    <div className="row">
+                      <img src={warningLogo} alt="No Data Fetched" />
+                      <h3>No data fetched</h3>
                     </div>
-                  </div>
+                  ) : (
+                    <ul>
+                      {exercises.map((exercise) => {
+                        return <li key={exercise._id}>{exercise.title}</li>;
+                      })}
+                    </ul>
+                  )}
                 </>
               )}
             </div>
