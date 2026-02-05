@@ -88,6 +88,7 @@ const Calendar = () => {
         </div>
         <div className="days-grid">
           {daysArray.map((day, index) => {
+            console.log("day: ", day);
             return (
               <div
                 key={index}

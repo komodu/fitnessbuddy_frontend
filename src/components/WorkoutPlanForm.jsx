@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 const WorkoutPlanForm = () => {
   const [template, setTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [date, setDate] = useState(new Date());
-  const [duration, setDuration] = useState(0);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const payload = {
     planTemplate: selectedTemplate,
-    startDate: date,
-    durationWeeks: duration,
+    startDate: startDate,
+    endDate: endDate,
   };
   useEffect(() => {
     const fetchTemplates = async () => {
@@ -79,22 +79,22 @@ const WorkoutPlanForm = () => {
           id="startDate"
           type="date"
           className="form-control"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
         />
       </div>
 
       <div className="mb-3">
         <label className="form-label" htmlFor="durationWeeks">
-          Duration (Weeks)
+          End Date
         </label>
         <input
-          id="durationWeeks"
-          type="number"
+          id="endDate"
+          type="date"
           min={1}
           className="form-control"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
         />
       </div>
 
