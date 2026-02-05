@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Calendar from "../components/Calendar";
-
+import warningLogo from "../assets/img/warning.png";
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
 
 const Dashboard = () => {
@@ -32,33 +32,41 @@ const Dashboard = () => {
           <section className="charts p-3 shadow-sm rounded bg-light flex-grow-1 d-flex flex-column">
             <div className="d-flex flex-column justify-content-center align-items-center border border-lightsubtle">
               <h1 className="mb-4 text-center text-lg-start">Todays Workout</h1>
-              {todayWorkout && todayWorkout.exercisesForTheDay.length == 0 ? (
-                <>
-                  <div className="d-flex justify-content-center align-items-center">
-                    <h3>
-                      {new Date(todayWorkout.date).toLocaleDateString()} :{" "}
-                    </h3>
-                    <h4 className="text-capitalize">{todayWorkout.name} : </h4>
-                    <h4 className="text-capitalize">{todayWorkout.day}</h4>
-                  </div>
 
+              {/* Returns if theres workout in that date */}
+              {todayWorkout && (
+                <>
+                  {/* TODO: Need to put some space here  */}
+                  <div className="d-flex justify-content-center align-items-center gap-3">
+                    <h3> {new Date(todayWorkout.date).toLocaleDateString()}</h3>{" "}
+                    <h4 className="text-capitalize">{todayWorkout.name}</h4>{" "}
+                    <h4 className="text-capitalize">{todayWorkout.day}</h4>{" "}
+                  </div>
                   <div className="row text-center">
                     <div className="col">
-                      <img
-                        src="./images/warning.png"
-                        height="80"
-                        alt="No data"
-                      />
-                      <p className="mt-2">
-                        <strong>No Data fetched</strong>
-                        <br />
-                        There are no Exercise assigned with {todayWorkout.name}
-                      </p>
+                      {/* Returns workout for the day */}
+                      {todayWorkout.exercisesForTheDay.length !== 0 ? (
+                        <ul>
+                          {todayWorkout.exercisesForTheDay.map(
+                            (exercise, index) => {
+                              return <li key={index}>{exercise.title}</li>;
+                            },
+                          )}
+                        </ul>
+                      ) : (
+                        <>
+                          <img src={warningLogo} alt="No data" height="80px" />
+                          <p className="mt-2">
+                            <strong>No data fetched</strong>
+                            <br />
+                            There are no exercises assigned in{" "}
+                            {todayWorkout.name}
+                          </p>
+                        </>
+                      )}
                     </div>
                   </div>
                 </>
-              ) : (
-                <></>
               )}
             </div>
             <h1 className="mb-4 text-center text-lg-start">
