@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Input from "../components/Input";
 
+//! TODO: Check Validations, possible crashes (null values)
+//! TODO: Check Error Handlers
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

@@ -3,6 +3,8 @@ import Input from "../components/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/Context";
 
+//! TODO: Check Validations, possible crashes (null values)
+//! TODO: Check Error Handlers
 const Login = () => {
   const { login, isAuthenticated } = useContext(AuthContext);
 

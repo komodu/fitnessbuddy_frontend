@@ -4,7 +4,7 @@ import { CurrentContext } from "../context/Context";
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const { userPlan } = useContext(CurrentContext);
-  const workoutPlan = userPlan.userPlan;
+  const workoutPlan = userPlan?.userPlan;
   console.log("data calendar: ", userPlan);
   // Get the current month and year
   const getCurrentMonthYear = () => {
@@ -70,13 +70,10 @@ const Calendar = () => {
     return date;
   };
 
-  if (!workoutPlan) {
-    return <div> Calendar Loading..</div>;
-  }
-  const planStart = new Date(workoutPlan.startDate);
+  const planStart = new Date(workoutPlan?.startDate);
   planStart.setHours(0, 0, 0, 0);
 
-  const planEnd = new Date(workoutPlan.endDate);
+  const planEnd = new Date(workoutPlan?.endDate);
   planEnd.setHours(0, 0, 0, 0);
 
   return (

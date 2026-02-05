@@ -5,6 +5,8 @@ import UniversalModal from "@/components/UniversalModal";
 import ExerciseForm from "@/components/ExerciseForm";
 import LoaderSVG from "@/assets/img/loader.svg";
 
+//! TODO: Check Validations, possible crashes (null values)
+//! TODO: Check Error Handlers
 const Home = () => {
   const { exercises, dispatch } = useContext(ExercisesContext);
   const { openModal } = useContext(ModalContext);

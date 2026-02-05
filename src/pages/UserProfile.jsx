@@ -5,6 +5,8 @@ import LoaderSVG from "@/assets/img/loader.svg";
 import UpdateProfileForm from "../components/UpdateProfileForm";
 import UniversalModal from "../components/UniversalModal";
 
+//! TODO: Check Validations, possible crashes (null values)
+//! TODO: Check Error Handlers
 const UserProfile = () => {
   const { username, userInfo, isAuthenticated, loading } =
     useContext(AuthContext);

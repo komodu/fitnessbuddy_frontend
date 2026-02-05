@@ -1,13 +1,16 @@
 import { useState, useEffect, useContext } from "react";
 import Calendar from "../components/Calendar";
-import warningLogo from "../assets/img/warning.png"; //!
+import warningLogo from "../assets/img/warning.png";
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
 import { CurrentContext } from "../context/Context";
 
+//! TODO: Check Validations, possible crashes (null values)
+//! TODO: Check Error Handlers
 const Dashboard = () => {
   const [value, onChange] = useState(new Date());
   const { userPlan } = useContext(CurrentContext);
-  const exercises = userPlan.exercises;
+  const exercises = userPlan?.exercises || null;
+  console.log("EXERLKEJHLK: ", exercises);
   return (
     <div className="home d-flex justify-content-center py-4">
       <div
@@ -18,24 +21,45 @@ const Dashboard = () => {
         <div className="col-12 col-lg-8 d-flex flex-column">
           <section className="charts p-3 shadow-sm rounded bg-light flex-grow-1 d-flex flex-column">
             <div className="d-flex flex-column justify-content-center align-items-center border border-lightsubtle">
-              {userPlan.date && (
+              {/* If UserPlan exist in User */}
+              {userPlan?.date ? (
                 <>
                   <h1 className="mb-4 text-center text-lg-start">
                     Todays Workout (
                     <strong className="text-capitalize">{userPlan.day}</strong>)
                   </h1>
                   {exercises.length === 0 ? (
-                    <div className="row">
-                      <img src={warningLogo} alt="No Data Fetched" />
-                      <h3>No data fetched</h3>
+                    <div className="row d-flex justify-content-center align-items-center gap-1">
+                      <img
+                        src={warningLogo}
+                        alt="No Data Fetched"
+                        style={{ width: "200px" }}
+                      />
+                      <h3 style={{ textAlign: "center" }}>No data fetched</h3>
                     </div>
                   ) : (
                     <ul>
-                      {exercises.map((exercise) => {
-                        return <li key={exercise._id}>{exercise.title}</li>;
-                      })}
+                      {exercises?.length > 0 &&
+                        exercises.map((exercise) => {
+                          return <li key={exercise._id}>{exercise.title}</li>;
+                        })}
                     </ul>
                   )}
+                </>
+              ) : (
+                // User Plan not Exist in the User
+                <>
+                  <h1 className="mb-4 text-center text-lg-start">
+                    Workout is not Assigned
+                  </h1>
+                  <div className="row d-flex justify-content-center align-items-center gap-1">
+                    <img
+                      src={warningLogo}
+                      alt="No Data Fetched"
+                      style={{ width: "200px" }}
+                    />
+                    <h3 style={{ textAlign: "center" }}>No data fetched</h3>
+                  </div>
                 </>
               )}
             </div>
