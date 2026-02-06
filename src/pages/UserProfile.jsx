@@ -7,6 +7,11 @@ import UniversalModal from "../components/UniversalModal";
 
 //! TODO: Check Validations, possible crashes (null values)
 //! TODO: Check Error Handlers
+
+//! TODO: Work on Editing Functionalities add more information (probably)
+//! TODO: Display workout splits in the table that depends on the cxurrent active user workout plan (coming from backend)
+//! TODO: Work on Photo functionality
+
 const UserProfile = () => {
   const { username, userInfo, isAuthenticated, loading } =
     useContext(AuthContext);

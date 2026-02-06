@@ -5,6 +5,7 @@ import { ActiveLinkContext } from "../context/Context";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProfileDropDown from "./ProfileDropdown";
 
+//! TODO: If there is an existing image it must be appended to the image icon instead of placeholder
 const Navigation = () => {
   const { active, setActive } = useContext(ActiveLinkContext);
   const [expanded, setExpanded] = useState(false);

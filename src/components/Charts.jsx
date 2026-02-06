@@ -24,7 +24,7 @@ ChartJS.register(
   Tooltip,
   Legend,
 );
-
+//! TODO: Update this into dynamic
 export const DynamicBarChart = () => {
   const [data, setData] = useState({
     labels: ["January", "February", "March", "April", "May", "June", "July"],

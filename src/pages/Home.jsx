@@ -5,6 +5,7 @@ import UniversalModal from "@/components/UniversalModal";
 import ExerciseForm from "@/components/ExerciseForm";
 import LoaderSVG from "@/assets/img/loader.svg";
 
+//! TODO: Work on Dropdown filtering
 const Home = () => {
   const { exercises, dispatch } = useContext(ExercisesContext);
   const { openModal } = useContext(ModalContext);

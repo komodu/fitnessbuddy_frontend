@@ -6,6 +6,10 @@ import { CurrentContext } from "../context/Context";
 
 //! TODO: Check Validations, possible crashes (null values)
 //! TODO: Check Error Handlers
+//! TODO: Radar Chart must based on 10 recent workouts
+//! TODO: Line Chart must depend on Selected Workout to display whelther Weight Lifted or Repetitions
+
+//! TODO: Calendar must have assigned border color (dynamic changeable by the user) if there is assigned workout
 const Dashboard = () => {
   const [value, onChange] = useState(new Date());
   const { userPlan } = useContext(CurrentContext);

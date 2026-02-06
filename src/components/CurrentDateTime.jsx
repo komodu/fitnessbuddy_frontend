@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
+//! TODO: Call this on Dashboard
 const CurrentDateTime = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
@@ -17,16 +18,16 @@ const CurrentDateTime = () => {
 
   // Format the date and time using built-in methods or a library like date-fns/Moment.js
   const formattedDate = currentDateTime.toLocaleDateString(undefined, {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   const formattedTime = currentDateTime.toLocaleTimeString(undefined, {
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
     hour12: true,
   });
 
