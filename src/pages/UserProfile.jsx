@@ -21,26 +21,6 @@ const UserProfile = () => {
   const [form] = useState(false);
   useEffect(() => {
     console.log(userInfo);
-    // const timer = setTimeout(() => {
-    //   setShowLoader(false);
-    // }, 2000);
-    // const fetchUser = async () => {
-    //   try {
-    //     const resp = await fetch("/api/auth/profile", {
-    //       method: "GET",
-    //       credentials: "include",
-    //     });
-
-    //     const result = await resp.json();
-    //     console.log("Fetch User Result:", result);
-    //     setUser(result);
-    //   } catch (error) {
-    //     console.error("Error in User Profile:", error);
-    //     setError(error.message);
-    //   }
-    // };
-    // fetchUser();
-    // return () => clearTimeout(timer);
   }, []);
   const handleClick = () => {
     openModal("Edit Profile", <UpdateProfileForm />);
