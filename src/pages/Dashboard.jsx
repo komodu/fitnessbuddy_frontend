@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import Calendar from "../components/Calendar";
 import warningLogo from "../assets/img/warning.png";
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
-import { CurrentContext } from "../context/Context";
+import { CurrentContext, ExercisesContext } from "../context/Context";
 import infoTooltip from "../assets/img/info.png";
 
 //! TODO: Check Validations, possible crashes (null values)
@@ -16,10 +16,14 @@ import infoTooltip from "../assets/img/info.png";
 const Dashboard = () => {
   const [value, onChange] = useState(new Date());
   const { userPlan, todayExercises } = useContext(CurrentContext);
+  const { exercises } = useContext(ExercisesContext);
   const [filterRange, setFilterRange] = useState("1");
-
   const [dropdown, setDropdown] = useState(false);
+
+  const [selectedExercise, setSelectedExercise] = useState(null);
   console.log("TODAYSS EXERCISES: ", todayExercises);
+  console.log("all Exercises: ", exercises);
+  console.log("selected: ", selectedExercise);
   return (
     <div className="home d-flex justify-content-center py-4">
       <div
@@ -108,6 +112,7 @@ const Dashboard = () => {
         {/* col-12 col-lg-8 d-flex flex-column */}
         <div className="col-10 col-lg-8 d-flex flex-column">
           <section className="charts p-3 shadow-sm rounded bg-light flex-grow-1 d-flex flex-column">
+            {/* Workout Chart Analysis */}
             <div className="d-flex align-items-center justify-content-center my-2">
               <div className="dropdown">
                 <button
@@ -120,53 +125,36 @@ const Dashboard = () => {
                     setDropdown((x) => !x);
                   }}
                 >
-                  Dropdown
+                  {selectedExercise || "Select exercise"}
                 </button>
 
                 {dropdown && (
                   <ul className="dropdown-menu dropdown-menu-end show">
-                    <li>
-                      <button
-                        className="dropdown-item"
-                        style={{ width: "300px" }}
-                      >
-                        Action
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="dropdown-item"
-                        style={{ width: "300px" }}
-                      >
-                        Another action
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="dropdown-item"
-                        style={{ width: "300px" }}
-                      >
-                        Something else here
-                      </button>
-                    </li>
-                    <li>
-                      <hr
-                        className="dropdown-divider"
-                        style={{ width: "300px" }}
-                      />
-                    </li>
-                    <li>
-                      <button
-                        className="dropdown-item"
-                        style={{ width: "300px" }}
-                      >
-                        Separated link
-                      </button>
-                    </li>
+                    {exercises.length > 0 ? (
+                      exercises.map((exercise) => {
+                        return (
+                          <li key={exercise._id}>
+                            <button
+                              className="dropdown-item text-capitalize"
+                              style={{ width: "300px" }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedExercise(exercise.title);
+                              }}
+                            >
+                              {exercise.title}
+                            </button>
+                          </li>
+                        );
+                      })
+                    ) : (
+                      <></>
+                    )}
                   </ul>
                 )}
               </div>
             </div>
+            {/* ---------------- */}
             <div className="btn-group" role="group" aria-label="Time Filter">
               <input
                 type="radio"
@@ -216,7 +204,6 @@ const Dashboard = () => {
                 30D
               </label>
             </div>
-
             <div className="d-flex flex-column">
               <div className="d-flex flex-column align-items-center">
                 <LineChart style={{ width: "475px", height: "270px" }} />

@@ -12,7 +12,7 @@ const ProtectedRoute = () => {
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [stopAuthLoading]);
 
   if (authLoading) return <p>Loading..</p>;
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
