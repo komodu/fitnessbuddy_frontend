@@ -1,18 +1,23 @@
 import { useState, useContext, useEffect } from "react";
 import WorkoutPlanForm from "../components/WorkoutPlanForm";
-import { ModalContext } from "../context/Context";
+import { CurrentContext, ModalContext } from "../context/Context";
 import UniversalModal from "@/components/UniversalModal";
 import WorkoutPlanTemplateForm from "../components/WorkoutTemplateForm";
-
+import WorkoutPlanSchedules from "../components/WorkoutPlanSchedules";
 //! TODO: Check Validations, possible crashes (null values)
 //! TODO: Check Error Handlers
 const WorkoutPlan = () => {
   const { openModal } = useContext(ModalContext);
+  const { userPlan } = useContext(CurrentContext);
   const [disable, setDisabled] = useState(false);
 
   useEffect(() => {
     // ! Work on Routings for validation
   }, []);
+  console.log(
+    "userPlanWorkoutPlan2: ",
+    userPlan?.userPlan.planTemplate.weeklySchedule["friday"],
+  );
   return (
     <>
       <UniversalModal />
@@ -42,7 +47,8 @@ const WorkoutPlan = () => {
             </button>
           </div>
         </div>
-        <div className="row g-3">
+        <WorkoutPlanSchedules />
+        {/* <div className="row g-3">
           <strong>Workout Schedule </strong>
           <div className="workout-details">
             <h4>Date: Friday, January 1, 1999</h4>
@@ -54,15 +60,15 @@ const WorkoutPlan = () => {
             <span className="material-symbols-outlined">delete</span>
           </div>
 
-          {/* {exercises.map((exercise) => (
+          {exercises.map((exercise) => (
             <div
               key={exercise._id}
               className="col-12 col-sm-6 col-lg-4 col-xl-3"
             >
               <ExerciseDetails exercise={exercise} />
             </div>
-          ))} */}
-        </div>
+          ))}
+        </div> */}
       </div>
     </>
   );

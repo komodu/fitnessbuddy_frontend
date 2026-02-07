@@ -504,3 +504,17 @@ h1 {
 span {
   margin: 0;
 }
+
+.accordion-body-custom {
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease;
+  opacity: 0;
+}
+
+.accordion-body-custom.open {
+  max-height: 200px; /* adjust based on content */
+  opacity: 1;
+}
