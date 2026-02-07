@@ -1,10 +1,13 @@
 import React, { useState, useContext } from "react";
-import { CurrentContext } from "../context/Context";
+import { CurrentContext, ModalContext } from "../context/Context";
+import UniversalModal from "./UniversalModal";
+import CalendarWorkout from "./CalendarWorkout";
 
-const Calendar = () => {
+const Calendar = ({ exercises }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const { userPlan } = useContext(CurrentContext);
   const workoutPlan = userPlan?.userPlan;
+  const { openModal } = useContext(ModalContext);
   // console.log("data calendar: ", userPlan);
   // Get the current month and year
   const getCurrentMonthYear = () => {
@@ -78,6 +81,7 @@ const Calendar = () => {
 
   return (
     <div className="calendar-container">
+      <UniversalModal />
       <div className="calendar-header">
         <button className="prev-month" onClick={goToPreviousMonth}>
           Prev
@@ -123,6 +127,16 @@ const Calendar = () => {
                   ${day === null ? "empty-day" : ""} 
                   ${isToday(day) ? "current-day" : ""} 
                   ${hasWorkout && !isToday(day) ? "workout-day" : ""}`}
+                onClick={() => {
+                  console.log("test");
+                  openModal(
+                    `Workout Exercise : ${month}/${day}/${year}`,
+                    <CalendarWorkout
+                      exercises={{ exercises }}
+                      workoutday={workout.name}
+                    />,
+                  );
+                }}
               >
                 {day && (
                   <>

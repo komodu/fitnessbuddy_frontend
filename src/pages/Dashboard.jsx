@@ -100,7 +100,7 @@ const Dashboard = () => {
             <h2 className="mb-3 text-center text-lg-start">
               Interactive Calendar
             </h2>
-            <Calendar onChange={onChange} value={value} />
+            <Calendar onChange={onChange} value={value} exercises={exercises} />
             {/* Chart 2: RadarChart */}
             <div className="d-flex flex-column">
               <RadarChart />
@@ -140,6 +140,7 @@ const Dashboard = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedExercise(exercise.title);
+                                setDropdown((e) => !e);
                               }}
                             >
                               {exercise.title}

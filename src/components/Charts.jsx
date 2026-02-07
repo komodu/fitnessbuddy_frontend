@@ -24,6 +24,7 @@ ChartJS.register(
   Tooltip,
   Legend,
 );
+
 //! TODO: Update this into dynamic
 export const DynamicBarChart = () => {
   const [data, setData] = useState({
@@ -89,6 +90,19 @@ export const DynamicBarChart = () => {
 // ! TODO: Date must be according to the filter e.g: 3D = 3Days ago it must show the previous dates
 // ! and the weights / sets and repetition that in those particular days
 export const LineChart = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  // const getCurrentDate = () => {
+  //   const month = currentDate.getMonth();
+  //   const year = currentDate.getFullYear();
+  //   const day = currentDate.getDate();
+  //   return { month, year, day };
+  // };
+  // const { currentMonth, currentYear, currentDay } = getCurrentDate();
+
+  // const dateToday = new Date(currentYear, currentMonth, currentDay).getDate();
+  console.log("lchart: ", new Date(currentDate));
+  // setCurrentDate(dateToday);
+
   const options = {
     responsive: true,
     plugins: {
