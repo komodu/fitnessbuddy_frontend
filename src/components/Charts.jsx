@@ -86,7 +86,8 @@ export const DynamicBarChart = () => {
 };
 
 // export default DynamicBarChart;
-
+// ! TODO: Date must be according to the filter e.g: 3D = 3Days ago it must show the previous dates
+// ! and the weights / sets and repetition that in those particular days
 export const LineChart = () => {
   const options = {
     responsive: true,
@@ -115,49 +116,47 @@ export const LineChart = () => {
     labels,
     datasets: [
       {
-        label: "Dataset 1",
-        data: labels.map(() =>
-          faker.datatype.number({ min: -1000, max: 1000 }),
-        ),
+        label: "Weight (KG)",
+        data: labels.map(() => faker.datatype.number({ min: 5, max: 40 })),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
-        label: "Dataset 2",
-        data: labels.map(() =>
-          faker.datatype.number({ min: -1000, max: 1000 }),
-        ),
+        label: "Repetition",
+        data: labels.map(() => faker.datatype.number({ min: 8, max: 25 })),
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
+      {
+        label: "Sets",
+        data: labels.map(() => faker.datatype.number({ min: 2, max: 5 })),
+        borderColor: "#00ff00",
+        backgroundColor: "#15c215",
+      },
     ],
   };
-  return <Line options={options} data={data} />;
+  return (
+    <CDBContainer>
+      <Line options={options} data={data} />
+    </CDBContainer>
+  );
 };
 
 export const RadarChart = () => {
   const [data] = useState({
-    labels: [
-      "Eating",
-      "Drinking",
-      "Sleeping",
-      "Designing",
-      "Coding",
-      "Cycling",
-      "Running",
-    ],
+    labels: ["Strength", "Consistency", "Volume", "Cardio", "Mobility"],
     datasets: [
       {
         label: "My First dataset",
         backgroundColor: "rgba(194, 116, 161, 0.5)",
         borderColor: "rgb(194, 116, 161)",
-        data: [65, 59, 90, 81, 56, 55, 40],
+        data: [65, 59, 90, 81, 56],
       },
       {
         label: "My Second dataset",
         backgroundColor: "rgba(71, 225, 167, 0.5)",
         borderColor: "rgb(71, 225, 167)",
-        data: [28, 48, 40, 19, 96, 27, 100],
+        data: [28, 48, 40, 19, 96],
       },
     ],
   });

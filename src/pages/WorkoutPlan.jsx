@@ -44,14 +44,14 @@ const WorkoutPlan = () => {
         </div>
         <div className="row g-3">
           <strong>Workout Schedule </strong>
-          <div class="workout-details">
+          <div className="workout-details">
             <h4>Date: Friday, January 1, 1999</h4>
             <h3>Core</h3>
             <p>
               <strong>Workout List </strong>
             </p>
             <p>1 day ago</p>
-            <span class="material-symbols-outlined">delete</span>
+            <span className="material-symbols-outlined">delete</span>
           </div>
 
           {/* {exercises.map((exercise) => (

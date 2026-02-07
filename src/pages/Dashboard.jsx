@@ -4,6 +4,7 @@ import warningLogo from "../assets/img/warning.png";
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
 import { CurrentContext } from "../context/Context";
 import infoTooltip from "../assets/img/info.png";
+
 //! TODO: Check Validations, possible crashes (null values)
 //! TODO: Check Error Handlers
 //! TODO: Radar Chart must based on 10 recent workouts
@@ -15,7 +16,9 @@ import infoTooltip from "../assets/img/info.png";
 const Dashboard = () => {
   const [value, onChange] = useState(new Date());
   const { userPlan, todayExercises } = useContext(CurrentContext);
+  const [filterRange, setFilterRange] = useState("1");
 
+  const [dropdown, setDropdown] = useState(false);
   console.log("TODAYSS EXERCISES: ", todayExercises);
   return (
     <div className="home d-flex justify-content-center py-4">
@@ -27,25 +30,10 @@ const Dashboard = () => {
         {/* col-10 col-lg-4 d-flex */}
         <div className="col-12 col-lg-4 d-flex flex-column">
           <section className="calendar shadow-sm rounded bg-light flex-grow-1">
-            <h2 className="mb-3 text-center text-lg-start">
-              Interactive Calendar
-            </h2>
-            <Calendar onChange={onChange} value={value} />
-            {/* Chart 2: RadarChart */}
-            <div className="d-flex flex-column">
-              <RadarChart />
-            </div>
-          </section>
-        </div>
-
-        {/* Left Column: Charts */}
-        {/* col-12 col-lg-8 d-flex flex-column */}
-        <div className="col-10 col-lg-8 d-flex">
-          <section className="charts p-3 shadow-sm rounded bg-light flex-grow-1 d-flex flex-column">
             <div className="d-flex flex-column justify-content-center align-items-center border border-lightsubtle">
               {/* If UserPlan exist in User */}
               {userPlan?.date ? (
-                <>
+                <div className="d-flex justify-content-center align-items-center flex-column">
                   <h1 className="mb-4 text-center text-lg-start">
                     Todays Workout (
                     <span>
@@ -87,7 +75,7 @@ const Dashboard = () => {
                         })}
                     </ul>
                   )}
-                </>
+                </div>
               ) : (
                 // User Plan not Exist in the User
                 <>
@@ -105,15 +93,131 @@ const Dashboard = () => {
                 </>
               )}
             </div>
-            {/* <h1 className="mb-4 text-center text-lg-start">
-              Dashboard Analytics
-            </h1> */}
+            <h2 className="mb-3 text-center text-lg-start">
+              Interactive Calendar
+            </h2>
+            <Calendar onChange={onChange} value={value} />
+            {/* Chart 2: RadarChart */}
             <div className="d-flex flex-column">
-              {/* Chart 1: DynamicBarChart */}
-              {/* <div className="d-flex flex-column">
-                <DynamicBarChart />
-              </div> */}
-              {/* Chart 3: Line Chart */}
+              <RadarChart />
+            </div>
+          </section>
+        </div>
+
+        {/* Left Column: Charts */}
+        {/* col-12 col-lg-8 d-flex flex-column */}
+        <div className="col-10 col-lg-8 d-flex flex-column">
+          <section className="charts p-3 shadow-sm rounded bg-light flex-grow-1 d-flex flex-column">
+            <div className="d-flex align-items-center justify-content-center my-2">
+              <div className="dropdown">
+                <button
+                  style={{ position: "relative", width: "300px" }}
+                  id="select-exercise"
+                  className="btn btn-outline-secondary dropdown-toggle"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDropdown((x) => !x);
+                  }}
+                >
+                  Dropdown
+                </button>
+
+                {dropdown && (
+                  <ul className="dropdown-menu dropdown-menu-end show">
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        style={{ width: "300px" }}
+                      >
+                        Action
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        style={{ width: "300px" }}
+                      >
+                        Another action
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        style={{ width: "300px" }}
+                      >
+                        Something else here
+                      </button>
+                    </li>
+                    <li>
+                      <hr
+                        className="dropdown-divider"
+                        style={{ width: "300px" }}
+                      />
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        style={{ width: "300px" }}
+                      >
+                        Separated link
+                      </button>
+                    </li>
+                  </ul>
+                )}
+              </div>
+            </div>
+            <div className="btn-group" role="group" aria-label="Time Filter">
+              <input
+                type="radio"
+                className="btn-check"
+                name="timefilter"
+                id="3d"
+                onClick={() => setFilterRange("1")}
+                checked={filterRange === "1" ? true : false}
+              />
+              <label className="btn btn-outline-primary" for="3d">
+                3D
+              </label>
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="timefilter"
+                id="7d"
+                onClick={() => setFilterRange("2")}
+                checked={filterRange === "2" ? true : false}
+              />
+              <label className="btn btn-outline-primary" for="7d">
+                7D
+              </label>
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="timefilter"
+                id="14d"
+                onClick={() => setFilterRange("3")}
+                checked={filterRange === "3" ? true : false}
+              />
+              <label className="btn btn-outline-primary" for="14d">
+                14D
+              </label>
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="timefilter"
+                id="30d"
+                onClick={() => setFilterRange("4")}
+                checked={filterRange === "4" ? true : false}
+              />
+              <label className="btn btn-outline-primary" for="30d">
+                30D
+              </label>
+            </div>
+
+            <div className="d-flex flex-column">
               <div className="d-flex flex-column align-items-center">
                 <LineChart style={{ width: "475px", height: "270px" }} />
               </div>

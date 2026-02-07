@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import Navigation from "@/components/Navigation";
 import { AuthContext } from "@/context/Context";
 import { ActiveLinkProvider } from "@/context/provider/ActiveLinkProvider";
