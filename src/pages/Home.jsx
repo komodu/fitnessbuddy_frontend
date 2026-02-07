@@ -1,5 +1,9 @@
 import { useEffect, useState, useContext } from "react";
-import { ExercisesContext, ModalContext } from "@/context/Context";
+import {
+  ExercisesContext,
+  ModalContext,
+  CurrentContext,
+} from "@/context/Context";
 import ExerciseDetails from "@/components/ExerciseDetails";
 import UniversalModal from "@/components/UniversalModal";
 import ExerciseForm from "@/components/ExerciseForm";
@@ -7,10 +11,11 @@ import LoaderSVG from "@/assets/img/loader.svg";
 
 //! TODO: Work on Dropdown filtering
 const Home = () => {
-  const { exercises, dispatch } = useContext(ExercisesContext);
+  const { exercises } = useContext(ExercisesContext);
   const { openModal } = useContext(ModalContext);
 
-  const [loading, setLoading] = useState(true);
+  const { currentLoading: loading } = useContext(CurrentContext);
+
   const [dropdown, setDropdown] = useState(false);
 
   //! Search Bar
@@ -19,40 +24,6 @@ const Home = () => {
   //! Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
-
-  // Fetch Data once on mount
-  useEffect(() => {
-    const fetchExercises = async () => {
-      try {
-        const response = await fetch("/api/exercise");
-        const json = await response.json();
-
-        if (response.ok) {
-          dispatch({ type: "SET_EXERCISES", payload: json });
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchWorkoutTypes = async () => {
-      try {
-        const response = await fetch("/api/workout-types");
-        const json = await response.json();
-
-        if (response.ok) {
-          dispatch({ type: "SET_WORKOUT_TYPES", payload: json });
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchWorkoutTypes();
-    fetchExercises();
-  }, [dispatch]); // <-- FIXED dependency
 
   // Filter based on search
   const filteredExercises = (exercises || []).filter((ex) =>

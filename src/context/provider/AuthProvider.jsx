@@ -5,7 +5,10 @@ const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [username, setUsername] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true); // IMPORTANT
+  const [authLoading, setAuthLoading] = useState(true); // IMPORTANT
+
+  const startAuthLoading = () => setAuthLoading(true);
+  const stopAuthLoading = () => setAuthLoading(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -14,11 +17,11 @@ const AuthProvider = ({ children }) => {
     // const storedUserId = localStorage.getItem("userId");
     if (token && storedUsername) {
       setUsername(JSON.parse(storedUsername));
-      setLoading(false);
+      setAuthLoading(false);
     }
 
     if (!token) {
-      setLoading(false);
+      setAuthLoading(false);
       return;
     }
 
@@ -43,7 +46,7 @@ const AuthProvider = ({ children }) => {
         localStorage.removeItem("userId");
         localStorage.removeItem("token");
       })
-      .finally(() => setLoading(false));
+      .finally(() => setAuthLoading(false));
   }, []);
 
   // Login
@@ -70,7 +73,7 @@ const AuthProvider = ({ children }) => {
     setUsername(data.data.username);
     setIsAuthenticated(true);
     setUserInfo(data.data.userInfo);
-    setLoading(false);
+    stopAuthLoading();
   };
 
   // Logout
@@ -92,7 +95,10 @@ const AuthProvider = ({ children }) => {
         username,
         userInfo,
         isAuthenticated,
-        loading, // expose loading
+        // expose loading
+        authLoading,
+        startAuthLoading,
+        stopAuthLoading,
         login,
         logout,
       }}

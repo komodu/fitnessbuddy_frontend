@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import Calendar from "../components/Calendar";
 import warningLogo from "../assets/img/warning.png";
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
@@ -10,12 +10,13 @@ import infoTooltip from "../assets/img/info.png";
 //! TODO: Line Chart must depend on Selected Workout to display whelther Weight Lifted or Repetitions
 
 //! TODO: Calendar must have assigned border color (dynamic changeable by the user) if there is assigned workout
+
+// ! Loader: ? take it from Current Context
 const Dashboard = () => {
   const [value, onChange] = useState(new Date());
-  const { userPlan, getWorkoutsForDay } = useContext(CurrentContext);
+  const { userPlan, todayExercises } = useContext(CurrentContext);
 
-  const exercises = getWorkoutsForDay(userPlan.day) || null;
-  console.log("TODAYSS EXERCISES: ", exercises);
+  console.log("TODAYSS EXERCISES: ", todayExercises);
   return (
     <div className="home d-flex justify-content-center py-4">
       <div
@@ -58,7 +59,7 @@ const Dashboard = () => {
                     </span>
                     )
                   </h1>
-                  {exercises.length === 0 ? (
+                  {todayExercises.length === 0 ? (
                     <div className="row d-flex justify-content-center align-items-center gap-1">
                       <img
                         src={warningLogo}
@@ -80,8 +81,8 @@ const Dashboard = () => {
                     </div>
                   ) : (
                     <ul>
-                      {exercises?.length > 0 &&
-                        exercises.map((exercise) => {
+                      {todayExercises?.length > 0 &&
+                        todayExercises.map((exercise) => {
                           return <li key={exercise._id}>{exercise.title}</li>;
                         })}
                     </ul>

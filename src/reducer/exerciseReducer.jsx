@@ -11,7 +11,12 @@ const initialStates = {
 
 const exercisesReducer = (state, action) => {
   switch (action.type) {
+    // Shows Exercises in Exercise Tab
     case "SET_EXERCISES":
+      return {
+        exercises: action.payload,
+      };
+    case "SET_TODAY_EXERCISES": //!
       return {
         exercises: action.payload,
       };

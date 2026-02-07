@@ -11,6 +11,8 @@ import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
 import UserProfile from "./pages/UserProfile";
 
+// Protected Route
+import ProtectedRoute from "./ProtectedRoute";
 // Provider
 import AuthProvider from "@/context/provider/AuthProvider";
 import ExercisesProvider from "@/context/provider/ExercisesProvider";
@@ -22,28 +24,34 @@ function App() {
       <div className="container-fluid px-0">
         <BrowserRouter>
           <AuthProvider>
-            <CurrentProvider>
-              <ExercisesProvider>
-                <ModalProvider>
-                  <Routes>
-                    {/* Public routes (login, register) */}
-                    <Route element={<AuthLayout />}>
-                      <Route path="/login" element={<Login />} />
-                      <Route path="/register" element={<Register />} />
-                    </Route>
+            <Routes>
+              {/* Public routes (login, register) */}
+              <Route element={<AuthLayout />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </Route>
 
-                    {/* Private / App routes (dashboard, settings, etc.) */}
-                    <Route element={<AppLayout />}>
-                      <Route path="/" element={<Navigate to="/dashboard" />} />
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/exercise" element={<Home />} />
-                      <Route path="/user-profile" element={<UserProfile />} />
-                      <Route path="/workout-plan" element={<WorkoutPlan />} />
-                    </Route>
-                  </Routes>
-                </ModalProvider>
-              </ExercisesProvider>
-            </CurrentProvider>
+              {/* Private / App routes (dashboard, settings, etc.) */}
+              <Route element={<ProtectedRoute />}>
+                <Route
+                  element={
+                    <ExercisesProvider>
+                      <CurrentProvider>
+                        <ModalProvider>
+                          <AppLayout />
+                        </ModalProvider>
+                      </CurrentProvider>
+                    </ExercisesProvider>
+                  }
+                >
+                  <Route path="/" element={<Navigate to="/dashboard" />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/exercise" element={<Home />} />
+                  <Route path="/user-profile" element={<UserProfile />} />
+                  <Route path="/workout-plan" element={<WorkoutPlan />} />
+                </Route>
+              </Route>
+            </Routes>
           </AuthProvider>
         </BrowserRouter>
       </div>

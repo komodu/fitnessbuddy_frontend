@@ -5,7 +5,7 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const { userPlan } = useContext(CurrentContext);
   const workoutPlan = userPlan?.userPlan;
-  console.log("data calendar: ", userPlan);
+  // console.log("data calendar: ", userPlan);
   // Get the current month and year
   const getCurrentMonthYear = () => {
     const month = currentDate.getMonth();
