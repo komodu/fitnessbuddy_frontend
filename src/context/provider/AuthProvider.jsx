@@ -17,6 +17,7 @@ const AuthProvider = ({ children }) => {
     // const storedUserId = localStorage.getItem("userId");
     if (token && storedUsername) {
       setUsername(JSON.parse(storedUsername));
+      setIsAuthenticated(true);
       setAuthLoading(false);
     }
 
@@ -24,7 +25,6 @@ const AuthProvider = ({ children }) => {
       setAuthLoading(false);
       return;
     }
-
     fetch("/api/auth/me", { credentials: "include" })
       .then((resp) => {
         if (!resp.ok) throw new Error("Failed to fetch user");
