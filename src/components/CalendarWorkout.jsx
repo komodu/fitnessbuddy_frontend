@@ -8,14 +8,37 @@ const CalendarWorkout = ({ exercises = [], workoutday }) => {
       })
     : [];
   console.log("filteredCalendar: ", filteredExercise);
+  console.log(filteredExercise.length);
+  console.log(workoutday);
   return (
     <div className="d-flex justify-content-center align-items-center">
-      <ul>
-        {filteredExercise &&
-          filteredExercise.map((ex) => {
-            return <li key={ex._id}>{ex.title}</li>;
-          })}
-      </ul>
+      {filteredExercise.length === 0 ? (
+        workoutday.toLowerCase() == "rest" ? (
+          <p>
+            Today is
+            <span>
+              <strong className="text-capitalize"> {workoutday} </strong>
+            </span>{" "}
+            Day!
+          </p>
+        ) : (
+          <p>
+            There is no assigned workout in{" "}
+            <span>
+              <strong className="text-capitalize"> {workoutday}</strong>
+            </span>
+          </p>
+        )
+      ) : (
+        <>
+          {" "}
+          <ul>
+            {filteredExercise.map((ex) => {
+              return <li key={ex._id}>{ex.title}</li>;
+            })}
+          </ul>
+        </>
+      )}
     </div>
   );
 };

@@ -130,7 +130,7 @@ const Calendar = ({ exercises }) => {
                 onClick={() => {
                   console.log("test");
                   openModal(
-                    `Workout Exercise : ${month}/${day}/${year}`,
+                    `Workout Exercise : ${month}/${day}/${year} ${" "} ${workout.name} Day`,
                     <CalendarWorkout
                       exercises={{ exercises }}
                       workoutday={workout.name}
