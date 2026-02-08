@@ -19,13 +19,13 @@ const UserProfile = () => {
   // const [showLoader, setShowLoader] = useState(true);
   const [error, setError] = useState(null);
   const [form] = useState(false);
+
   useEffect(() => {
-    console.log(userInfo);
-  }, []);
+    console.log("userInfo: ", userInfo);
+  }, [userInfo]);
   const handleClick = () => {
-    openModal("Edit Profile", <UpdateProfileForm />);
+    openModal("Edit Profile", <UpdateProfileForm payload={userInfo} />);
   };
-  console.log("username: ", username);
   if (!isAuthenticated || error) return <p>{error}</p>;
   if (loading) {
     return (

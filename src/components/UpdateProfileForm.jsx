@@ -1,13 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "./Input";
 
-const UpdateProfileForm = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [age, setAge] = useState("");
+const UpdateProfileForm = ({ payload }) => {
+  const [name, setName] = useState(payload.name);
+  const [email, setEmail] = useState(payload.email);
+  const [age, setAge] = useState(payload.age);
+  console.log("payload: ", payload);
+  useEffect(() => {
+    if (payload) {
+      setName(payload.name || "");
+      setEmail(payload.email || "");
+      setAge(payload.age || "");
+    }
+  }, [payload]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const updatedPayload = {
+      name,
+      email,
+      age,
+    };
+    try {
+      console.log("id payload: ", payload._id);
+      const response = await fetch(`/api/auth/${payload._id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedPayload),
+      });
+      if (!response.ok) throw new Error("Error in Editing User");
+      const data = await response.json();
+      console.log("data: ", data);
+    } catch (error) {
+      console.log("error in editing user: ", error);
+    }
+  };
 
   return (
-    <form className="form-control">
+    <form className="form-control" onSubmit={handleSubmit}>
       <Input
         label="Name"
         placeholder="Name"
