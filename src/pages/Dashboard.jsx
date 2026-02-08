@@ -47,8 +47,11 @@ const Dashboard = () => {
               {/* If UserPlan exist in User */}
               {
                 userPlan?.date && !loader ? (
-                  <div className="d-flex justify-content-center align-items-center flex-column">
-                    <h1 className="mb-4 text-center text-lg-start">
+                  <div
+                    className="d-flex justify-content-center align-items-center flex-column"
+                    style={{ width: "300px" }}
+                  >
+                    <h1 className="mb-4 text-center text-lg-start text-center">
                       Todays Workout (
                       <span>
                         <strong className="text-capitalize">
@@ -99,7 +102,7 @@ const Dashboard = () => {
                     {" "}
                     <div
                       className="d-flex justify-content-center align-items-center gap-1 "
-                      style={{ width: "300px", minHeight: "60vh" }}
+                      style={{ width: "300px", minHeight: "40vh" }}
                     >
                       <img
                         src={LoaderSVG}
