@@ -21,54 +21,80 @@ const WorkoutPlan = () => {
   return (
     <>
       <UniversalModal />
+
       <div className="container-fluid home px-3 px-md-5">
-        <div>
-          <div className="d-flex justify-content-around my-3">
-            <h1>Workout Plan</h1>
-            <button
-              className="btn btn-primary"
-              onClick={() =>
-                openModal("Create User Workout Plan", <WorkoutPlanForm />)
-              }
-              disabled={disable ? "true" : ""}
-            >
-              <span>Add Workout Plan </span>
-            </button>
-            <button
-              className="btn btn-primary"
-              onClick={() =>
-                openModal(
-                  "Create User Workout Plan Template",
-                  <WorkoutPlanTemplateForm />,
-                )
-              }
-            >
-              <span>Add Workout Plan Template</span>
-            </button>
-          </div>
-        </div>
-        <WorkoutPlanSchedules />
-        {/* <div className="row g-3">
-          <strong>Workout Schedule </strong>
-          <div className="workout-details">
-            <h4>Date: Friday, January 1, 1999</h4>
-            <h3>Core</h3>
-            <p>
-              <strong>Workout List </strong>
-            </p>
-            <p>1 day ago</p>
-            <span className="material-symbols-outlined">delete</span>
+        <div className="row justify-content-center gy-4">
+          {/* LEFT COLUMN */}
+          <div className="col-12 col-lg-4">
+            <div className="d-flex flex-column gap-3">
+              {/* Header */}
+              <div className="d-flex justify-content-between align-items-center">
+                <h1 className="mb-0">Workout Plan</h1>
+
+                <button
+                  className="btn btn-primary"
+                  onClick={() =>
+                    openModal("Create User Workout Plan", <WorkoutPlanForm />)
+                  }
+                  disabled={disable}
+                >
+                  Add Workout Plan
+                </button>
+              </div>
+
+              {/* Workout Card */}
+              <div className="card workout-details shadow-sm">
+                <div className="card-body">
+                  <h6 className="text-muted mb-1">
+                    Date: Friday, January 1, 1999
+                  </h6>
+
+                  <h4 className="fw-bold">Core</h4>
+
+                  <p className="mb-1">
+                    <strong>Workout List</strong>
+                  </p>
+
+                  <p className="text-muted mb-3">1 day ago</p>
+
+                  <div className="d-flex justify-content-end">
+                    <span className="material-symbols-outlined text-danger cursor-pointer">
+                      delete
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {exercises.map((exercise) => (
-            <div
-              key={exercise._id}
-              className="col-12 col-sm-6 col-lg-4 col-xl-3"
-            >
-              <ExerciseDetails exercise={exercise} />
+          {/* RIGHT COLUMN */}
+          <div className="col-12 col-lg-8 p-3 border">
+            <div className="d-flex flex-column gap-3">
+              <div className="d-flex justify-content-around align-items-center">
+                <strong>Workout Schedule</strong>
+
+                <button
+                  className="btn btn-primary"
+                  onClick={() =>
+                    openModal(
+                      "Create User Workout Plan Template",
+                      <WorkoutPlanTemplateForm />,
+                    )
+                  }
+                >
+                  Add Workout Plan Template
+                </button>
+              </div>
+
+              {/* Schedule List */}
+              <div className="row g-3">
+                <div className="col-12">
+                  <WorkoutPlanSchedules />
+                </div>
+              </div>
             </div>
-          ))}
-        </div> */}
+          </div>
+        </div>
       </div>
     </>
   );

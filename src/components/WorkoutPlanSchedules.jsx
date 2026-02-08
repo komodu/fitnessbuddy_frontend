@@ -33,49 +33,51 @@ const WorkoutPlanSchedules = () => {
 
           <div
             className={`accordion-body-custom ${
-              openIndex === index ? "open" : ""
+              openIndex === index ? "open mh-100" : ""
             }`}
           >
             <div className="p-3">
               {item.content}
 
-              <tr>
-                {days &&
-                  days.map((day) => (
-                    <th className="text-capitalize border border-dark m-2 p-2">
-                      {day}
-                    </th>
-                  ))}
-              </tr>
-              <tr>
-                <td className="text-capitalize border border-dark m-2 p-2">
-                  <ul>
-                    <li>hello</li>
-                    <li>hello</li>
-                    <li>hello</li>
-                    <li>hello</li>
-                    <li>hello</li>
-                  </ul>
-                </td>
-                <td className="text-capitalize border border-dark m-2 p-2">
-                  <ul>
-                    <li>hello</li>
-                    <li>hello</li>
-                    <li>hello</li>
-                    <li>hello</li>
-                    <li>hello</li>
-                  </ul>
-                </td>
-                <td className="text-capitalize border border-dark m-2 p-2">
-                  <ul>
-                    <li>hi</li>
-                    <li>hi</li>
-                    <li>hi</li>
-                    <li>hi</li>
-                    <li>hi</li>
-                  </ul>
-                </td>
-              </tr>
+              <table>
+                <tr>
+                  {days &&
+                    days.map((day) => (
+                      <th className="text-capitalize border border-dark m-2 p-2">
+                        {day}
+                      </th>
+                    ))}
+                </tr>
+                <tr>
+                  <td className="text-capitalize border border-dark m-2 p-2">
+                    <ul>
+                      <li>hello</li>
+                      <li>hello</li>
+                      <li>hello</li>
+                      <li>hello</li>
+                      <li>hello</li>
+                    </ul>
+                  </td>
+                  <td className="text-capitalize border border-dark m-2 p-2">
+                    <ul>
+                      <li>hello</li>
+                      <li>hello</li>
+                      <li>hello</li>
+                      <li>hello</li>
+                      <li>hello</li>
+                    </ul>
+                  </td>
+                  <td className="text-capitalize border border-dark m-2 p-2">
+                    <ul>
+                      <li>hi</li>
+                      <li>hi</li>
+                      <li>hi</li>
+                      <li>hi</li>
+                      <li>hi</li>
+                    </ul>
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
