@@ -23,13 +23,15 @@ const WorkoutPlan = () => {
       <UniversalModal />
 
       <div className="container-fluid home px-3 px-md-5">
-        <div className="row justify-content-center gy-4">
+        <div className="row justify-content-center ">
           {/* LEFT COLUMN */}
           <div className="col-12 col-lg-4">
             <div className="d-flex flex-column gap-3">
               {/* Header */}
               <div className="d-flex justify-content-between align-items-center">
-                <h1 className="mb-0">Workout Plan</h1>
+                <h2 className="mb-0">
+                  <strong>Workout Plan</strong>
+                </h2>
 
                 <button
                   className="btn btn-primary"
@@ -71,7 +73,9 @@ const WorkoutPlan = () => {
           <div className="col-12 col-lg-8 p-3 border">
             <div className="d-flex flex-column gap-3">
               <div className="d-flex justify-content-around align-items-center">
-                <strong>Workout Schedule</strong>
+                <h2>
+                  <strong>Workout Schedule</strong>
+                </h2>
 
                 <button
                   className="btn btn-primary"
