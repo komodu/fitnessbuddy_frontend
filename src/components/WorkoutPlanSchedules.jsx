@@ -48,8 +48,33 @@ const WorkoutPlanSchedules = () => {
                   ))}
               </tr>
               <tr>
-                <td></td>
-                <td></td>
+                <td className="text-capitalize border border-dark m-2 p-2">
+                  <ul>
+                    <li>hello</li>
+                    <li>hello</li>
+                    <li>hello</li>
+                    <li>hello</li>
+                    <li>hello</li>
+                  </ul>
+                </td>
+                <td className="text-capitalize border border-dark m-2 p-2">
+                  <ul>
+                    <li>hello</li>
+                    <li>hello</li>
+                    <li>hello</li>
+                    <li>hello</li>
+                    <li>hello</li>
+                  </ul>
+                </td>
+                <td className="text-capitalize border border-dark m-2 p-2">
+                  <ul>
+                    <li>hi</li>
+                    <li>hi</li>
+                    <li>hi</li>
+                    <li>hi</li>
+                    <li>hi</li>
+                  </ul>
+                </td>
               </tr>
             </div>
           </div>

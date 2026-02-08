@@ -7,7 +7,7 @@ const CurrentProvider = ({ children }) => {
 
   const [userPlan, setUserPlan] = useState(null);
   const [todayExercises, setTodayExercises] = useState([]);
-  const [currentLoading, setCurrentLoading] = useState(false);
+  const [currentLoading, setCurrentLoading] = useState(true);
 
   const startCurrentLoading = () => setCurrentLoading(true);
   const stopCurrentLoading = () => setCurrentLoading(false);
@@ -41,7 +41,11 @@ const CurrentProvider = ({ children }) => {
       );
       setTodayExercises(filteredExercise);
     };
+    const timer = setTimeout(() => {
+      stopCurrentLoading();
+    }, 2000);
     fetchExerciseForDay();
+    return () => clearTimeout(timer);
   }, [userPlan, exercises]);
   if (!isAuthenticated) return null;
   console.log("userPlan: ", userPlan);

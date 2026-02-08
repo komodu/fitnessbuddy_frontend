@@ -1,10 +1,10 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Calendar from "../components/Calendar";
 import warningLogo from "../assets/img/warning.png";
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
 import { CurrentContext, ExercisesContext } from "../context/Context";
 import infoTooltip from "../assets/img/info.png";
-
+import LoaderSVG from "../assets/img/loader.svg";
 //! TODO: Check Validations, possible crashes (null values)
 //! TODO: Check Error Handlers
 //! TODO: Radar Chart must based on 10 recent workouts
@@ -21,9 +21,18 @@ const Dashboard = () => {
   const [dropdown, setDropdown] = useState(false);
 
   const [selectedExercise, setSelectedExercise] = useState(null);
-  console.log("TODAYSS EXERCISES: ", todayExercises);
+  const [loader, setLoader] = useState(true);
+
   console.log("all Exercises: ", exercises);
+  console.log("TODAYSS EXERCISES: ", todayExercises);
   console.log("selected: ", selectedExercise);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoader(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="home d-flex justify-content-center py-4">
       <div
@@ -36,66 +45,88 @@ const Dashboard = () => {
           <section className="calendar shadow-sm rounded bg-light flex-grow-1">
             <div className="d-flex flex-column justify-content-center align-items-center border border-lightsubtle">
               {/* If UserPlan exist in User */}
-              {userPlan?.date ? (
-                <div className="d-flex justify-content-center align-items-center flex-column">
-                  <h1 className="mb-4 text-center text-lg-start">
-                    Todays Workout (
-                    <span>
-                      <strong className="text-capitalize">
-                        {userPlan.day}
-                      </strong>{" "}
-                      :{" "}
-                      <strong className="text-capitalize">
-                        {userPlan.workoutType}
-                      </strong>
-                    </span>
-                    )
-                  </h1>
-                  {todayExercises.length === 0 ? (
-                    <div className="row d-flex justify-content-center align-items-center gap-1">
-                      <img
-                        src={warningLogo}
-                        alt="No Data Fetched"
-                        style={{ width: "200px" }}
-                      />
-                      <div className="d-flex justify-content-center align-items-center">
-                        <h3 style={{ textAlign: "center" }}>
-                          No Workout Assigned{" "}
-                          <span title="Assign Exercise in the Day assigned workout">
-                            <img
-                              className="info-tooltip"
-                              src={infoTooltip}
-                              alt=""
-                            />
-                          </span>
-                        </h3>
+              {
+                userPlan?.date && !loader ? (
+                  <div className="d-flex justify-content-center align-items-center flex-column">
+                    <h1 className="mb-4 text-center text-lg-start">
+                      Todays Workout (
+                      <span>
+                        <strong className="text-capitalize">
+                          {userPlan.day}
+                        </strong>{" "}
+                        :{" "}
+                        <strong className="text-capitalize">
+                          {userPlan.workoutType}
+                        </strong>
+                      </span>
+                      )
+                    </h1>
+                    {todayExercises.length === 0 ? (
+                      <div className="row d-flex justify-content-center align-items-center gap-1">
+                        <img
+                          src={warningLogo}
+                          alt="No Data Fetched"
+                          style={{ width: "200px" }}
+                        />
+                        <div className="d-flex justify-content-center align-items-center">
+                          <h3 style={{ textAlign: "center" }}>
+                            No Workout Assigned{" "}
+                            <span title="Assign Exercise in the Day assigned workout">
+                              <img
+                                className="info-tooltip"
+                                src={infoTooltip}
+                                alt=""
+                              />
+                            </span>
+                          </h3>
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <ul>
-                      {todayExercises?.length > 0 &&
-                        todayExercises.map((exercise) => {
-                          return <li key={exercise._id}>{exercise.title}</li>;
-                        })}
-                    </ul>
-                  )}
-                </div>
-              ) : (
-                // User Plan not Exist in the User
-                <>
-                  <h1 className="mb-4 text-center text-lg-start">
-                    Workout is not Assigned
-                  </h1>
-                  <div className="row d-flex justify-content-center align-items-center gap-1">
-                    <img
-                      src={warningLogo}
-                      alt="No Data Fetched"
-                      style={{ width: "200px" }}
-                    />
-                    <h3 style={{ textAlign: "center" }}>No data fetched</h3>
+                    ) : (
+                      <div className="row d-flex justify-content-center align-items-center gap-1">
+                        <ul>
+                          {todayExercises?.length > 0 &&
+                            todayExercises.map((exercise) => {
+                              return (
+                                <li key={exercise._id}>{exercise.title}</li>
+                              );
+                            })}
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                </>
-              )}
+                ) : loader ? (
+                  <>
+                    {" "}
+                    <div
+                      className="d-flex justify-content-center align-items-center gap-1 "
+                      style={{ width: "300px", minHeight: "60vh" }}
+                    >
+                      <img
+                        src={LoaderSVG}
+                        className="loader-icon"
+                        style={{ width: "60px", height: "60px" }}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <>
+                      <h1 className="mb-4 text-center text-lg-start">
+                        Workout is not Assigned
+                      </h1>
+                      <div className="row d-flex justify-content-center align-items-center gap-1">
+                        <img
+                          src={warningLogo}
+                          alt="No Data Fetched"
+                          style={{ width: "200px" }}
+                        />
+                        <h3 style={{ textAlign: "center" }}>No data fetched</h3>
+                      </div>
+                    </>
+                  </>
+                )
+                // User Plan not Exist in the User
+              }
             </div>
             <h2 className="mb-3 text-center text-lg-start">
               Interactive Calendar
