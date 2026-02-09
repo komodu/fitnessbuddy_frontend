@@ -65,6 +65,7 @@ const WorkoutPlanSchedules = () => {
                       <li>hello</li>
                       <li>hello</li>
                       <li>hello</li>
+                      <li>hello</li>
                     </ul>
                   </td>
                   <td className="text-capitalize border border-dark m-2 p-2">
