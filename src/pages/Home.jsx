@@ -8,11 +8,12 @@ import ExerciseDetails from "@/components/ExerciseDetails";
 import UniversalModal from "@/components/UniversalModal";
 import ExerciseForm from "@/components/ExerciseForm";
 import LoaderSVG from "@/assets/img/loader.svg";
-
+import { useExercises } from "../hooks/accessor/ContextAccessors";
+import { useModal } from "../hooks/accessor/ContextAccessors";
 //! TODO: Work on Dropdown filtering
 const Home = () => {
-  const { exercises } = useContext(ExercisesContext);
-  const { openModal } = useContext(ModalContext);
+  const { exercises } = useExercises();
+  const { openModal } = useModal();
 
   const { currentLoading: loading } = useContext(UserDataContext);
 

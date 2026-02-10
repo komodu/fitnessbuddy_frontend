@@ -1,4 +1,9 @@
-export const useCustomModal = ({ setTitle, setContent, setShow }) => {
+import { useState } from "react";
+
+export const useCustomModal = () => {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState(null);
+  const [show, setShow] = useState(false);
   const openModal = (modalTitle, modalContent) => {
     setTitle(modalTitle);
     setContent(modalContent);
@@ -8,5 +13,5 @@ export const useCustomModal = ({ setTitle, setContent, setShow }) => {
     setShow(false);
   };
 
-  return { openModal, closeModal };
+  return { openModal, closeModal, title, content, show };
 };

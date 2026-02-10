@@ -1,13 +1,8 @@
 import { Modal, Button } from "react-bootstrap";
-import { ModalContext } from "../context/Context";
-import { useContext } from "react";
+import { useModal } from "../hooks/accessor/ContextAccessors";
 function UniversalModal() {
-  const { closeModal, title, content, show } = useContext(ModalContext);
-  // const [show, setShow] = useState(false);
-
-  // // Functions to handle modal open/close
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
+  const { closeModal, title, content, show } = useModal();
+  if (!show) return null;
 
   return (
     <>
