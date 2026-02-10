@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AuthContext } from "../Context";
 import { useAuthUser } from "../../hooks/useAuthUser";
+
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setisAuthenticated] = useState(false);
   const [authLoading, setAuthLoading] = useState(true); // IMPORTANT

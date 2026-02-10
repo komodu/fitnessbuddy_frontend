@@ -1,20 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { AuthContext } from "./context/Context";
-import { useContext, useEffect } from "react";
+import { useAuth } from "./hooks/accessor/ContextAccessors";
 
 const ProtectedRoute = () => {
-  const { isAuthenticated, authLoading, stopAuthLoading } =
-    useContext(AuthContext);
+  const { isAuthenticated, authLoading } = useAuth();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      stopAuthLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [stopAuthLoading]);
-
-  if (authLoading) return <p>Loading..</p>;
+  if (authLoading) return;
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };
 
