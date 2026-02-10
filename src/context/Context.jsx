@@ -10,4 +10,4 @@ export const ActiveLinkContext = createContext();
 
 export const UserContext = createContext();
 
-export const CurrentContext = createContext();
+export const UserDataContext = createContext();

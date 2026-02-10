@@ -40,44 +40,51 @@ const WorkoutPlanSchedules = () => {
               {item.content}
 
               <table>
-                <tr>
-                  {days &&
-                    days.map((day) => (
-                      <th className="text-capitalize border border-dark m-2 p-2">
-                        {day}
-                      </th>
-                    ))}
-                </tr>
-                <tr>
-                  <td className="text-capitalize border border-dark m-2 p-2">
-                    <ul>
-                      <li>hello</li>
-                      <li>hello</li>
-                      <li>hello</li>
-                      <li>hello</li>
-                      <li>hello</li>
-                    </ul>
-                  </td>
-                  <td className="text-capitalize border border-dark m-2 p-2">
-                    <ul>
-                      <li>hello</li>
-                      <li>hello</li>
-                      <li>hello</li>
-                      <li>hello</li>
-                      <li>hello</li>
-                      <li>hello</li>
-                    </ul>
-                  </td>
-                  <td className="text-capitalize border border-dark m-2 p-2">
-                    <ul>
-                      <li>hi</li>
-                      <li>hi</li>
-                      <li>hi</li>
-                      <li>hi</li>
-                      <li>hi</li>
-                    </ul>
-                  </td>
-                </tr>
+                <thead>
+                  <tr>
+                    {days &&
+                      days.map((day, index) => (
+                        <th
+                          key={index}
+                          className="text-capitalize border border-dark m-2 p-2"
+                        >
+                          {day}
+                        </th>
+                      ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="text-capitalize border border-dark m-2 p-2">
+                      <ul>
+                        <li>hello</li>
+                        <li>hello</li>
+                        <li>hello</li>
+                        <li>hello</li>
+                        <li>hello</li>
+                      </ul>
+                    </td>
+                    <td className="text-capitalize border border-dark m-2 p-2">
+                      <ul>
+                        <li>hello</li>
+                        <li>hello</li>
+                        <li>hello</li>
+                        <li>hello</li>
+                        <li>hello</li>
+                        <li>hello</li>
+                      </ul>
+                    </td>
+                    <td className="text-capitalize border border-dark m-2 p-2">
+                      <ul>
+                        <li>hi</li>
+                        <li>hi</li>
+                        <li>hi</li>
+                        <li>hi</li>
+                        <li>hi</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>

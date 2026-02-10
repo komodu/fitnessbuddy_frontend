@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
-import { CurrentContext, ModalContext } from "../context/Context";
+import { UserDataContext, ModalContext } from "../context/Context";
 import UniversalModal from "./UniversalModal";
 import CalendarWorkout from "./CalendarWorkout";
 
 const Calendar = ({ exercises }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const { userPlan } = useContext(CurrentContext);
+  const { userPlan } = useContext(UserDataContext);
   const workoutPlan = userPlan?.userPlan;
   const { openModal } = useContext(ModalContext);
   // console.log("data calendar: ", userPlan);

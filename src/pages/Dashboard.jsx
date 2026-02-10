@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import Calendar from "../components/Calendar";
 import warningLogo from "../assets/img/warning.png";
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
-import { CurrentContext, ExercisesContext } from "../context/Context";
+import { UserDataContext, ExercisesContext } from "../context/Context";
 import infoTooltip from "../assets/img/info.png";
 import LoaderSVG from "../assets/img/loader.svg";
 //! TODO: Check Validations, possible crashes (null values)
@@ -14,7 +14,7 @@ import LoaderSVG from "../assets/img/loader.svg";
 //! TODO: Add Recent Workouts depends on current workout
 const Dashboard = () => {
   const [value, onChange] = useState(new Date());
-  const { userPlan, todayExercises } = useContext(CurrentContext);
+  const { userPlan, todayExercises } = useContext(UserDataContext);
   const { exercises } = useContext(ExercisesContext);
   const [filterRange, setFilterRange] = useState("1");
   const [dropdown, setDropdown] = useState(false);

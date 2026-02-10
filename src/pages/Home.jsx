@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import {
   ExercisesContext,
   ModalContext,
-  CurrentContext,
+  UserDataContext,
 } from "@/context/Context";
 import ExerciseDetails from "@/components/ExerciseDetails";
 import UniversalModal from "@/components/UniversalModal";
@@ -14,7 +14,7 @@ const Home = () => {
   const { exercises } = useContext(ExercisesContext);
   const { openModal } = useContext(ModalContext);
 
-  const { currentLoading: loading } = useContext(CurrentContext);
+  const { currentLoading: loading } = useContext(UserDataContext);
 
   const [dropdown, setDropdown] = useState(false);
 

@@ -17,7 +17,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import AuthProvider from "@/context/provider/AuthProvider";
 import ExercisesProvider from "@/context/provider/ExercisesProvider";
 import ModalProvider from "@/context/provider/ModalProvider";
-import CurrentProvider from "./context/provider/CurrentProvider";
+import UserDataProvider from "./context/provider/UserDataProvider";
 function App() {
   return (
     <div className="App">
@@ -36,11 +36,11 @@ function App() {
                 <Route
                   element={
                     <ExercisesProvider>
-                      <CurrentProvider>
+                      <UserDataProvider>
                         <ModalProvider>
                           <AppLayout />
                         </ModalProvider>
-                      </CurrentProvider>
+                      </UserDataProvider>
                     </ExercisesProvider>
                   }
                 >

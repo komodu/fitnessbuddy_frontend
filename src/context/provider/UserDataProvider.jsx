@@ -1,7 +1,7 @@
-import { CurrentContext, AuthContext, ExercisesContext } from "../Context";
+import { UserDataContext, AuthContext, ExercisesContext } from "../Context";
 import { useState, useEffect, useContext } from "react";
 
-const CurrentProvider = ({ children }) => {
+const UserDataProvider = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const { exercises } = useContext(ExercisesContext);
 
@@ -52,7 +52,7 @@ const CurrentProvider = ({ children }) => {
   // console.log("userPlan workout Type: ", userPlan?.workoutType);
   console.log("exercise: ", todayExercises);
   return (
-    <CurrentContext.Provider
+    <UserDataContext.Provider
       value={{
         userPlan,
         todayExercises,
@@ -62,8 +62,8 @@ const CurrentProvider = ({ children }) => {
       }}
     >
       {children}
-    </CurrentContext.Provider>
+    </UserDataContext.Provider>
   );
 };
 
-export default CurrentProvider;
+export default UserDataProvider;

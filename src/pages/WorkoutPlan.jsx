@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import WorkoutPlanForm from "../components/WorkoutPlanForm";
-import { CurrentContext, ModalContext } from "../context/Context";
+import { UserDataContext, ModalContext } from "../context/Context";
 import UniversalModal from "@/components/UniversalModal";
 import WorkoutPlanTemplateForm from "../components/WorkoutTemplateForm";
 import WorkoutPlanSchedules from "../components/WorkoutPlanSchedules";
@@ -8,7 +8,7 @@ import WorkoutPlanSchedules from "../components/WorkoutPlanSchedules";
 //! TODO: Check Error Handlers
 const WorkoutPlan = () => {
   const { openModal } = useContext(ModalContext);
-  const { userPlan } = useContext(CurrentContext);
+  const { userPlan } = useContext(UserDataContext);
   const [disable, setDisabled] = useState(false);
 
   useEffect(() => {
