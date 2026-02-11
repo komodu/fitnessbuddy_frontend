@@ -1,4 +1,15 @@
 import { useEffect } from "react";
+import { SaveTodayDay } from "../hooks/useLocalStorageDay";
+
+const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 export const useAuthUser = ({
   setisAuthenticated,
@@ -41,6 +52,7 @@ export const useAuthUser = ({
   }, []);
 
   const login = async (username, password) => {
+    const today = new Date();
     console.log("username: ", username);
     console.log("password: ", password);
     console.log("json: ", JSON.stringify({ username, password }));
@@ -54,9 +66,9 @@ export const useAuthUser = ({
     });
     if (!response.ok) throw new Error("Login Failed");
     const data = await response.json();
-
     console.log("Login Profile Data: ", data);
 
+    localStorage.setItem("today", daysOfWeek[today.getDay()]);
     localStorage.setItem("token", data.data.token);
     localStorage.setItem("userId", data.data.userid);
     localStorage.setItem("username", JSON.stringify(data.data.username));
@@ -76,6 +88,7 @@ export const useAuthUser = ({
     setUsername(null);
     setUserInfo(null);
     setisAuthenticated(false);
+    localStorage.removeItem("today");
   };
 
   return { login, logout };

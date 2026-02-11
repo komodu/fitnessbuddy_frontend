@@ -1,23 +1,40 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import WorkoutPlanForm from "../components/WorkoutPlanForm";
-import { UserDataContext, ModalContext } from "../context/Context";
+import { useModal, useUserData } from "../hooks/accessor/ContextAccessors";
 import UniversalModal from "@/components/UniversalModal";
 import WorkoutPlanTemplateForm from "../components/WorkoutTemplateForm";
 import WorkoutPlanSchedules from "../components/WorkoutPlanSchedules";
+
+import LoaderSVG from "../assets/img/loader.svg";
+
+const days = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+];
 //! TODO: Check Validations, possible crashes (null values)
 //! TODO: Check Error Handlers
 const WorkoutPlan = () => {
-  const { openModal } = useContext(ModalContext);
-  const { userPlan } = useContext(UserDataContext);
+  const { openModal } = useModal();
+  const { allPlan } = useUserData();
   const [disable, setDisabled] = useState(false);
+  console.log("currentPlan: ", allPlan);
 
-  useEffect(() => {
-    // ! Work on Routings for validation
-  }, []);
-  console.log(
-    "userPlanWorkoutPlan2: ",
-    userPlan?.userPlan.planTemplate.weeklySchedule["friday"],
-  );
+  // if (!allPlan) {
+  //   return (
+  //     <div className="workouts-loading">
+  //       <img
+  //         src={LoaderSVG}
+  //         className="loader-icon"
+  //         style={{ width: "60px", height: "60px" }}
+  //       />
+  //     </div>
+  //   );
+  // }
   return (
     <>
       <UniversalModal />
@@ -45,27 +62,45 @@ const WorkoutPlan = () => {
               </div>
 
               {/* Workout Card */}
-              <div className="card workout-details shadow-sm">
-                <div className="card-body">
-                  <h6 className="text-muted mb-1">
-                    Date: Friday, January 1, 1999
-                  </h6>
+              {allPlan?.length > 0 ? (
+                allPlan.map((plan) => (
+                  <div
+                    className="card workout-details shadow-sm"
+                    key={plan._id}
+                  >
+                    <div className="card-body">
+                      <h6 className="text-muted mb-1">
+                        Date Start : {plan.startDate}
+                      </h6>
+                      <h6>Date End : {plan.endDate}</h6>
 
-                  <h4 className="fw-bold">Core</h4>
+                      <h4 className="fw-bold">{plan.planTemplate.name}</h4>
 
-                  <p className="mb-1">
-                    <strong>Workout List</strong>
-                  </p>
+                      <p className="mb-1">
+                        <strong>Workout List</strong>
+                        <ul>
+                          {days.map((day) => (
+                            <li>
+                              {day} :{" "}
+                              {plan.planTemplate.weeklySchedule[day].name}
+                            </li>
+                          ))}
+                        </ul>
+                      </p>
 
-                  <p className="text-muted mb-3">1 day ago</p>
+                      <p className="text-muted mb-3">1 day ago</p>
 
-                  <div className="d-flex justify-content-end">
-                    <span className="material-symbols-outlined text-danger cursor-pointer">
-                      delete
-                    </span>
+                      <div className="d-flex justify-content-end">
+                        <span className="material-symbols-outlined text-danger cursor-pointer">
+                          delete
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                ))
+              ) : (
+                <>asdasdasdasdasd</>
+              )}
             </div>
           </div>
 
@@ -74,7 +109,7 @@ const WorkoutPlan = () => {
             <div className="d-flex flex-column gap-3">
               <div className="d-flex justify-content-around align-items-center">
                 <h2>
-                  <strong>Workout Schedule</strong>
+                  <strong>Workout Plan Template</strong>
                 </h2>
 
                 <button

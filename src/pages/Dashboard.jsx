@@ -23,8 +23,6 @@ const Dashboard = () => {
   const [loader, setLoader] = useState(true);
 
   console.log("all Exercises: ", exercises);
-  console.log("TODAYSS EXERCISES: ", todayExercises);
-  console.log("selected: ", selectedExercise);
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoader(false);

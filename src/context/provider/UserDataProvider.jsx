@@ -5,7 +5,7 @@ const UserDataProvider = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const { exercises } = useContext(ExercisesContext);
 
-  const [userPlan, setUserPlan] = useState(null);
+  const [allPlan, setAllPlan] = useState([]);
   const [todayExercises, setTodayExercises] = useState([]);
   const [currentLoading, setCurrentLoading] = useState(true);
 
@@ -13,14 +13,14 @@ const UserDataProvider = ({ children }) => {
   const stopCurrentLoading = () => setCurrentLoading(false);
 
   useEffect(() => {
-    const fetchUserPlan = async () => {
+    const fetchAllPlan = async () => {
       try {
-        const response = await fetch("/api/workoutplan/userplan");
+        const response = await fetch("/api/workoutplan/get-plans");
         if (!response.ok)
           throw new Error("Error in Fetching UserPlanWorkout Through Context");
         const result = await response.json();
 
-        setUserPlan(result);
+        setAllPlan(Array.isArray(result) ? result : Object.values(result));
       } catch (error) {
         console.log("ERROR in Fetching: ", error);
       } finally {
@@ -28,14 +28,14 @@ const UserDataProvider = ({ children }) => {
       }
     };
 
-    fetchUserPlan();
+    fetchAllPlan();
   }, [isAuthenticated]);
 
   useEffect(() => {
     const fetchExerciseForDay = async () => {
-      if (!userPlan) return [];
+      if (!allPlan.length) return [];
 
-      const muscleGroup = userPlan.workoutType;
+      const muscleGroup = allPlan.workoutType;
       const filteredExercise = exercises.filter(
         (exercise) => exercise.workoutType.name === muscleGroup,
       );
@@ -46,15 +46,16 @@ const UserDataProvider = ({ children }) => {
     }, 2000);
     fetchExerciseForDay();
     return () => clearTimeout(timer);
-  }, [userPlan, exercises]);
+  }, [allPlan, exercises]);
+
+  console.log("Provider Plan: ", allPlan);
   if (!isAuthenticated) return null;
-  console.log("userPlan: ", userPlan);
   // console.log("userPlan workout Type: ", userPlan?.workoutType);
   console.log("exercise: ", todayExercises);
   return (
     <UserDataContext.Provider
       value={{
-        userPlan,
+        allPlan,
         todayExercises,
         currentLoading,
         startCurrentLoading, //! Unused
