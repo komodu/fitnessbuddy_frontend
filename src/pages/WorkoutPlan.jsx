@@ -21,9 +21,10 @@ const days = [
 const WorkoutPlan = () => {
   const { openModal } = useModal();
   const { allPlan } = useUserData();
+  const { templates } = useUserData();
   const [disable, setDisabled] = useState(false);
   console.log("currentPlan: ", allPlan);
-
+  console.log("templates: ", templates);
   // if (!allPlan) {
   //   return (
   //     <div className="workouts-loading">
@@ -76,17 +77,22 @@ const WorkoutPlan = () => {
 
                       <h4 className="fw-bold">{plan.planTemplate.name}</h4>
 
-                      <p className="mb-1">
-                        <strong>Workout List</strong>
+                      <div>
+                        <p className="mb-1">
+                          <strong>Workout List</strong>
+                        </p>
                         <ul>
                           {days.map((day) => (
-                            <li>
+                            <li
+                              key={plan.planTemplate.weeklySchedule[day]._id}
+                              className="text-capitalize"
+                            >
                               {day} :{" "}
                               {plan.planTemplate.weeklySchedule[day].name}
                             </li>
                           ))}
                         </ul>
-                      </p>
+                      </div>
 
                       <p className="text-muted mb-3">1 day ago</p>
 
@@ -127,9 +133,15 @@ const WorkoutPlan = () => {
 
               {/* Schedule List */}
               <div className="row g-3">
-                <div className="col-12">
-                  <WorkoutPlanSchedules />
-                </div>
+                {templates.length > 0 ? (
+                  templates.map((temp) => (
+                    <div className="col-12" key={temp._id}>
+                      <WorkoutPlanSchedules template={temp} />
+                    </div>
+                  ))
+                ) : (
+                  <p>No templates available</p>
+                )}
               </div>
             </div>
           </div>

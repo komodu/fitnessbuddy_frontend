@@ -1,9 +1,11 @@
 import { UserDataContext, AuthContext, ExercisesContext } from "../Context";
 import { useState, useEffect, useContext } from "react";
-
+import { useDataUser } from "../../hooks/useDataUser";
 const UserDataProvider = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const { exercises } = useContext(ExercisesContext);
+
+  const { templates } = useDataUser();
 
   const [allPlan, setAllPlan] = useState([]);
   const [todayExercises, setTodayExercises] = useState([]);
@@ -55,6 +57,7 @@ const UserDataProvider = ({ children }) => {
   return (
     <UserDataContext.Provider
       value={{
+        templates,
         allPlan,
         todayExercises,
         currentLoading,

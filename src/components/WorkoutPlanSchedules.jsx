@@ -1,95 +1,54 @@
 import { useState } from "react";
-const WorkoutPlanSchedules = () => {
-  const days = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ];
-  const [openIndex, setOpenIndex] = useState(null);
 
-  const toggle = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
+const days = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+];
+
+const WorkoutPlanSchedules = ({ template }) => {
+  const [open, setOpen] = useState(false);
+
+  const toggle = () => {
+    setOpen(!open);
   };
-  const items = [
-    { title: "Accordion Item #1", content: "This is the first content." },
-    { title: "Accordion Item #2", content: "This is the second content." },
-    { title: "Accordion Item #3", content: "This is the third content." },
-  ];
-  console.log("openIndex:", openIndex);
+
+  if (!template || !template.weeklySchedule) {
+    return <p>No schedule available</p>;
+  }
+
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column">
-      {items.map((item, index) => (
-        <div key={index} className="border mb-2 rounded">
-          <button
-            className="btn btn-light w-100 text-start"
-            onClick={() => toggle(index)}
-          >
-            {item.title}
-          </button>
+    <div className="border mb-3 rounded">
+      <button className="btn btn-light w-100 text-start" onClick={toggle}>
+        {template.name}
+      </button>
 
-          <div
-            className={`accordion-body-custom ${
-              openIndex === index ? "open mh-100" : ""
-            }`}
-          >
-            <div className="p-3">
-              {item.content}
-
-              <table>
-                <thead>
-                  <tr>
-                    {days &&
-                      days.map((day, index) => (
-                        <th
-                          key={index}
-                          className="text-capitalize border border-dark m-2 p-2"
-                        >
-                          {day}
-                        </th>
-                      ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="text-capitalize border border-dark m-2 p-2">
-                      <ul>
-                        <li>hello</li>
-                        <li>hello</li>
-                        <li>hello</li>
-                        <li>hello</li>
-                        <li>hello</li>
-                      </ul>
-                    </td>
-                    <td className="text-capitalize border border-dark m-2 p-2">
-                      <ul>
-                        <li>hello</li>
-                        <li>hello</li>
-                        <li>hello</li>
-                        <li>hello</li>
-                        <li>hello</li>
-                        <li>hello</li>
-                      </ul>
-                    </td>
-                    <td className="text-capitalize border border-dark m-2 p-2">
-                      <ul>
-                        <li>hi</li>
-                        <li>hi</li>
-                        <li>hi</li>
-                        <li>hi</li>
-                        <li>hi</li>
-                      </ul>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <div className={`accordion-body-custom ${open ? "open mh-100" : ""}`}>
+        <div className="p-3">
+          <table className="table table-bordered text-center">
+            <thead>
+              <tr>
+                {days.map((day) => (
+                  <th key={day} className="text-capitalize">
+                    {day}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {days.map((day) => (
+                  <td key={day}>{template.weeklySchedule[day]?.name || "—"}</td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
         </div>
-      ))}
+      </div>
     </div>
   );
 };
