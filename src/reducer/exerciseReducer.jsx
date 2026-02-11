@@ -20,6 +20,8 @@ const exercisesReducer = (state, action) => {
       return {
         exercises: action.payload,
       };
+    case "SET_WORKOUT_TYPES":
+      return { ...state, workoutTypes: action.payload };
     case "CREATE_EXERCISE":
       return {
         exercises: [action.payload, ...state.exercises],
@@ -43,7 +45,7 @@ const formReducer = (state, action) => {
         error: action.error,
         emptyFields: action.emptyFields || [],
       };
-    case "SET_WORKOUT_TYPES":
+    case "SET_WORKOUT_TYPES": // ! Initializer for the form
       return { ...state, workoutTypes: action.payload };
     case "RESET_FORM":
       return {

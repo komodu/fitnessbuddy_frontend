@@ -8,14 +8,21 @@ import ExerciseDetails from "@/components/ExerciseDetails";
 import UniversalModal from "@/components/UniversalModal";
 import ExerciseForm from "@/components/ExerciseForm";
 import LoaderSVG from "@/assets/img/loader.svg";
-import { useExercises } from "../hooks/accessor/ContextAccessors";
-import { useModal } from "../hooks/accessor/ContextAccessors";
+import {
+  useExercises,
+  useModal,
+  useUserData,
+} from "../hooks/accessor/ContextAccessors";
+
+import { initialStates } from "../reducer/exerciseReducer";
+import { useWorkoutTypes } from "../hooks/useWorkoutTypes";
 //! TODO: Work on Dropdown filtering
 const Home = () => {
   const { exercises } = useExercises();
-  const { openModal } = useModal();
+  const { workoutTypes } = useWorkoutTypes();
 
-  const { currentLoading: loading } = useContext(UserDataContext);
+  const { openModal } = useModal();
+  const { currentLoading: loading } = useUserData();
 
   const [dropdown, setDropdown] = useState(false);
 
@@ -26,10 +33,22 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-  // Filter based on search
-  const filteredExercises = (exercises || []).filter((ex) =>
-    (ex.title || "").toLowerCase().includes((searchTerm || "").toLowerCase()),
-  );
+  //! Dropdown
+  const [selectedType, setSelectedType] = useState("");
+
+  let result = exercises || [];
+
+  if (searchTerm) {
+    result = result.filter((ex) =>
+      ex.title?.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }
+
+  if (selectedType) {
+    result = result.filter((ex) => ex.workoutType?.name === selectedType);
+  }
+
+  const filteredExercises = result;
 
   // Reset to page 1 whenever user searches
   useEffect(() => {
@@ -51,7 +70,7 @@ const Home = () => {
       </div>
     );
   }
-
+  console.log("filter:", exercises);
   return (
     <div className="container-fluid home px-3 px-md-5">
       <UniversalModal />
@@ -83,31 +102,35 @@ const Home = () => {
             <button
               className="btn btn-outline-secondary dropdown-toggle"
               type="button"
+              value={selectedType}
+              style={{ width: selectedType != "" ? "120px" : "" }}
               onClick={(e) => {
                 e.stopPropagation();
                 setDropdown((x) => !x);
               }}
+              onChange={(e) => setSelectedType(e.target.value)}
             >
-              Dropdown
+              {selectedType || "Select Workout Type"}
             </button>
 
             {dropdown && (
               <ul className="dropdown-menu dropdown-menu-end show">
-                <li>
-                  <button className="dropdown-item">Action</button>
-                </li>
-                <li>
-                  <button className="dropdown-item">Another action</button>
-                </li>
-                <li>
-                  <button className="dropdown-item">Something else here</button>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <button className="dropdown-item">Separated link</button>
-                </li>
+                {workoutTypes.map((type) => {
+                  return (
+                    <li key={type._id}>
+                      <button
+                        onClick={(e) => {
+                          setDropdown((x) => !x);
+                          setSelectedType(e.target.value);
+                        }}
+                        value={type.name}
+                        className="dropdown-item"
+                      >
+                        {type.name}
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>

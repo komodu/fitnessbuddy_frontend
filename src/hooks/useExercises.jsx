@@ -1,11 +1,13 @@
 import { exercisesReducer } from "../reducer/exerciseReducer";
 import { useReducer, useState, useEffect } from "react";
+
 const initialState = {
   exercise: [],
 };
 export const useExercises = () => {
   const [state, dispatch] = useReducer(exercisesReducer, initialState);
   const [exLoading, setExLoading] = useState(true);
+
   useEffect(() => {
     const fetchUserExercises = async () => {
       try {
@@ -26,7 +28,6 @@ export const useExercises = () => {
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
-
   console.log("ExercisesProvider: ", state.exercises);
 
   return { exLoading, state, dispatch };
