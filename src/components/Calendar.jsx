@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
-import { UserDataContext, ModalContext } from "../context/Context";
+import { ModalContext } from "../context/Context";
 import UniversalModal from "./UniversalModal";
 import CalendarWorkout from "./CalendarWorkout";
+import { useUserData } from "../hooks/accessor/ContextAccessors";
 
 const Calendar = ({ exercises }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const { userPlan } = useContext(UserDataContext);
-  const workoutPlan = userPlan?.userPlan;
+  const { activePlan } = useUserData();
+
   const { openModal } = useContext(ModalContext);
   // console.log("data calendar: ", userPlan);
   // Get the current month and year
@@ -73,12 +74,14 @@ const Calendar = ({ exercises }) => {
     return date;
   };
 
-  const planStart = new Date(workoutPlan?.startDate);
+  const planStart = new Date(activePlan?.startDate);
   planStart.setHours(0, 0, 0, 0);
 
-  const planEnd = new Date(workoutPlan?.endDate);
+  const planEnd = new Date(activePlan?.endDate);
   planEnd.setHours(0, 0, 0, 0);
-
+  // console.log("active plancalendar : ", activePlan);
+  // console.log("planEnd::: ", new Date(planEnd?.toUTCString().split("T")[0]));
+  console.log("planEnd: ", planEnd);
   return (
     <div className="calendar-container">
       <UniversalModal />
@@ -110,14 +113,14 @@ const Calendar = ({ exercises }) => {
           {daysArray.map((day) => {
             const date = buildDateFromDay(day);
             const hasWorkout =
-              workoutPlan && date >= planStart && date <= planEnd;
+              activePlan && date >= planStart && date <= planEnd;
 
             let workout = null;
             if (hasWorkout) {
               const weekday = date
                 .toLocaleDateString("en-US", { weekday: "long" })
                 .toLowerCase();
-              workout = workoutPlan.planTemplate.weeklySchedule[weekday];
+              workout = activePlan.planTemplate.weeklySchedule[weekday];
             }
 
             return (
