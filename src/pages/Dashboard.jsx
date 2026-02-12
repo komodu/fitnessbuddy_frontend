@@ -1,8 +1,9 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Calendar from "../components/Calendar";
 import warningLogo from "../assets/img/warning.png";
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
-import { UserDataContext, ExercisesContext } from "../context/Context";
+import { ExercisesContext } from "../context/Context";
+import { useUserData, useExercises } from "../hooks/accessor/ContextAccessors";
 import infoTooltip from "../assets/img/info.png";
 import LoaderSVG from "../assets/img/loader.svg";
 //! TODO: Check Validations, possible crashes (null values)
@@ -14,19 +15,26 @@ import LoaderSVG from "../assets/img/loader.svg";
 //! TODO: Add Recent Workouts depends on current workout
 const Dashboard = () => {
   const [value, onChange] = useState(new Date());
-  const { userPlan, todayExercises } = useContext(UserDataContext);
-  const { exercises } = useContext(ExercisesContext);
+  const { exercises } = useExercises();
+  const { activePlan, todayExercises } = useUserData();
   const [filterRange, setFilterRange] = useState("1");
   const [dropdown, setDropdown] = useState(false);
 
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [loader, setLoader] = useState(true);
 
-  console.log("all Exercises: ", exercises);
+  const dayToday = localStorage.getItem("today");
+  console.log("today exercises dashboard: ", todayExercises);
+  console.log("active plan dashboardddsazsd: ", activePlan);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoader(false);
     }, 3000);
+    console.log(
+      "workoutname: ",
+      activePlan?.planTemplate?.weeklySchedule[localStorage.getItem("today")],
+    );
     return () => clearTimeout(timer);
   }, []);
 
@@ -43,25 +51,29 @@ const Dashboard = () => {
             <div className="d-flex flex-column justify-content-center align-items-center border border-lightsubtle">
               {/* If UserPlan exist in User */}
               {
-                userPlan?.date && !loader ? (
+                activePlan && !loader ? (
                   <div
                     className="d-flex justify-content-center align-items-center flex-column"
                     style={{ width: "300px" }}
                   >
-                    <h1 className="mb-4 text-center text-lg-start text-center">
-                      Todays Workout (
-                      <span>
-                        <strong className="text-capitalize">
-                          {userPlan.day}
-                        </strong>{" "}
+                    <h1 className="text-center text-lg-start text-center">
+                      Todays Workout
+                    </h1>
+                    <h4>
+                      <span className="text-center">
+                        <strong className="text-capitalize">({dayToday}</strong>{" "}
                         :{" "}
                         <strong className="text-capitalize">
-                          {userPlan.workoutType}
+                          {
+                            activePlan?.planTemplate?.weeklySchedule[
+                              dayToday.toLowerCase()
+                            ].name
+                          }
+                          )
                         </strong>
                       </span>
-                      )
-                    </h1>
-                    {todayExercises.length === 0 ? (
+                    </h4>
+                    {!todayExercises ? (
                       <div className="row d-flex justify-content-center align-items-center gap-1">
                         <img
                           src={warningLogo}
@@ -84,7 +96,7 @@ const Dashboard = () => {
                     ) : (
                       <div className="row d-flex justify-content-center align-items-center gap-1">
                         <ul>
-                          {todayExercises?.length > 0 &&
+                          {todayExercises &&
                             todayExercises.map((exercise) => {
                               return (
                                 <li key={exercise._id}>{exercise.title}</li>

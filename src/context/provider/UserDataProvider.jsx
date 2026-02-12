@@ -1,5 +1,5 @@
 import { UserDataContext, AuthContext, ExercisesContext } from "../Context";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, act } from "react";
 import { useDataUser } from "../../hooks/useDataUser";
 const UserDataProvider = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -8,6 +8,7 @@ const UserDataProvider = ({ children }) => {
   const { templates } = useDataUser();
 
   const [allPlan, setAllPlan] = useState([]);
+  const [activePlan, setActivePlan] = useState([]);
   const [todayExercises, setTodayExercises] = useState([]);
   const [currentLoading, setCurrentLoading] = useState(true);
 
@@ -29,18 +30,33 @@ const UserDataProvider = ({ children }) => {
         setCurrentLoading(false);
       }
     };
-
+    const fetchActivePlan = async () => {
+      try {
+        const response = await fetch("/api/workoutplan/userplan");
+        if (!response.ok) throw new Error("Error fetching Active Plan");
+        const data = await response.json();
+        console.log("Active Plan has been set. ");
+        setActivePlan(data.activePlan);
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    };
+    fetchActivePlan();
     fetchAllPlan();
   }, [isAuthenticated]);
 
   useEffect(() => {
     const fetchExerciseForDay = async () => {
-      if (!allPlan.length) return [];
+      if (!activePlan) return null;
 
-      const muscleGroup = allPlan.workoutType;
-      const filteredExercise = exercises.filter(
-        (exercise) => exercise.workoutType.name === muscleGroup,
-      );
+      const muscleGroup =
+        activePlan?.planTemplate?.weeklySchedule[
+          localStorage.getItem("today").toLocaleLowerCase()
+        ].name;
+      const filteredExercise = exercises.filter((exercise) => {
+        return exercise.workoutType.name === muscleGroup;
+      });
+      console.log("Filtereasd: ", filteredExercise);
       setTodayExercises(filteredExercise);
     };
     const timer = setTimeout(() => {
@@ -48,17 +64,20 @@ const UserDataProvider = ({ children }) => {
     }, 2000);
     fetchExerciseForDay();
     return () => clearTimeout(timer);
-  }, [allPlan, exercises]);
+  }, [activePlan, exercises]);
 
-  console.log("Provider Plan: ", allPlan);
+  console.log("all exercises provider: ", exercises);
+  console.log("All Plans provider: ", allPlan);
+  console.log("Active Plan provider: ", activePlan);
   if (!isAuthenticated) return null;
   // console.log("userPlan workout Type: ", userPlan?.workoutType);
-  console.log("exercise: ", todayExercises);
+  console.log("today exercises provider: ", todayExercises);
   return (
     <UserDataContext.Provider
       value={{
         templates,
         allPlan,
+        activePlan,
         todayExercises,
         currentLoading,
         startCurrentLoading, //! Unused
