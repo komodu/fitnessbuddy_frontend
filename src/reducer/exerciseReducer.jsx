@@ -1,6 +1,7 @@
 // Form Reducer Initial State
 const initialStates = {
   title: "",
+  set: "",
   load: "",
   reps: "",
   workoutType: "",

@@ -6,6 +6,7 @@ import { ExercisesContext } from "../context/Context";
 import { useUserData, useExercises } from "../hooks/accessor/ContextAccessors";
 import infoTooltip from "../assets/img/info.png";
 import LoaderSVG from "../assets/img/loader.svg";
+import StartWorkoutComponent from "../components/StartWorkoutComponent";
 //! TODO: Check Validations, possible crashes (null values)
 //! TODO: Check Error Handlers
 
@@ -44,7 +45,7 @@ const Dashboard = () => {
         className="dashboard-row row g-4 justify-content-center"
         style={{ maxWidth: "1200px", width: "100%" }}
       >
-        {/* Right Column: Calendar */}
+        {/* Left Column: Calendar */}
         {/* col-10 col-lg-4 d-flex */}
         <div className="col-12 col-lg-4 d-flex flex-column">
           <section className="calendar shadow-sm rounded bg-light flex-grow-1">
@@ -73,7 +74,7 @@ const Dashboard = () => {
                         </strong>
                       </span>
                     </h4>
-                    {!todayExercises ? (
+                    {todayExercises.length == 0 ? (
                       <div className="row d-flex justify-content-center align-items-center gap-1">
                         <img
                           src={warningLogo}
@@ -151,11 +152,15 @@ const Dashboard = () => {
           </section>
         </div>
 
-        {/* Left Column: Charts */}
+        {/* Right Column */}
         {/* col-12 col-lg-8 d-flex flex-column */}
         <div className="col-10 col-lg-8 d-flex flex-column">
           <section className="charts p-3 shadow-sm rounded bg-light flex-grow-1 d-flex flex-column">
-            {/* Workout Chart Analysis */}
+            {/* Start Workout Component */}
+            <div className="d-flex flex-column justify-content-center align-items-center my-2 py-2">
+              <h2> COMPONENT START WORKOUT</h2>
+              <StartWorkoutComponent />
+            </div>
             <div className="d-flex align-items-center justify-content-center my-2">
               <div className="dropdown">
                 <button
@@ -198,7 +203,8 @@ const Dashboard = () => {
                 )}
               </div>
             </div>
-            {/* ---------------- */}
+
+            {/* --------Filter -------- */}
             <div className="btn-group" role="group" aria-label="Time Filter">
               <input
                 type="radio"
@@ -248,6 +254,8 @@ const Dashboard = () => {
                 30D
               </label>
             </div>
+
+            {/* Workout Chart Analysis */}
             <div className="d-flex flex-column">
               <div className="d-flex flex-column align-items-center">
                 <LineChart style={{ width: "475px", height: "270px" }} />

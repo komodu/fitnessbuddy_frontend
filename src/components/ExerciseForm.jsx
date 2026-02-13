@@ -7,11 +7,20 @@ import { initialStates, formReducer } from "../reducer/exerciseReducer";
 const ExerciseForm = () => {
   const { dispatch } = useContext(ExercisesContext);
   const [formState, dispatchForm] = useReducer(formReducer, initialStates);
-  const { title, load, reps, workoutType, workoutTypes, error, emptyFields } =
-    formState;
+  const {
+    title,
+    set,
+    load,
+    reps,
+    workoutType,
+    workoutTypes,
+    error,
+    emptyFields,
+  } = formState;
 
   const handleChange = (field, value) => {
     dispatchForm({ type: "SET_FIELD", field, value });
+    console.log("field: ", field, " value:", value);
   };
 
   useEffect(() => {
@@ -36,7 +45,7 @@ const ExerciseForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const exercise = { title, load, reps, workoutType };
+    const exercise = { title, set, load, reps, workoutType };
     console.log("body:", JSON.stringify(exercise));
     const response = await fetch("/api/exercise", {
       method: "POST",
@@ -45,7 +54,7 @@ const ExerciseForm = () => {
     });
 
     const json = await response.json();
-
+    console.log("data Submitted to: ", json);
     if (!response.ok) {
       dispatchForm({
         type: "SET_ERROR",
@@ -78,7 +87,6 @@ const ExerciseForm = () => {
             ))}
           </Form.Select>
         </div>
-
         <Input
           label="Title"
           type="text"
@@ -86,22 +94,26 @@ const ExerciseForm = () => {
           value={title}
           placeholder="Test"
         />
-
         <Input
           label="Load (KG)"
           type="number"
           onChange={(e) => handleChange("load", e.target.value)}
           value={load}
           placeholder="##"
+        />{" "}
+        <Input
+          label="Sets"
+          type="number"
+          onChange={(e) => handleChange("set", e.target.value)}
+          value={set}
+          placeholder="##"
         />
-
         <Input
           label="Repetitions"
           type="number"
           onChange={(e) => handleChange("reps", e.target.value)}
           placeholder="##"
         />
-
         <button>Add Workout</button>
         {error && <div className="error">{error}</div>}
       </form>
