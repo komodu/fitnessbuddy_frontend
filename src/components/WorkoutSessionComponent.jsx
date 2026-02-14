@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import { useUserData } from "../hooks/accessor/ContextAccessors"; // adjust path
 import "bootstrap/dist/css/bootstrap.min.css";
 
-export default function WorkoutSession() {
-  const { todayExercises } = useUserData();
+const WorkoutSession = () => {
+  const { todayExercises, activePlan } = useUserData();
   const [workout, setWorkout] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  const dayToday = localStorage.getItem("today").toLowerCase();
+  console.log("activePlan: ", activePlan);
+  console.log(
+    "today's workout Type: ",
+    activePlan.planTemplate.weeklySchedule[dayToday]._id,
+  );
 
-  // 1️⃣ When exercises change, extend them with UI state
+  // When exercises change, extend them with UI state
   useEffect(() => {
     if (!todayExercises) return;
 
@@ -19,7 +26,7 @@ export default function WorkoutSession() {
     setWorkout(formatted);
   }, [todayExercises]);
 
-  // 2️⃣ Handle set submission
+  // Handle set submission
   const handleSubmitSet = (id) => {
     setWorkout((prev) =>
       prev.map((ex) => {
@@ -56,7 +63,7 @@ export default function WorkoutSession() {
 
         <tbody>
           {workout.map((ex) => (
-            <tr key={ex.id} className={ex.completed ? "table-success" : ""}>
+            <tr key={ex._id} className={ex.completed ? "table-success" : ""}>
               <td>
                 {ex.title}
                 {ex.completed && (
@@ -77,7 +84,7 @@ export default function WorkoutSession() {
                 <button
                   className="btn btn-primary btn-sm"
                   disabled={ex.completed}
-                  onClick={() => handleSubmitSet(ex.id)}
+                  onClick={() => handleSubmitSet(ex._id)}
                 >
                   Submit Set
                 </button>
@@ -88,4 +95,6 @@ export default function WorkoutSession() {
       </table>
     </div>
   );
-}
+};
+
+export default WorkoutSession;
