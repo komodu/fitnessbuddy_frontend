@@ -11,7 +11,9 @@ const StartWorkoutComponent = () => {
   const dayToday = localStorage.getItem("today").toLowerCase();
   // const workoutTypeId = activePlan.planTemplate?.weeklySchedule[dayToday]._id;
   // const planId = activePlan.planTemplate?._id;
+  const [session, setSession] = useState(null);
 
+  const [isExist, setIsExist] = useState(false);
   useEffect(() => {
     if (!activePlan?.planTemplate) return;
 
@@ -32,18 +34,13 @@ const StartWorkoutComponent = () => {
           workoutTypeId,
         }),
       });
-      console.log(
-        "stringify: ",
-        JSON.stringify({
-          planId,
-          workoutTypeId,
-        }),
-      );
+
       const data = await response.json();
-      console.log("result session : ", data);
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
+      console.log("result session : ", data);
+      setSession(data);
 
       console.log("Session started:", data);
 
@@ -56,7 +53,20 @@ const StartWorkoutComponent = () => {
       console.log("it is finished");
     }
   };
-
+  // handleContinue if session existed then it will be this function instead of handleStart
+  const handleContinue = async () => {};
+  //Check if session exist
+  useEffect(() => {
+    const fetchSession = async () => {
+      const response = await fetch("/api/workout-sessions");
+      if (!response.ok) throw new Error("error fetching session");
+      const data = response.json();
+      setIsExist(true);
+      setSession(data);
+    };
+    fetchSession();
+  }, []);
+  console.log("sess: ", session);
   return (
     <div className="" style={{ maxWidth: "500px" }}>
       {/* Toggle Button (shown when closed) */}
@@ -64,12 +74,14 @@ const StartWorkoutComponent = () => {
         <button
           className="btn btn-primary"
           onClick={() => {
-            handleStart();
+            {
+              session && isExist ? handleContinue() : handleStart();
+            }
             setOpen(true);
           }}
           style={{ width: "250px" }}
         >
-          Show Details
+          {session && isExist ? "Continue Workout" : "Start New Workout"}
         </button>
       )}
 
@@ -90,7 +102,7 @@ const StartWorkoutComponent = () => {
             {show && (
               <div className="accordion-collapse collapse show gap-4">
                 <div className="accordion-body">
-                  <WorkoutSession />
+                  <WorkoutSession exercise={session} />
                 </div>
               </div>
             )}
