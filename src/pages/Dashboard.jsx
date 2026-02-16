@@ -83,7 +83,11 @@ const Dashboard = () => {
                         />
                         <div className="d-flex justify-content-center align-items-center">
                           <h3 style={{ textAlign: "center" }}>
-                            No Workout Assigned{" "}
+                            {activePlan?.planTemplate?.weeklySchedule[
+                              dayToday.toLowerCase()
+                            ].name != "Rest"
+                              ? "No Workout Assigned."
+                              : "Today is Rest Day "}
                             <span title="Assign Exercise in the Day assigned workout">
                               <img
                                 className="info-tooltip"

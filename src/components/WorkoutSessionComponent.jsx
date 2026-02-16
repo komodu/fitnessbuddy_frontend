@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useUserData } from "../hooks/accessor/ContextAccessors"; // adjust path
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const WorkoutSession = ({}) => {
+const WorkoutSession = () => {
   const { todayExercises, activePlan } = useUserData();
   const [workout, setWorkout] = useState([]);
+  const [duration, setDuration] = useState(new Date());
   // const [loading, setLoading] = useState(false);
   const dayToday = localStorage.getItem("today").toLowerCase();
   console.log("activePlan: ", activePlan);
@@ -27,7 +28,7 @@ const WorkoutSession = ({}) => {
   }, [todayExercises]);
 
   // Handle set submission
-  const handleSubmitSet = (id) => {
+  const handleSubmitSet = async (id, reps, weight) => {
     setWorkout((prev) =>
       prev.map((ex) => {
         if (ex.id === id) {
@@ -40,6 +41,26 @@ const WorkoutSession = ({}) => {
         return ex;
       }),
     );
+    const currentTime = new Date().getTime();
+    setDuration(currentTime - duration.getTime());
+    try {
+      const res = await fetch("/api/workout-session/add-set", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          exerciseId: id,
+          reps: Number(reps),
+          weight: Number(weight),
+          duration: duration,
+          restTime: 60, // optional
+        }),
+      });
+      const data = await res.json();
+      console.log("Updated set:", data);
+      // Optionally update local state to reflect new set
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (!workout.length) {
