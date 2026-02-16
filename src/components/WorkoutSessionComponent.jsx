@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useUserData } from "../hooks/accessor/ContextAccessors"; // adjust path
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const WorkoutSession = () => {
+const WorkoutSession = ({}) => {
   const { todayExercises, activePlan } = useUserData();
   const [workout, setWorkout] = useState([]);
   // const [loading, setLoading] = useState(false);

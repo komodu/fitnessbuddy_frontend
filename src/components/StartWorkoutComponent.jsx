@@ -58,11 +58,15 @@ const StartWorkoutComponent = () => {
   //Check if session exist
   useEffect(() => {
     const fetchSession = async () => {
-      const response = await fetch("/api/workout-sessions");
-      if (!response.ok) throw new Error("error fetching session");
-      const data = response.json();
-      setIsExist(true);
-      setSession(data);
+      try {
+        const response = await fetch("/api/workout-sessions");
+        if (!response.ok) throw new Error("error fetching session");
+        const data = response.json();
+        setIsExist(true);
+        setSession(data);
+      } catch (err) {
+        console.log("error in fetching Session: ", err);
+      }
     };
     fetchSession();
   }, []);
