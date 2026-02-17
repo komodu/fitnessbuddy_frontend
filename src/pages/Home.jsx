@@ -110,27 +110,45 @@ const Home = () => {
               }}
               onChange={(e) => setSelectedType(e.target.value)}
             >
-              {selectedType || "Select Workout Type"}
+              {selectedType || "All"}
             </button>
 
             {dropdown && (
               <ul className="dropdown-menu dropdown-menu-end show">
-                {workoutTypes.map((type) => {
-                  return (
-                    <li key={type._id}>
+                {selectedType !== "" && (
+                  <>
+                    <li>
                       <button
                         onClick={(e) => {
                           setDropdown((x) => !x);
                           setSelectedType(e.target.value);
                         }}
-                        value={type.name}
+                        value=""
                         className="dropdown-item"
                       >
-                        {type.name}
+                        All
                       </button>
                     </li>
-                  );
-                })}
+                  </>
+                )}
+                {workoutTypes
+                  .filter((type) => type.value !== selectedType)
+                  .map((type) => {
+                    return (
+                      <li key={type._id}>
+                        <button
+                          onClick={(e) => {
+                            setDropdown((x) => !x);
+                            setSelectedType(e.target.value);
+                          }}
+                          value={type.name}
+                          className="dropdown-item"
+                        >
+                          {type.name}
+                        </button>
+                      </li>
+                    );
+                  })}
               </ul>
             )}
           </div>
