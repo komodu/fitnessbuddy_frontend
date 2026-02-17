@@ -75,21 +75,24 @@ const StartWorkoutComponent = () => {
     <div className="" style={{ maxWidth: "500px" }}>
       {/* Toggle Button (shown when closed) */}
       {!open &&
-        activePlan?.planTemplate?.weeklySchedule?.[dayToday]?.name !==
-          "Rest" ? (
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                {
-                  session && isExist ? handleContinue() : handleStart();
-                }
-                setOpen(true);
-              }}
-              style={{ width: "250px" }}
-            >
-              {session && isExist ? "Continue Workout" : "Start New Workout"}
-            </button>,
-          ): <><h3>It is Rest Day Get a Life!</h3></>}
+      activePlan?.planTemplate?.weeklySchedule?.[dayToday]?.name !== "Rest" ? (
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            {
+              session && isExist ? handleContinue() : handleStart();
+            }
+            setOpen(true);
+          }}
+          style={{ width: "250px" }}
+        >
+          {session && isExist ? "Continue Workout" : "Start New Workout"}
+        </button>
+      ) : (
+        <>
+          <h3>It is Rest Day Get a Life!</h3>
+        </>
+      )}
 
       {/* Accordion (shown when open) */}
       {open && (

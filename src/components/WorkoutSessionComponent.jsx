@@ -41,17 +41,17 @@ const WorkoutSession = () => {
         return ex;
       }),
     );
-    const currentTime = new Date().getTime();
-    setDuration(currentTime - duration.getTime());
+    // const currentTime = new Date().getTime();
+    // setDuration(currentTime - duration.getTime());
     try {
-      const res = await fetch("/api/workout-session/add-set", {
+      const res = await fetch("/api/workout-sessions/add-set", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           exerciseId: id,
-          reps: Number(reps),
-          weight: Number(weight),
-          duration: duration,
+          reps: 22,
+          weight: 33,
+          duration: 44,
           restTime: 60, // optional
         }),
       });
