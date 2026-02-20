@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
-import { useUserData } from "../hooks/accessor/ContextAccessors"; // adjust path
+import { useUserData } from "../hooks/accessor/ContextAccessors";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const WorkoutSession = () => {
   const { todayExercises, activePlan } = useUserData();
   const [workout, setWorkout] = useState([]);
-  const [duration, setDuration] = useState(new Date());
-  // const [loading, setLoading] = useState(false);
-  const dayToday = localStorage.getItem("today").toLowerCase();
-  console.log("activePlan: ", activePlan);
-  console.log(
-    "today's workout Type: ",
-    activePlan.planTemplate.weeklySchedule[dayToday]._id,
-  );
+  const [editingId, setEditingId] = useState(null); // row being edited
+  const dayToday = localStorage.getItem("today")?.toLowerCase();
 
-  // When exercises change, extend them with UI state
   useEffect(() => {
     if (!todayExercises) return;
 
@@ -22,16 +15,20 @@ const WorkoutSession = () => {
       ...ex,
       currentSet: 1,
       completed: false,
+      editedWeight: ex.weight ?? 0,
+      editedReps: ex.reps ?? 0,
     }));
 
     setWorkout(formatted);
   }, [todayExercises]);
 
-  // Handle set submission
-  const handleSubmitSet = async (id, reps, weight) => {
+  // Handle set submission (with optional edited values)
+  const handleSubmitSet = async (id) => {
+    const exercise = workout.find((ex) => ex._id === id);
+
     setWorkout((prev) =>
       prev.map((ex) => {
-        if (ex.id === id) {
+        if (ex._id === id) {
           if (ex.currentSet < ex.totalSet) {
             return { ...ex, currentSet: ex.currentSet + 1 };
           } else {
@@ -41,26 +38,36 @@ const WorkoutSession = () => {
         return ex;
       }),
     );
-    // const currentTime = new Date().getTime();
-    // setDuration(currentTime - duration.getTime());
+
     try {
       const res = await fetch("/api/workout-sessions/add-set", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           exerciseId: id,
-          reps: 22,
-          weight: 33,
+          reps: Number(exercise.editedReps),
+          weight: Number(exercise.editedWeight),
           duration: 44,
-          restTime: 60, // optional
+          restTime: 60,
         }),
       });
       const data = await res.json();
-      console.log("Updated set:", data);
-      // Optionally update local state to reflect new set
+      console.log("Submitted set:", data);
     } catch (err) {
       console.error(err);
     }
+
+    // Exit editing after submit
+    setEditingId(null);
+  };
+  const handleChange = (id, field, value) => {
+    setWorkout((prev) =>
+      prev.map((ex) =>
+        ex._id === id
+          ? { ...ex, [field]: value === "" ? "" : Number(value) } // convert to number
+          : ex,
+      ),
+    );
   };
 
   if (!workout.length) {
@@ -98,17 +105,57 @@ const WorkoutSession = () => {
                   : `${ex.currentSet} / ${ex.totalSet}`}
               </td>
 
-              <td>{ex.weight} kg</td>
-              <td>{ex.reps}</td>
+              {/* Weight */}
+              <td style={{ width: "80px" }}>
+                {editingId === ex._id ? (
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={ex.editedWeight}
+                    onChange={(e) =>
+                      handleChange(ex._id, "editedWeight", e.target.value)
+                    }
+                  />
+                ) : (
+                  `${ex.weight} kg`
+                )}
+              </td>
 
+              {/* Reps */}
               <td>
-                <button
-                  className="btn btn-primary btn-sm"
-                  disabled={ex.completed}
-                  onClick={() => handleSubmitSet(ex._id)}
-                >
-                  Submit Set
-                </button>
+                {editingId === ex._id ? (
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={ex.editedReps}
+                    style={{ width: "60px" }}
+                    onChange={(e) =>
+                      handleChange(ex._id, "editedReps", e.target.value)
+                    }
+                  />
+                ) : (
+                  ex.reps
+                )}
+              </td>
+
+              {/* Action */}
+              <td>
+                {editingId === ex._id ? (
+                  <button
+                    className="btn btn-primary btn-sm"
+                    disabled={ex.completed}
+                    onClick={() => handleSubmitSet(ex._id)}
+                  >
+                    Submit Set
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-warning btn-sm"
+                    onClick={() => setEditingId(ex._id)}
+                  >
+                    Edit
+                  </button>
+                )}
               </td>
             </tr>
           ))}
