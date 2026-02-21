@@ -2,47 +2,45 @@ import { useEffect, useState } from "react";
 import { useUserData } from "../hooks/accessor/ContextAccessors";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const WorkoutSession = () => {
-  const { todayExercises, activePlan } = useUserData();
+const WorkoutSession = ({ session, setSession }) => {
+  const { todayExercises } = useUserData();
   const [workout, setWorkout] = useState([]);
-  const [editingId, setEditingId] = useState(null); // row being edited
-  const dayToday = localStorage.getItem("today")?.toLowerCase();
+  const [editingId, setEditingId] = useState(null);
+
+  const isCompleted = session?.status === "completed";
 
   useEffect(() => {
-    if (!todayExercises) return;
+    if (!todayExercises || !session) return;
 
-    const formatted = todayExercises.map((ex) => ({
-      ...ex,
-      currentSet: 1,
-      completed: false,
-      editedWeight: ex.weight ?? 0,
-      editedReps: ex.reps ?? 0,
-    }));
+    const sessionExercises = session.workoutTypes?.[0]?.exercises || [];
+
+    const formatted = todayExercises.map((ex) => {
+      const matched = sessionExercises.find((se) => se.exercise === ex._id);
+
+      const completedSets = matched?.sets?.length || 0;
+
+      return {
+        ...ex,
+        currentSet: completedSets + 1,
+        completed: completedSets >= ex.totalSet,
+        editedWeight: ex.load ?? 0,
+        editedReps: ex.reps ?? 0,
+      };
+    });
 
     setWorkout(formatted);
-  }, [todayExercises]);
-
-  // Handle set submission (with optional edited values)
+  }, [todayExercises, session]);
+  // Submit single set
   const handleSubmitSet = async (id) => {
     const exercise = workout.find((ex) => ex._id === id);
-
-    setWorkout((prev) =>
-      prev.map((ex) => {
-        if (ex._id === id) {
-          if (ex.currentSet < ex.totalSet) {
-            return { ...ex, currentSet: ex.currentSet + 1 };
-          } else {
-            return { ...ex, completed: true };
-          }
-        }
-        return ex;
-      }),
-    );
 
     try {
       const res = await fetch("/api/workout-sessions/add-set", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         body: JSON.stringify({
           exerciseId: id,
           reps: Number(exercise.editedReps),
@@ -51,31 +49,70 @@ const WorkoutSession = () => {
           restTime: 60,
         }),
       });
+
       const data = await res.json();
-      console.log("Submitted set:", data);
+      if (!res.ok) throw new Error(data.message);
+
+      // Update session globally
+      setSession(data);
+
+      setEditingId(null);
     } catch (err) {
       console.error(err);
     }
-
-    // Exit editing after submit
-    setEditingId(null);
   };
+
   const handleChange = (id, field, value) => {
     setWorkout((prev) =>
       prev.map((ex) =>
         ex._id === id
-          ? { ...ex, [field]: value === "" ? "" : Number(value) } // convert to number
+          ? { ...ex, [field]: value === "" ? "" : Number(value) }
           : ex,
       ),
     );
   };
+
+  console.log("session:: ", session);
+  //  COMPLETE WORKOUT SESSION
+  const handleSubmitWorkout = async () => {
+    try {
+      const res = await fetch("/api/workout-sessions/complete", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          sessionId: session._id,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      setSession(data); // update parent
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+  };
+
+  // ✅ IF SESSION COMPLETED SHOW THIS ONLY
+  if (isCompleted) {
+    return (
+      <div className="container mt-5 text-center">
+        <h2 className="text-success">🎉 Workout Completed for Today!</h2>
+        <h4>Enjoy your day 💪</h4>
+      </div>
+    );
+  }
 
   if (!workout.length) {
     return <div className="container mt-5">No exercises found.</div>;
   }
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 d-flex flex-column justify-content-center align-items-center">
       <h3 className="mb-4">Workout Session</h3>
 
       <table className="table table-bordered table-striped">
@@ -105,40 +142,38 @@ const WorkoutSession = () => {
                   : `${ex.currentSet} / ${ex.totalSet}`}
               </td>
 
-              {/* Weight */}
               <td style={{ width: "80px" }}>
                 {editingId === ex._id ? (
                   <input
                     type="number"
                     className="form-control"
                     value={ex.editedWeight}
+                    style={{ width: "80px" }}
                     onChange={(e) =>
                       handleChange(ex._id, "editedWeight", e.target.value)
                     }
                   />
                 ) : (
-                  `${ex.weight} kg`
+                  `${ex.editedWeight} kg`
                 )}
               </td>
 
-              {/* Reps */}
               <td>
                 {editingId === ex._id ? (
                   <input
                     type="number"
                     className="form-control"
                     value={ex.editedReps}
-                    style={{ width: "60px" }}
+                    style={{ width: "80px" }}
                     onChange={(e) =>
                       handleChange(ex._id, "editedReps", e.target.value)
                     }
                   />
                 ) : (
-                  ex.reps
+                  ex.editedReps
                 )}
               </td>
 
-              {/* Action */}
               <td>
                 {editingId === ex._id ? (
                   <button
@@ -151,9 +186,10 @@ const WorkoutSession = () => {
                 ) : (
                   <button
                     className="btn btn-warning btn-sm"
+                    disabled={ex.completed}
                     onClick={() => setEditingId(ex._id)}
                   >
-                    Edit
+                    Update Set
                   </button>
                 )}
               </td>
@@ -161,6 +197,14 @@ const WorkoutSession = () => {
           ))}
         </tbody>
       </table>
+
+      <button
+        className="btn btn-success mt-3"
+        onClick={handleSubmitWorkout}
+        disabled={editingId ? true : false}
+      >
+        Complete Workout
+      </button>
     </div>
   );
 };

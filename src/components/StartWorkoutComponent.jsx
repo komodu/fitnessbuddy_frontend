@@ -53,6 +53,7 @@ const StartWorkoutComponent = () => {
       console.log("it is finished");
     }
   };
+  console.log("Session: ", session);
   // handleContinue if session existed then it will be this function instead of handleStart
   const handleContinue = async () => {};
   //Check if session exist
@@ -111,7 +112,7 @@ const StartWorkoutComponent = () => {
             {show && (
               <div className="accordion-collapse collapse show gap-4">
                 <div className="accordion-body">
-                  <WorkoutSession exercise={session} />
+                  <WorkoutSession session={session} setSession={setSession} />
                 </div>
               </div>
             )}
