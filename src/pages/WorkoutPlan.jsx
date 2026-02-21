@@ -36,6 +36,20 @@ const WorkoutPlan = () => {
   //     </div>
   //   );
   // }
+
+  const handleDeletePlan = async (plan_id) => {
+    console.log("plan:", plan_id);
+    try {
+      const response = await fetch("/api/workoutplan/delete-plan/" + plan_id, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Error in Deleting Plan");
+      const data = await response.json();
+      console.log("data: ", data);
+    } catch (error) {
+      console.log("Error in Deleting Plan: ", error);
+    }
+  };
   return (
     <>
       <UniversalModal />
@@ -97,7 +111,10 @@ const WorkoutPlan = () => {
                       <p className="text-muted mb-3">1 day ago</p>
 
                       <div className="d-flex justify-content-end">
-                        <span className="material-symbols-outlined text-danger cursor-pointer">
+                        <span
+                          className="material-symbols-outlined text-danger cursor-pointer"
+                          onClick={() => handleDeletePlan(plan._id)}
+                        >
                           delete
                         </span>
                       </div>

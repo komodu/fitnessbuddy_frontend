@@ -1,9 +1,5 @@
-import { useEffect, useState, useContext } from "react";
-import {
-  ExercisesContext,
-  ModalContext,
-  UserDataContext,
-} from "@/context/Context";
+import { useEffect, useState } from "react";
+
 import ExerciseDetails from "@/components/ExerciseDetails";
 import UniversalModal from "@/components/UniversalModal";
 import ExerciseForm from "@/components/ExerciseForm";
