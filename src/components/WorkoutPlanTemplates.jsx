@@ -10,7 +10,7 @@ const days = [
   "sunday",
 ];
 
-const WorkoutPlanSchedules = ({ template }) => {
+const WorkoutPlanTemplates = ({ template }) => {
   const [open, setOpen] = useState(false);
 
   const toggle = () => {
@@ -41,9 +41,25 @@ const WorkoutPlanSchedules = ({ template }) => {
             </thead>
             <tbody>
               <tr>
-                {days.map((day) => (
-                  <td key={day}>{template.weeklySchedule[day]?.name || "—"}</td>
-                ))}
+                {days.map((day) => {
+                  const dayData = template.weeklySchedule?.[day];
+
+                  return (
+                    <td key={day}>
+                      <div className="fw-bold">{dayData?.name || "—"}</div>
+
+                      {dayData?.exercises?.length > 0 ? (
+                        dayData.exercises.map((ex) => (
+                          <div key={ex._id} className="small text-muted">
+                            • {ex.title}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="small text-muted">No exercises</div>
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             </tbody>
           </table>
@@ -53,4 +69,4 @@ const WorkoutPlanSchedules = ({ template }) => {
   );
 };
 
-export default WorkoutPlanSchedules;
+export default WorkoutPlanTemplates;

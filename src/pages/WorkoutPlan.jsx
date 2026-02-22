@@ -3,7 +3,7 @@ import WorkoutPlanForm from "../components/WorkoutPlanForm";
 import { useModal, useUserData } from "../hooks/accessor/ContextAccessors";
 import UniversalModal from "@/components/UniversalModal";
 import WorkoutPlanTemplateForm from "../components/WorkoutTemplateForm";
-import WorkoutPlanSchedules from "../components/WorkoutPlanSchedules";
+import WorkoutPlanTemplates from "../components/WorkoutPlanTemplates";
 
 import LoaderSVG from "../assets/img/loader.svg";
 
@@ -153,7 +153,7 @@ const WorkoutPlan = () => {
                 {templates.length > 0 ? (
                   templates.map((temp) => (
                     <div className="col-12" key={temp._id}>
-                      <WorkoutPlanSchedules template={temp} />
+                      <WorkoutPlanTemplates template={temp} />
                     </div>
                   ))
                 ) : (
