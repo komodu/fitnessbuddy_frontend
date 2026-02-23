@@ -4,6 +4,7 @@ import DisplayProfile from "../assets/img/user-placeholder.png";
 import LoaderSVG from "@/assets/img/loader.svg";
 import UpdateProfileForm from "../components/UpdateProfileForm";
 import UniversalModal from "../components/UniversalModal";
+import { UserDataContext } from "../context/Context";
 
 //! TODO: Check Validations, possible crashes (null values)
 //! TODO: Check Error Handlers
@@ -11,10 +12,13 @@ import UniversalModal from "../components/UniversalModal";
 //! TODO: Display workout splits per Day in the table that depends on the cxurrent active user workout plan (coming from backend)
 //! TODO: Work on Photo functionality
 
+//! TODO: Work on getting activeplan's exercises
+//! Either filter activeplan in templates and display it or refactor backend
 const UserProfile = () => {
   const { username, userInfo, isAuthenticated, loading } =
     useContext(AuthContext);
   const { openModal } = useContext(ModalContext);
+  const { activePlan, templates } = useContext(UserDataContext);
   // const [showLoader, setShowLoader] = useState(true);
   const [error, setError] = useState(null);
   const [form] = useState(false);
@@ -37,7 +41,8 @@ const UserProfile = () => {
       </div>
     );
   }
-
+  console.log("templates userprofile: ", templates);
+  console.log("activePlan userprofile: ", activePlan);
   return (
     <div className="container border user-profile py-3 ">
       <div className="container py-4">
@@ -76,14 +81,21 @@ const UserProfile = () => {
                 <h5 className="mb-0">Workout</h5>
               </div>
               <div className="card-body">
+                <h6>
+                  <strong>
+                    Current Workout:{" "}
+                    <span className="text-capitalize">
+                      {activePlan.planTemplate?.name}
+                    </span>
+                  </strong>
+                </h6>
                 <p>
-                  <strong>Day:</strong>
-                </p>
-                <p>
-                  <strong>Split:</strong>
-                </p>
-                <p>
-                  <strong>Rest</strong>
+                  <strong>
+                    Days :{" "}
+                    <span className="text-capitalize">
+                      {activePlan.planTemplate?.daysPerWeek}
+                    </span>{" "}
+                  </strong>
                 </p>
               </div>
             </div>
