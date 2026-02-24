@@ -17,6 +17,10 @@ const WorkoutPlanTemplates = ({ template }) => {
     setOpen(!open);
   };
 
+  // useEffect(()=>{
+
+  // })
+
   if (!template || !template.weeklySchedule) {
     return <p>No schedule available</p>;
   }

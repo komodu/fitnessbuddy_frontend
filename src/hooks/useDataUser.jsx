@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 export const useDataUser = () => {
   const [templates, setTemplates] = useState([]);
+
   useEffect(() => {
     const fetchUserTemplates = async () => {
       try {

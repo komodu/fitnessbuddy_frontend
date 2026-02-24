@@ -20,11 +20,10 @@ const days = [
 //! TODO: Check Error Handlers
 const WorkoutPlan = () => {
   const { openModal } = useModal();
-  const { allPlan } = useUserData();
-  const { templates } = useUserData();
+  const { allPlan, setAllPlan, templates } = useUserData();
   const [disable, setDisabled] = useState(false);
   console.log("currentPlan: ", allPlan);
-  console.log("templates: ", templates);
+  console.log("templatezzs: ", templates);
   // if (!allPlan) {
   //   return (
   //     <div className="workouts-loading">
@@ -38,14 +37,14 @@ const WorkoutPlan = () => {
   // }
 
   const handleDeletePlan = async (plan_id) => {
-    console.log("plan:", plan_id);
     try {
       const response = await fetch("/api/workoutplan/delete-plan/" + plan_id, {
         method: "DELETE",
       });
+
       if (!response.ok) throw new Error("Error in Deleting Plan");
-      const data = await response.json();
-      console.log("data: ", data);
+
+      setAllPlan((prev) => prev.filter((plan) => plan._id !== plan_id));
     } catch (error) {
       console.log("Error in Deleting Plan: ", error);
     }
@@ -83,33 +82,33 @@ const WorkoutPlan = () => {
                     className="card workout-details shadow-sm"
                     key={plan._id}
                   >
+                    {" "}
                     <div className="card-body">
-                      <h6 className="text-muted mb-1">
-                        Date Start : {plan.startDate}
-                      </h6>
-                      <h6>Date End : {plan.endDate}</h6>
-
-                      <h4 className="fw-bold">{plan.planTemplate.name}</h4>
-
+                      <h2>
+                        <strong className="text-capitalize">
+                          {plan.planName}
+                        </strong>
+                      </h2>
                       <div>
                         <p className="mb-1">
-                          <strong>Workout List</strong>
+                          <strong>Workout:</strong>
                         </p>
+                        <h4 className="fw-bold">{plan.planTemplate.name}</h4>{" "}
                         <ul>
-                          {days.map((day) => (
-                            <li
-                              key={plan.planTemplate.weeklySchedule[day]._id}
-                              className="text-capitalize"
-                            >
+                          {days.map((day, index) => (
+                            <li key={index} className="text-capitalize">
                               {day} :{" "}
                               {plan.planTemplate.weeklySchedule[day].name}
                             </li>
                           ))}
                         </ul>
                       </div>
-
+                      <h6 className="text-muted mb-1">
+                        Date Start : {plan.startDate}
+                      </h6>
+                      <h6>Date End : {plan.endDate}</h6>
+                      {/* //! Implement MomentJS */}
                       <p className="text-muted mb-3">1 day ago</p>
-
                       <div className="d-flex justify-content-end">
                         <span
                           className="material-symbols-outlined text-danger cursor-pointer"

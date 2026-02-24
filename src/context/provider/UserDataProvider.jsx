@@ -1,5 +1,5 @@
 import { UserDataContext, AuthContext, ExercisesContext } from "../Context";
-import { useState, useEffect, useContext, act } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useDataUser } from "../../hooks/useDataUser";
 const UserDataProvider = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -8,6 +8,7 @@ const UserDataProvider = ({ children }) => {
   const { templates } = useDataUser();
 
   const [allPlan, setAllPlan] = useState([]);
+
   const [activePlan, setActivePlan] = useState([]);
   const [todayExercises, setTodayExercises] = useState([]);
   const [currentLoading, setCurrentLoading] = useState(true);
@@ -15,21 +16,22 @@ const UserDataProvider = ({ children }) => {
   const startCurrentLoading = () => setCurrentLoading(true);
   const stopCurrentLoading = () => setCurrentLoading(false);
 
-  useEffect(() => {
-    const fetchAllPlan = async () => {
-      try {
-        const response = await fetch("/api/workoutplan/get-plans");
-        if (!response.ok)
-          throw new Error("Error in Fetching UserPlanWorkout Through Context");
-        const result = await response.json();
+  const fetchAllPlan = async () => {
+    try {
+      const response = await fetch("/api/workoutplan/get-plans");
+      if (!response.ok)
+        throw new Error("Error in Fetching UserPlanWorkout Through Context");
+      const result = await response.json();
 
-        setAllPlan(Array.isArray(result) ? result : Object.values(result));
-      } catch (error) {
-        console.log("ERROR in Fetching: ", error);
-      } finally {
-        setCurrentLoading(false);
-      }
-    };
+      setAllPlan(Array.isArray(result) ? result : Object.values(result));
+    } catch (error) {
+      console.log("ERROR in Fetching: ", error);
+    } finally {
+      setCurrentLoading(false);
+    }
+  };
+
+  useEffect(() => {
     const fetchActivePlan = async () => {
       try {
         const response = await fetch("/api/workoutplan/userplan");
@@ -77,6 +79,8 @@ const UserDataProvider = ({ children }) => {
       value={{
         templates,
         allPlan,
+        setAllPlan, // WorkoutPlanTemplates
+        fetchAllPlan,
         activePlan,
         todayExercises,
         currentLoading,
