@@ -9,7 +9,6 @@ const ExerciseDetails = ({ exercise }) => {
       method: "DELETE",
     });
     const json = await response.json();
-    console.log("deleted: ", json);
     if (response.ok) {
       dispatch({ type: "DELETE_EXERCISE", payload: json });
     }

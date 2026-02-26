@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { CDBContainer } from "cdbreact";
-import { Line, Radar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import "@/ChartConfig";
 import {
   Chart as ChartJS,
@@ -24,6 +24,16 @@ ChartJS.register(
   Tooltip,
   Legend,
 );
+
+import {
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  ResponsiveContainer,
+} from "recharts";
+import { useFitnessStats } from "../hooks/useFitnessStats";
 
 //! TODO: Update this into dynamic
 export const DynamicBarChart = () => {
@@ -155,31 +165,35 @@ export const LineChart = () => {
   );
 };
 
-export const RadarChart = () => {
-  const [data] = useState({
-    labels: ["Strength", "Consistency", "Volume", "Cardio", "Mobility"],
-    datasets: [
-      {
-        label: "My First dataset",
-        backgroundColor: "rgba(194, 116, 161, 0.5)",
-        borderColor: "rgb(194, 116, 161)",
-        data: [65, 59, 90, 81, 56],
-      },
-      {
-        label: "My Second dataset",
-        backgroundColor: "rgba(71, 225, 167, 0.5)",
-        borderColor: "rgb(71, 225, 167)",
-        data: [28, 48, 40, 19, 96],
-      },
-    ],
-  });
+export function FitnessRadar({ workoutSessions }) {
+  const stats = useFitnessStats({ workoutSessions });
+
+  const radarData = [
+    { subject: "Strength", score: stats.strengthScore },
+    { subject: "Cardio", score: stats.cardioScore },
+    { subject: "Mobility", score: stats.mobilityScore },
+    { subject: "Volume", score: stats.volumeScore },
+    { subject: "Consistency", score: stats.consistencyScore },
+  ];
 
   return (
-    <CDBContainer>
-      <h3 className="mt-5">Radar chart</h3>
-      <Radar data={data} options={{ responsive: true }} />
-    </CDBContainer>
+    <div style={{ width: "100%", height: 400 }}>
+      <ResponsiveContainer>
+        <RadarChart data={radarData}>
+          <PolarGrid />
+          <PolarAngleAxis dataKey="subject" />
+          <PolarRadiusAxis domain={[0, 100]} />
+          <Radar
+            name="Workout Stats"
+            dataKey="score"
+            stroke="#8884d8"
+            fill="#8884d8"
+            fillOpacity={0.6}
+          />
+        </RadarChart>
+      </ResponsiveContainer>
+    </div>
   );
-};
+}
 
 // export default RadarChart;

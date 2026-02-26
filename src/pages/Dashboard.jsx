@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Calendar from "../components/Calendar";
 import warningLogo from "../assets/img/warning.png";
 import { Link } from "react-router-dom";
-import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
+import { FitnessRadar, LineChart } from "../components/FitnessRadar";
 import { ExercisesContext } from "../context/Context";
 import { useUserData, useExercises } from "../hooks/accessor/ContextAccessors";
 import infoTooltip from "../assets/img/info.png";
@@ -25,8 +25,26 @@ const Dashboard = () => {
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [loader, setLoader] = useState(true);
 
-  const dayToday = localStorage.getItem("today");
+  const [workoutSessions, setWorkoutSessions] = useState([]);
 
+  const dayToday = localStorage.getItem("today");
+  useEffect(() => {
+    // Fetch your session data from API
+    const fetchUserSessions = async () => {
+      try {
+        const response = await fetch("/api/workout-sessions/all");
+        if (!response.ok) {
+          console.error("Error in Fetching User Sessions");
+        }
+        const json = await response.json();
+        setWorkoutSessions(json);
+        console.log("json: ", json);
+      } catch (error) {
+        console.error("error session fetching : ", error);
+      }
+    };
+    fetchUserSessions();
+  }, []);
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoader(false);
@@ -155,7 +173,7 @@ const Dashboard = () => {
             <Calendar onChange={onChange} value={value} exercises={exercises} />
             {/* Chart 2: RadarChart */}
             <div className="d-flex flex-column">
-              <RadarChart />
+              <FitnessRadar workoutSessions={workoutSessions} />
             </div>
           </section>
         </div>
@@ -266,7 +284,7 @@ const Dashboard = () => {
             {/* Workout Chart Analysis */}
             <div className="d-flex flex-column">
               <div className="d-flex flex-column align-items-center">
-                <LineChart style={{ width: "475px", height: "270px" }} />
+                {/* <LineChart style={{ width: "475px", height: "270px" }} /> */}
               </div>
             </div>
           </section>

@@ -46,7 +46,6 @@ const ExerciseForm = () => {
     e.preventDefault();
 
     const exercise = { title, set, load, reps, workoutType };
-    console.log("body:", JSON.stringify(exercise));
     const response = await fetch("/api/exercise", {
       method: "POST",
       body: JSON.stringify(exercise),
