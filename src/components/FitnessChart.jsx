@@ -1,29 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { CDBContainer } from "cdbreact";
-import { Line } from "react-chartjs-2";
+import { aggregateExercisesData } from "../utils/aggregateExercisesData";
 import "@/ChartConfig";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import faker from "faker";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-);
 
 import {
   Radar,
@@ -31,6 +10,13 @@ import {
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { useFitnessStats } from "../hooks/useFitnessStats";
@@ -99,72 +85,45 @@ export const DynamicBarChart = () => {
 // export default DynamicBarChart;
 // ! TODO: Date must be according to the filter e.g: 3D = 3Days ago it must show the previous dates
 // ! and the weights / sets and repetition that in those particular days
-export const LineChart = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  // const getCurrentDate = () => {
-  //   const month = currentDate.getMonth();
-  //   const year = currentDate.getFullYear();
-  //   const day = currentDate.getDate();
-  //   return { month, year, day };
-  // };
-  // const { currentMonth, currentYear, currentDay } = getCurrentDate();
 
-  // const dateToday = new Date(currentYear, currentMonth, currentDay).getDate();
-  // setCurrentDate(dateToday);
+export function WorkoutLineChart({ workoutSessions, days = 7 }) {
+  const chartData = aggregateExercisesData(workoutSessions, days);
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Chart.js Line Chart",
-      },
-    },
-  };
-
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Weight (KG)",
-        data: labels.map(() => faker.datatype.number({ min: 5, max: 40 })),
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-      {
-        label: "Repetition",
-        data: labels.map(() => faker.datatype.number({ min: 8, max: 25 })),
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-      },
-      {
-        label: "Sets",
-        data: labels.map(() => faker.datatype.number({ min: 2, max: 5 })),
-        borderColor: "#00ff00",
-        backgroundColor: "#15c215",
-      },
-    ],
-  };
   return (
-    <CDBContainer>
-      <Line options={options} data={data} />
-    </CDBContainer>
+    <div style={{ width: "100%", height: 400 }}>
+      <ResponsiveContainer>
+        <LineChart
+          data={chartData}
+          margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="sets"
+            stroke="#8884d8"
+            name="Highest Sets"
+          />
+          <Line
+            type="monotone"
+            dataKey="reps"
+            stroke="#82ca9d"
+            name="Highest Reps"
+          />
+          <Line
+            type="monotone"
+            dataKey="weight"
+            stroke="#ff7300"
+            name="Highest Weight"
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   );
-};
-
+}
 export function FitnessRadar({ workoutSessions }) {
   const stats = useFitnessStats({ workoutSessions });
 

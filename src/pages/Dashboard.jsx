@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "../components/Calendar";
 import warningLogo from "../assets/img/warning.png";
 import { Link } from "react-router-dom";
-import { FitnessRadar, LineChart } from "../components/FitnessRadar";
+import { FitnessRadar, WorkoutLineChart } from "../components/FitnessChart";
 import { ExercisesContext } from "../context/Context";
 import { useUserData, useExercises } from "../hooks/accessor/ContextAccessors";
 import infoTooltip from "../assets/img/info.png";
 import LoaderSVG from "../assets/img/loader.svg";
 import StartWorkoutComponent from "../components/StartWorkoutComponent";
+
 //! TODO: Check Validations, possible crashes (null values)
 //! TODO: Check Error Handlers
 
@@ -55,7 +56,7 @@ const Dashboard = () => {
     );
     return () => clearTimeout(timer);
   }, []);
-
+  console.log("select:", selectedExercise);
   return (
     <div className="home d-flex justify-content-center py-4">
       <div
@@ -187,6 +188,8 @@ const Dashboard = () => {
               <h2> COMPONENT START WORKOUT</h2>
               <StartWorkoutComponent />
             </div>
+            {/* -------- Dropdown -------- */}
+            {/* -------- Dropdown -------- */}
             <div className="d-flex align-items-center justify-content-center my-2">
               <div className="dropdown">
                 <button
@@ -204,9 +207,8 @@ const Dashboard = () => {
 
                 {dropdown && (
                   <ul className="dropdown-menu dropdown-menu-end show">
-                    {exercises.length > 0 ? (
-                      exercises.map((exercise) => {
-                        return (
+                    {exercises.length > 0
+                      ? exercises.map((exercise) => (
                           <li key={exercise._id}>
                             <button
                               className="dropdown-item text-capitalize"
@@ -214,78 +216,125 @@ const Dashboard = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedExercise(exercise.title);
-                                setDropdown((e) => !e);
+                                setDropdown(false);
                               }}
                             >
                               {exercise.title}
                             </button>
                           </li>
-                        );
-                      })
-                    ) : (
-                      <></>
-                    )}
+                        ))
+                      : null}
                   </ul>
                 )}
               </div>
             </div>
 
-            {/* --------Filter -------- */}
-            <div className="btn-group" role="group" aria-label="Time Filter">
-              <input
-                type="radio"
-                className="btn-check"
-                name="timefilter"
-                id="3d"
-                onClick={() => setFilterRange("1")}
-                checked={filterRange === "1" ? true : false}
-              />
-              <label className="btn btn-outline-primary" for="3d">
-                3D
-              </label>
-
-              <input
-                type="radio"
-                class="btn-check"
-                name="timefilter"
-                id="7d"
-                onClick={() => setFilterRange("2")}
-                checked={filterRange === "2" ? true : false}
-              />
-              <label className="btn btn-outline-primary" for="7d">
-                7D
-              </label>
-
-              <input
-                type="radio"
-                class="btn-check"
-                name="timefilter"
-                id="14d"
-                onClick={() => setFilterRange("3")}
-                checked={filterRange === "3" ? true : false}
-              />
-              <label className="btn btn-outline-primary" for="14d">
-                14D
-              </label>
-
-              <input
-                type="radio"
-                class="btn-check"
-                name="timefilter"
-                id="30d"
-                onClick={() => setFilterRange("4")}
-                checked={filterRange === "4" ? true : false}
-              />
-              <label className="btn btn-outline-primary" for="30d">
-                30D
-              </label>
+            {/* -------- Time Filter -------- */}
+            <div
+              className="btn-group mb-3"
+              role="group"
+              aria-label="Time Filter"
+            >
+              {[
+                { id: "3d", label: "3D", value: "1" },
+                { id: "7d", label: "7D", value: "2" },
+                { id: "14d", label: "14D", value: "3" },
+                { id: "30d", label: "30D", value: "4" },
+              ].map((filter) => (
+                <React.Fragment key={filter.id}>
+                  <input
+                    type="radio"
+                    className="btn-check"
+                    name="timefilter"
+                    id={filter.id}
+                    onClick={() => setFilterRange(filter.value)}
+                    checked={filterRange === filter.value}
+                  />
+                  <label
+                    className="btn btn-outline-primary"
+                    htmlFor={filter.id}
+                  >
+                    {filter.label}
+                  </label>
+                </React.Fragment>
+              ))}
             </div>
 
-            {/* Workout Chart Analysis */}
-            <div className="d-flex flex-column">
-              <div className="d-flex flex-column align-items-center">
-                {/* <LineChart style={{ width: "475px", height: "270px" }} /> */}
-              </div>
+            {/* -------- Workout Chart Analysis -------- */}
+            <div className="d-flex flex-column align-items-center">
+              <h2>Workout Progress</h2>
+
+              {(() => {
+                // Map filterRange to number of days
+                let days = 7;
+                let title = "Last 7 Days";
+
+                switch (filterRange) {
+                  case "1":
+                    days = 3;
+                    title = "Last 3 Days";
+                    break;
+                  case "2":
+                    days = 7;
+                    title = "Last 7 Days";
+                    break;
+                  case "3":
+                    days = 14;
+                    title = "Last 14 Days";
+                    break;
+                  case "4":
+                    days = 30;
+                    title = "Last 30 Days";
+                    break;
+                  default:
+                    break;
+                }
+
+                // Map selectedExercise title to _id
+                const selectedExerciseObj = exercises.find(
+                  (ex) =>
+                    ex.title.toLowerCase() === selectedExercise?.toLowerCase(),
+                );
+                const selectedExerciseId = selectedExerciseObj?._id;
+
+                // Filter workoutSessions by selectedExerciseId
+                const filteredSessions = workoutSessions
+                  .map((session) => {
+                    const filteredWorkoutTypes = session.workoutTypes
+                      .map((type) => {
+                        const filteredExercises = type.exercises.filter(
+                          (ex) => ex.exercise.toString() === selectedExerciseId,
+                        );
+                        if (filteredExercises.length > 0) {
+                          return { ...type, exercises: filteredExercises };
+                        }
+                        return null;
+                      })
+                      .filter(Boolean);
+
+                    if (filteredWorkoutTypes.length > 0) {
+                      return { ...session, workoutTypes: filteredWorkoutTypes };
+                    }
+                    return null;
+                  })
+                  .filter(Boolean);
+
+                return (
+                  <>
+                    <h3>{title}</h3>
+                    {filteredSessions.length > 0 ? (
+                      <WorkoutLineChart
+                        workoutSessions={filteredSessions}
+                        days={days}
+                      />
+                    ) : (
+                      <p className="text-muted">
+                        No data for selected exercise
+                      </p>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </section>
         </div>

@@ -99,11 +99,11 @@ const WorkoutSession = ({ session, setSession }) => {
     }
   };
 
-  // ✅ IF SESSION COMPLETED SHOW THIS ONLY
+  // IF SESSION COMPLETED SHOW THIS ONLY
   if (isCompleted) {
     return (
       <div className="container mt-5 text-center">
-        <h2 className="text-success">🎉 Workout Completed for Today!</h2>
+        <h2 className="text-success">Workout Completed for Today!</h2>
         <h4>Enjoy your day 💪</h4>
       </div>
     );

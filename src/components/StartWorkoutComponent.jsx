@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useUserData } from "../hooks/accessor/ContextAccessors";
 import WorkoutSession from "../components/WorkoutSessionComponent";
+
+//! Issue: Optmize to avoid bugs, put taken session into Context
 const StartWorkoutComponent = () => {
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(true);
@@ -14,11 +16,15 @@ const StartWorkoutComponent = () => {
   const [session, setSession] = useState(null);
 
   const [isExist, setIsExist] = useState(false);
+  const [isCompleted, setCompleted] = useState(false);
   useEffect(() => {
     if (!activePlan?.planTemplate) return;
 
     setPlanId(activePlan.planTemplate._id);
     setworkoutTypeId(activePlan.planTemplate.weeklySchedule?.[dayToday]?._id);
+    if (session?.status === "completed") {
+      setCompleted(true);
+    }
   }, [activePlan, dayToday]);
 
   const handleStart = async () => {
@@ -60,7 +66,7 @@ const StartWorkoutComponent = () => {
       try {
         const response = await fetch("/api/workout-sessions");
         if (!response.ok) throw new Error("error fetching session");
-        const data = response.json();
+        const data = await response.json();
         setIsExist(true);
         setSession(data);
       } catch (err) {
@@ -69,34 +75,45 @@ const StartWorkoutComponent = () => {
     };
     fetchSession();
   }, []);
+
+  console.log("today session: ", session);
   return (
-    <div className="" style={{ maxWidth: "500px" }}>
+    <div className="border border-black" style={{ maxWidth: "500px" }}>
       {/* Toggle Button (shown when closed) */}
       {/* If there is assigned Active Plan */}
-      {!open && activePlan ? (
-        activePlan?.planTemplate?.weeklySchedule?.[dayToday]?.name !==
-        "Rest" ? (
-          <button
-            className="btn btn-primary"
-            onClick={() => {
-              {
-                session && isExist ? handleContinue() : handleStart();
-              }
-              setOpen(true);
-            }}
-            style={{ width: "250px" }}
-          >
-            {session && isExist ? "Continue Workout" : "Start New Workout"}
-          </button>
+      {!isCompleted ? (
+        !open && activePlan ? (
+          activePlan?.planTemplate?.weeklySchedule?.[dayToday]?.name !==
+          "Rest" ? (
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                {
+                  session && isExist ? handleContinue() : handleStart();
+                }
+                setOpen(true);
+              }}
+              style={{ width: "250px" }}
+            >
+              {session && isExist ? "Continue Workout" : "Start New Workout"}
+            </button>
+          ) : (
+            <>
+              {/* If the Active Plan today is Rest */}
+              <h3>It is Rest Day Get a Life!</h3>
+            </>
+          )
         ) : (
-          <>
-            {/* If the Active Plan today is Rest */}
-            <h3>It is Rest Day Get a Life!</h3>
-          </>
+          // If there is no Assigned Active Plan
+          !open && !activePlan && <>Assign a Plan first</>
         )
       ) : (
-        // If there is no Assigned Active Plan
-        !open && !activePlan && <>Assign a Plan first</>
+        <>
+          <div className="container mt-5 text-center">
+            <h2 className="text-success">Workout Completed for Today!</h2>
+            <h4>Enjoy your day 💪</h4>
+          </div>
+        </>
       )}
 
       {/* Accordion (shown when open) */}
