@@ -35,7 +35,6 @@ export const useAuthUser = ({
         return resp.json();
       })
       .then((data) => {
-        console.log("AuthMe: ", data);
         setUserInfo(data.userInfo);
         setUsername(data.user.username);
         localStorage.setItem("username", JSON.stringify(data.user.username));
@@ -53,9 +52,7 @@ export const useAuthUser = ({
 
   const login = async (username, password) => {
     const today = new Date();
-    console.log("username: ", username);
-    console.log("password: ", password);
-    console.log("json: ", JSON.stringify({ username, password }));
+
     const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: {

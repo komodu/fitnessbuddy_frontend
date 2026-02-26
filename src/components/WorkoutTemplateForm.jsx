@@ -32,8 +32,7 @@ const WorkoutPlanTemplateForm = () => {
       try {
         const response = await fetch("/api/workout-types");
         const data = await response.json();
-        console.log("templateform: ", data);
-        console.log("wkout: ", initState);
+
         if (response.ok) {
           dispatchForm({ type: "SET_WORKOUT_TYPES", payload: data });
         } else {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Calendar from "../components/Calendar";
 import warningLogo from "../assets/img/warning.png";
+import { Link } from "react-router-dom";
 import { LineChart, DynamicBarChart, RadarChart } from "../components/Charts";
 import { ExercisesContext } from "../context/Context";
 import { useUserData, useExercises } from "../hooks/accessor/ContextAccessors";
@@ -25,8 +26,6 @@ const Dashboard = () => {
   const [loader, setLoader] = useState(true);
 
   const dayToday = localStorage.getItem("today");
-  console.log("today exercises dashboard: ", todayExercises);
-  console.log("active plan dashboardddsazsd: ", activePlan);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -139,6 +138,11 @@ const Dashboard = () => {
                         />
                         <h3 style={{ textAlign: "center" }}>No data fetched</h3>
                       </div>
+                      <Link to="/workout-plan">
+                        <button className="btn btn-primary w-100 mb-3">
+                          Add Workout Plan
+                        </button>
+                      </Link>
                     </>
                   </>
                 )

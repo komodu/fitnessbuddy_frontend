@@ -66,7 +66,7 @@ const Home = () => {
       </div>
     );
   }
-  console.log("filter:", exercises);
+
   return (
     <div className="container-fluid home px-3 px-md-5">
       <UniversalModal />

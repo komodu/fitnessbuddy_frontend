@@ -16,6 +16,5 @@ export const useDataUser = () => {
     fetchUserTemplates();
   }, []);
 
-  console.log("from customHook Templates : ", templates);
   return { templates };
 };

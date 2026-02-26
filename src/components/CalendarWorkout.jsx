@@ -13,6 +13,7 @@ const CalendarWorkout = ({ exercises = [], workoutday }) => {
   return (
     <div className="d-flex justify-content-center align-items-center">
       {filteredExercise.length === 0 ? (
+        // If workoutday is Rest Day
         workoutday.toLowerCase() == "rest" ? (
           <p>
             Today is
@@ -22,6 +23,7 @@ const CalendarWorkout = ({ exercises = [], workoutday }) => {
             Day!
           </p>
         ) : (
+          // If the WorkoutDay is not Rest Day and no assigned Workout
           <p>
             There is no assigned workout in{" "}
             <span>
@@ -30,6 +32,7 @@ const CalendarWorkout = ({ exercises = [], workoutday }) => {
           </p>
         )
       ) : (
+        // Shows the Filtered Exercises depends with Workout Plan assigned
         <>
           {" "}
           <ul>

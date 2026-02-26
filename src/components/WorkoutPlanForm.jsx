@@ -29,14 +29,12 @@ const WorkoutPlanForm = () => {
       if (!response.ok) throw new Error("Error in submitting new Plan");
       const data = await response.json();
       setAllPlan((prev) => [data.data, ...prev]);
-      console.log("datasndf: ", data.data);
       closeModal();
     } catch (error) {
       console.log("error: ", error.message);
       closeModal();
     }
   };
-  console.log("asd:", templates);
   console.log(payload);
 
   return (

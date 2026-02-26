@@ -63,7 +63,6 @@ const UserDataProvider = ({ children }) => {
       const filteredExercise = exercises.filter((exercise) => {
         return exercise.workoutType.name === muscleGroup;
       });
-      console.log("Filtereasd: ", filteredExercise);
       setTodayExercises(filteredExercise);
     };
     const timer = setTimeout(() => {
@@ -73,12 +72,8 @@ const UserDataProvider = ({ children }) => {
     return () => clearTimeout(timer);
   }, [activePlan, exercises]);
 
-  console.log("all exercises provider: ", exercises);
-  console.log("All Plans provider: ", allPlan);
-  console.log("Active Plan provider: ", activePlan);
   if (!isAuthenticated) return null;
-  // console.log("userPlan workout Type: ", userPlan?.workoutType);
-  console.log("today exercises provider: ", todayExercises);
+
   return (
     <UserDataContext.Provider
       value={{

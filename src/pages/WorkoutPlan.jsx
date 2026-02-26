@@ -22,8 +22,7 @@ const WorkoutPlan = () => {
   const { openModal } = useModal();
   const { allPlan, setAllPlan, templates } = useUserData();
   const [disable, setDisabled] = useState(false);
-  console.log("currentPlan: ", allPlan);
-  console.log("templatezzs: ", templates);
+
   // if (!allPlan) {
   //   return (
   //     <div className="workouts-loading">

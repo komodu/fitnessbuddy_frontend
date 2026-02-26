@@ -100,7 +100,6 @@ export const LineChart = () => {
   // const { currentMonth, currentYear, currentDay } = getCurrentDate();
 
   // const dateToday = new Date(currentYear, currentMonth, currentDay).getDate();
-  console.log("lchart: ", new Date(currentDate));
   // setCurrentDate(dateToday);
 
   const options = {

@@ -30,6 +30,7 @@ const WorkoutSession = ({ session, setSession }) => {
 
     setWorkout(formatted);
   }, [todayExercises, session]);
+
   // Submit single set
   const handleSubmitSet = async (id) => {
     const exercise = workout.find((ex) => ex._id === id);
@@ -41,10 +42,12 @@ const WorkoutSession = ({ session, setSession }) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        // ! Must be updated to dynamic
         body: JSON.stringify({
           exerciseId: id,
           reps: Number(exercise.editedReps),
           weight: Number(exercise.editedWeight),
+
           duration: 44,
           restTime: 60,
         }),
@@ -72,7 +75,6 @@ const WorkoutSession = ({ session, setSession }) => {
     );
   };
 
-  console.log("session:: ", session);
   //  COMPLETE WORKOUT SESSION
   const handleSubmitWorkout = async () => {
     try {

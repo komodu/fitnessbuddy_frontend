@@ -40,8 +40,7 @@ const UserProfile = () => {
       </div>
     );
   }
-  console.log("templates userprofile: ", templates);
-  console.log("activePlan userprofile: ", activePlan);
+
   return (
     <div className="container border user-profile py-3 ">
       <div className="container py-4">

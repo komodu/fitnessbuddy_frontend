@@ -18,8 +18,7 @@ const Register = () => {
       age: age,
       email: email,
     };
-    console.log(age);
-    console.log(email);
+
     try {
       const resp = await fetch("/api/auth/register", {
         method: "POST",

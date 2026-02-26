@@ -39,7 +39,6 @@ const StartWorkoutComponent = () => {
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
-      console.log("result session : ", data);
       setSession(data);
 
       console.log("Session started:", data);
@@ -53,7 +52,6 @@ const StartWorkoutComponent = () => {
       console.log("it is finished");
     }
   };
-  console.log("Session: ", session);
   // handleContinue if session existed then it will be this function instead of handleStart
   const handleContinue = async () => {};
   //Check if session exist
@@ -71,28 +69,34 @@ const StartWorkoutComponent = () => {
     };
     fetchSession();
   }, []);
-  console.log("sess: ", session);
   return (
     <div className="" style={{ maxWidth: "500px" }}>
       {/* Toggle Button (shown when closed) */}
-      {!open &&
-      activePlan?.planTemplate?.weeklySchedule?.[dayToday]?.name !== "Rest" ? (
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            {
-              session && isExist ? handleContinue() : handleStart();
-            }
-            setOpen(true);
-          }}
-          style={{ width: "250px" }}
-        >
-          {session && isExist ? "Continue Workout" : "Start New Workout"}
-        </button>
+      {/* If there is assigned Active Plan */}
+      {!open && activePlan ? (
+        activePlan?.planTemplate?.weeklySchedule?.[dayToday]?.name !==
+        "Rest" ? (
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              {
+                session && isExist ? handleContinue() : handleStart();
+              }
+              setOpen(true);
+            }}
+            style={{ width: "250px" }}
+          >
+            {session && isExist ? "Continue Workout" : "Start New Workout"}
+          </button>
+        ) : (
+          <>
+            {/* If the Active Plan today is Rest */}
+            <h3>It is Rest Day Get a Life!</h3>
+          </>
+        )
       ) : (
-        <>
-          <h3>It is Rest Day Get a Life!</h3>
-        </>
+        // If there is no Assigned Active Plan
+        !open && !activePlan && <>Assign a Plan first</>
       )}
 
       {/* Accordion (shown when open) */}

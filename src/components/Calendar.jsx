@@ -9,7 +9,6 @@ const Calendar = ({ exercises }) => {
   const { activePlan } = useUserData();
 
   const { openModal } = useContext(ModalContext);
-  // console.log("data calendar: ", userPlan);
   // Get the current month and year
   const getCurrentMonthYear = () => {
     const month = currentDate.getMonth();
@@ -79,9 +78,6 @@ const Calendar = ({ exercises }) => {
 
   const planEnd = new Date(activePlan?.endDate);
   planEnd.setHours(0, 0, 0, 0);
-  // console.log("active plancalendar : ", activePlan);
-  // console.log("planEnd::: ", new Date(planEnd?.toUTCString().split("T")[0]));
-  console.log("planEnd: ", planEnd);
   return (
     <div className="calendar-container">
       <UniversalModal />
@@ -131,7 +127,6 @@ const Calendar = ({ exercises }) => {
                   ${isToday(day) ? "current-day" : ""} 
                   ${hasWorkout && !isToday(day) ? "workout-day" : ""}`}
                 onClick={() => {
-                  console.log("test");
                   openModal(
                     `Workout Exercise : ${month}/${day}/${year} ${" "} ${workout.name} Day`,
                     <CalendarWorkout
