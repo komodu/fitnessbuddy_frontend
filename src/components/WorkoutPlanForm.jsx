@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useModal, useUserData } from "../hooks/accessor/ContextAccessors";
 
 const WorkoutPlanForm = () => {

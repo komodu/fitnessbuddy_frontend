@@ -16,26 +16,31 @@ const UserDataProvider = ({ children }) => {
   const startCurrentLoading = () => setCurrentLoading(true);
   const stopCurrentLoading = () => setCurrentLoading(false);
 
-  const fetchAllPlan = async () => {
-    try {
-      const response = await fetch("/api/workoutplan/get-plans");
-      if (!response.ok)
-        throw new Error("Error in Fetching UserPlanWorkout Through Context");
-      const result = await response.json();
+  useEffect(() => {
+    const fetchAllPlan = async () => {
+      try {
+        const response = await fetch("/api/workoutplan/get-plans");
+        if (!response.ok)
+          throw new Error("Error in Fetching UserPlanWorkout Through Context");
+        const result = await response.json();
 
-      setAllPlan(Array.isArray(result) ? result : Object.values(result));
-    } catch (error) {
-      console.log("ERROR in Fetching: ", error);
-    } finally {
-      setCurrentLoading(false);
-    }
-  };
+        setAllPlan(Array.isArray(result) ? result : Object.values(result));
+      } catch (error) {
+        console.log("ERROR in Fetching: ", error);
+      } finally {
+        setCurrentLoading(false);
+      }
+    };
+    fetchAllPlan();
+  }, []);
 
   useEffect(() => {
     const fetchActivePlan = async () => {
       try {
         const response = await fetch("/api/workoutplan/userplan");
-        if (!response.ok) throw new Error("Error fetching Active Plan");
+        if (!response.ok) {
+          setActivePlan([]);
+        }
         const data = await response.json();
         console.log("Active Plan has been set. ");
         setActivePlan(data.activePlan);
@@ -43,9 +48,9 @@ const UserDataProvider = ({ children }) => {
         console.log("error: ", error);
       }
     };
+
     fetchActivePlan();
-    fetchAllPlan();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, allPlan]);
 
   useEffect(() => {
     const fetchExerciseForDay = async () => {
@@ -80,7 +85,7 @@ const UserDataProvider = ({ children }) => {
         templates,
         allPlan,
         setAllPlan, // WorkoutPlanTemplates
-        fetchAllPlan,
+        // fetchAllPlan,
         activePlan,
         todayExercises,
         currentLoading,

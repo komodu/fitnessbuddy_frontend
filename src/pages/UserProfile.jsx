@@ -15,8 +15,7 @@ import { UserDataContext } from "../context/Context";
 //! TODO: Work on getting activeplan's exercises
 //! Either filter activeplan in templates and display it or refactor backend
 const UserProfile = () => {
-  const { username, userInfo, isAuthenticated, loading } =
-    useContext(AuthContext);
+  const { userInfo, isAuthenticated, loading } = useContext(AuthContext);
   const { openModal } = useContext(ModalContext);
   const { activePlan, templates } = useContext(UserDataContext);
   // const [showLoader, setShowLoader] = useState(true);
@@ -83,9 +82,25 @@ const UserProfile = () => {
               <div className="card-body">
                 <h6>
                   <strong>
-                    Current Workout:{" "}
+                    Current Workout Plan:{" "}
                     <span className="text-capitalize">
-                      {activePlan.planTemplate?.name}
+                      {activePlan && activePlan.planTemplate?.name}
+                    </span>
+                  </strong>
+                </h6>
+                <h6>
+                  <strong>
+                    Start Date:{" "}
+                    <span className="text-capitalize">
+                      {activePlan && activePlan.planTemplate?.name}
+                    </span>
+                  </strong>
+                </h6>
+                <h6>
+                  <strong>
+                    End Date:{" "}
+                    <span className="text-capitalize">
+                      {activePlan && activePlan.planTemplate?.name}
                     </span>
                   </strong>
                 </h6>
@@ -93,7 +108,7 @@ const UserProfile = () => {
                   <strong>
                     Days :{" "}
                     <span className="text-capitalize">
-                      {activePlan.planTemplate?.daysPerWeek}
+                      {activePlan && activePlan.planTemplate?.daysPerWeek}
                     </span>{" "}
                   </strong>
                 </p>
