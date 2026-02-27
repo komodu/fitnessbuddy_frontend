@@ -25,7 +25,7 @@ const StartWorkoutComponent = () => {
     if (session?.status === "completed") {
       setCompleted(true);
     }
-  }, [activePlan, dayToday]);
+  }, [activePlan, dayToday, session?.status]);
 
   const handleStart = async () => {
     try {
@@ -76,7 +76,6 @@ const StartWorkoutComponent = () => {
     fetchSession();
   }, []);
 
-  console.log("today session: ", session);
   return (
     <div className="border border-black" style={{ maxWidth: "500px" }}>
       {/* Toggle Button (shown when closed) */}

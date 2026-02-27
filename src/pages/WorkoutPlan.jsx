@@ -23,18 +23,6 @@ const WorkoutPlan = () => {
   const { allPlan, setAllPlan, templates } = useUserData();
   const [disable, setDisabled] = useState(false);
 
-  // if (!allPlan) {
-  //   return (
-  //     <div className="workouts-loading">
-  //       <img
-  //         src={LoaderSVG}
-  //         className="loader-icon"
-  //         style={{ width: "60px", height: "60px" }}
-  //       />
-  //     </div>
-  //   );
-  // }
-
   const handleDeletePlan = async (plan_id) => {
     try {
       const response = await fetch("/api/workoutplan/delete-plan/" + plan_id, {

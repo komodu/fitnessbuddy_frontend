@@ -9,6 +9,7 @@ const WorkoutPlanForm = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const { closeModal } = useModal();
+
   const payload = {
     planName: planName,
     planTemplate: selectedTemplate,

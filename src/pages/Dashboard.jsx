@@ -23,9 +23,9 @@ const Dashboard = () => {
   const [filterRange, setFilterRange] = useState("1");
   const [dropdown, setDropdown] = useState(false);
 
-  const [selectedExercise, setSelectedExercise] = useState(null);
   const [loader, setLoader] = useState(true);
 
+  const [selectedExercise, setSelectedExercise] = useState(null);
   const [workoutSessions, setWorkoutSessions] = useState([]);
 
   const dayToday = localStorage.getItem("today");

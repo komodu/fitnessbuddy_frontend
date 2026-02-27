@@ -10,7 +10,6 @@ import {
   useUserData,
 } from "../hooks/accessor/ContextAccessors";
 
-import { initialStates } from "../reducer/exerciseReducer";
 import { useWorkoutTypes } from "../hooks/useWorkoutTypes";
 //! TODO: Work on Dropdown filtering
 const Home = () => {

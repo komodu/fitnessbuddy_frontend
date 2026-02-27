@@ -1,5 +1,4 @@
 const CalendarWorkout = ({ exercises = [], workoutday }) => {
-  console.log("calendarworkoutday: ", workoutday);
   const filteredExercise = Array.isArray(exercises.exercises)
     ? exercises.exercises.filter((exercise) => {
         console.log("exercise:", exercise.workoutType.name);
@@ -7,9 +6,7 @@ const CalendarWorkout = ({ exercises = [], workoutday }) => {
         return workoutday === exercise.workoutType.name;
       })
     : [];
-  console.log("filteredCalendar: ", filteredExercise);
-  console.log(filteredExercise.length);
-  console.log(workoutday);
+
   return (
     <div className="d-flex justify-content-center align-items-center">
       {filteredExercise.length === 0 ? (
