@@ -65,12 +65,14 @@ const StartWorkoutComponent = () => {
     const fetchSession = async () => {
       try {
         const response = await fetch("/api/workout-sessions");
-        if (!response.ok) throw new Error("error fetching session");
         const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || "Error fetching sessions");
+        }
         setIsExist(true);
         setSession(data);
       } catch (err) {
-        console.log("error in fetching Session: ", err);
+        console.error(err.message);
       }
     };
     fetchSession();

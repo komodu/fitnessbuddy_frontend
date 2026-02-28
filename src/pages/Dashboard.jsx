@@ -41,7 +41,7 @@ const Dashboard = () => {
         setWorkoutSessions(json);
         console.log("json: ", json);
       } catch (error) {
-        console.error("error session fetching : ", error);
+        console.log(error);
       }
     };
     fetchUserSessions();
