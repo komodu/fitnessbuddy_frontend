@@ -21,15 +21,16 @@ const WorkoutPlanTemplates = ({ template }) => {
 
   console.log(open);
   return (
-    <div>
+    <>
       <button className="btn btn-light text-start w-100" onClick={toggle}>
         {template.name}
       </button>
+
       <div
-        className={`accordion-body-custom border mb-3 rounded w-100"${open ? " open" : ""} `}
+        className={`accordion-body-custom border rounded${open ? " open" : ""} w-100`}
       >
         <div className="table-responsive">
-          <table className="table table-bordered text-center mb-0">
+          <table className="table table-bordered text-center mb-0 w-100">
             <thead>
               <tr>
                 {days.map((day) => (
@@ -63,7 +64,7 @@ const WorkoutPlanTemplates = ({ template }) => {
           </table>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

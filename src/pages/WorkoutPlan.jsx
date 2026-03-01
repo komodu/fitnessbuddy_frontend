@@ -40,14 +40,11 @@ const WorkoutPlan = () => {
     <>
       <UniversalModal />
 
-      <div className="container-fluid home px-md-3 px-md-5 py-4">
-        <div className="row g-4 px-0">
+      <div className="container-fluid">
+        <div className="row g-4 px-0 w-100">
           {/* LEFT COLUMN */}
           <div className="col-12 col-md-6 col-lg-4 g-4">
-            <div
-              className="d-flex flex-column gap-3"
-              style={{ maxWidth: "300px" }}
-            >
+            <div className="d-flex flex-column gap-3">
               {/* Header */}
               <div className="d-flex flex-column flex-md-row justify-content-between px-0">
                 <h2 className="mb-0 ">
@@ -119,36 +116,30 @@ const WorkoutPlan = () => {
           {/* RIGHT COLUMN */}
           <div className="col-12 col-md-6 col-lg-8">
             <div className="d-flex flex-column gap-3">
-              <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 px-0">
-                <h2>
-                  <strong>Workout Plan Template</strong>
-                </h2>
+              <h2>
+                <strong>Workout Plan Template</strong>
+              </h2>
 
-                <button
-                  className="btn btn-primary"
-                  onClick={() =>
-                    openModal(
-                      "Create User Workout Plan Template",
-                      <WorkoutPlanTemplateForm />,
-                    )
-                  }
-                >
-                  Add Workout Plan Template
-                </button>
-              </div>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  openModal(
+                    "Create User Workout Plan Template",
+                    <WorkoutPlanTemplateForm />,
+                  )
+                }
+              >
+                Add Workout Plan Template
+              </button>
+            </div>
 
-              {/* Schedule List */}
+            {/* Schedule List */}
 
+            <div className="row justify-content-center g-3 px-0 w-100">
               {templates.length > 0 ? (
                 templates.map((temp) => (
-                  <div className="container">
-                    {" "}
-                    <div
-                      className="d-flex flex-column justify-content-center align-items-center"
-                      key={temp._id}
-                    >
-                      <WorkoutPlanTemplates template={temp} />
-                    </div>
+                  <div className="col-12 col-md-8 col-lg-12" key={temp._id}>
+                    <WorkoutPlanTemplates template={temp} />
                   </div>
                 ))
               ) : (

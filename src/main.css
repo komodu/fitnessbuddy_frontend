@@ -104,11 +104,6 @@ body {
    3. LAYOUT & PAGES
 ================================ */
 
-.home {
-  display: grid;
-  gap: 40px; /* Reduced gap for better desktop scaling */
-}
-
 /* Workout Cards */
 .workout-details {
   background: #fff;
