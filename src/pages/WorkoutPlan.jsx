@@ -41,7 +41,7 @@ const WorkoutPlan = () => {
       <UniversalModal />
 
       <div className="container-fluid home px-md-3 px-md-5 py-4">
-        <div className="row g-4 ">
+        <div className="row g-4 px-0">
           {/* LEFT COLUMN */}
           <div className="col-12 col-md-6 col-lg-4 g-4">
             <div
@@ -49,7 +49,7 @@ const WorkoutPlan = () => {
               style={{ maxWidth: "300px" }}
             >
               {/* Header */}
-              <div className="d-flex flex-column flex-md-row justify-content-between">
+              <div className="d-flex flex-column flex-md-row justify-content-between px-0">
                 <h2 className="mb-0 ">
                   <strong>Workout Plan</strong>
                 </h2>
@@ -119,7 +119,7 @@ const WorkoutPlan = () => {
           {/* RIGHT COLUMN */}
           <div className="col-12 col-md-6 col-lg-8">
             <div className="d-flex flex-column gap-3">
-              <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+              <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 px-0">
                 <h2>
                   <strong>Workout Plan Template</strong>
                 </h2>
@@ -138,17 +138,22 @@ const WorkoutPlan = () => {
               </div>
 
               {/* Schedule List */}
-              <div className="row g-2">
-                {templates.length > 0 ? (
-                  templates.map((temp) => (
-                    <div className="col-12" key={temp._id}>
+
+              {templates.length > 0 ? (
+                templates.map((temp) => (
+                  <div className="container">
+                    {" "}
+                    <div
+                      className="d-flex flex-column justify-content-center align-items-center"
+                      key={temp._id}
+                    >
                       <WorkoutPlanTemplates template={temp} />
                     </div>
-                  ))
-                ) : (
-                  <p>No templates available</p>
-                )}
-              </div>
+                  </div>
+                ))
+              ) : (
+                <p>No templates available</p>
+              )}
             </div>
           </div>
         </div>

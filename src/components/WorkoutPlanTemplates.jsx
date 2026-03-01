@@ -13,23 +13,23 @@ const days = [
 const WorkoutPlanTemplates = ({ template }) => {
   const [open, setOpen] = useState(false);
 
-  const toggle = () => {
-    setOpen(!open);
-  };
+  const toggle = () => setOpen((prev) => !prev);
 
   if (!template || !template.weeklySchedule) {
     return <p>No schedule available</p>;
   }
 
+  console.log(open);
   return (
-    <div className="border mb-3 rounded" style={{ maxWidth: "350px" }}>
-      <button className="btn btn-light w-100 text-start" onClick={toggle}>
+    <div>
+      <button className="btn btn-light text-start w-100" onClick={toggle}>
         {template.name}
       </button>
-
-      <div className={`accordion-body-custom ${open ? "open mh-100" : ""}`}>
-        <div className="p-3">
-          <table className="table table-bordered text-center">
+      <div
+        className={`accordion-body-custom border mb-3 rounded w-100"${open ? " open" : ""} `}
+      >
+        <div className="table-responsive">
+          <table className="table table-bordered text-center mb-0">
             <thead>
               <tr>
                 {days.map((day) => (
@@ -43,11 +43,9 @@ const WorkoutPlanTemplates = ({ template }) => {
               <tr>
                 {days.map((day) => {
                   const dayData = template.weeklySchedule?.[day];
-
                   return (
                     <td key={day}>
                       <div className="fw-bold">{dayData?.name || "—"}</div>
-
                       {dayData?.exercises?.length > 0 ? (
                         dayData.exercises.map((ex) => (
                           <div key={ex._id} className="small text-muted">

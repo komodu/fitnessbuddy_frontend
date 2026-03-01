@@ -386,3 +386,12 @@ h1 {
     font-size: 0.75rem;
   }
 }
+.accordion-body-custom {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.accordion-body-custom.open {
+  max-height: 1000px; /* big enough to fit content */
+}
