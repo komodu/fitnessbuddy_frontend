@@ -84,8 +84,6 @@ const UserDataProvider = ({ children }) => {
         activePlan,
         todayExercises,
         currentLoading,
-        startCurrentLoading, //! Unused
-        stopCurrentLoading, //! Unused
       }}
     >
       {children}

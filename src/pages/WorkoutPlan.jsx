@@ -40,14 +40,17 @@ const WorkoutPlan = () => {
     <>
       <UniversalModal />
 
-      <div className="container-fluid home px-3 px-md-5">
-        <div className="row justify-content-center ">
+      <div className="container-fluid home px-md-3 px-md-5 py-4">
+        <div className="row g-4 ">
           {/* LEFT COLUMN */}
-          <div className="col-12 col-lg-4">
-            <div className="d-flex flex-column gap-3">
+          <div className="col-12 col-md-6 col-lg-4 g-4">
+            <div
+              className="d-flex flex-column gap-3"
+              style={{ maxWidth: "300px" }}
+            >
               {/* Header */}
-              <div className="d-flex justify-content-between align-items-center">
-                <h2 className="mb-0">
+              <div className="d-flex flex-column flex-md-row justify-content-between">
+                <h2 className="mb-0 ">
                   <strong>Workout Plan</strong>
                 </h2>
 
@@ -66,15 +69,13 @@ const WorkoutPlan = () => {
               {allPlan?.length > 0 ? (
                 allPlan.map((plan) => (
                   <div
-                    className="card workout-details shadow-sm"
+                    className="card workout-details shadow-sm "
                     key={plan._id}
                   >
                     {" "}
                     <div className="card-body">
-                      <h2>
-                        <strong className="text-capitalize">
-                          {plan.planName}
-                        </strong>
+                      <h2 className="text-capitalize">
+                        <strong>{plan.planName}</strong>
                       </h2>
                       <div>
                         <p className="mb-1">
@@ -90,9 +91,11 @@ const WorkoutPlan = () => {
                           ))}
                         </ul>
                       </div>
+
                       <h6 className="text-muted mb-1">
                         Date Start : {plan.startDate}
                       </h6>
+
                       <h6>Date End : {plan.endDate}</h6>
                       {/* //! Implement MomentJS */}
                       <p className="text-muted mb-3">1 day ago</p>
@@ -114,9 +117,9 @@ const WorkoutPlan = () => {
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="col-12 col-lg-8 p-3 border">
+          <div className="col-12 col-md-6 col-lg-8">
             <div className="d-flex flex-column gap-3">
-              <div className="d-flex justify-content-around align-items-center">
+              <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                 <h2>
                   <strong>Workout Plan Template</strong>
                 </h2>
@@ -135,7 +138,7 @@ const WorkoutPlan = () => {
               </div>
 
               {/* Schedule List */}
-              <div className="row g-3">
+              <div className="row g-2">
                 {templates.length > 0 ? (
                   templates.map((temp) => (
                     <div className="col-12" key={temp._id}>

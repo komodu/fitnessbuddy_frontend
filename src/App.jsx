@@ -12,7 +12,7 @@ import AppLayout from "./layouts/AppLayout";
 import UserProfile from "./pages/UserProfile";
 
 // Protected Route
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "./layouts/ProtectedRoute";
 // Provider
 import AuthProvider from "@/context/provider/AuthProvider";
 import ExercisesProvider from "@/context/provider/ExercisesProvider";
@@ -21,40 +21,38 @@ import UserDataProvider from "./context/provider/UserDataProvider";
 function App() {
   return (
     <div className="App">
-      <div className="container-fluid px-0">
-        <BrowserRouter>
-          <AuthProvider>
-            <Routes>
-              {/* Public routes (login, register) */}
-              <Route element={<AuthLayout />}>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-              </Route>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            {/* Public routes (login, register) */}
+            <Route element={<AuthLayout />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Route>
 
-              {/* Private / App routes (dashboard, settings, etc.) */}
-              <Route element={<ProtectedRoute />}>
-                <Route
-                  element={
-                    <ExercisesProvider>
-                      <UserDataProvider>
-                        <ModalProvider>
-                          <AppLayout />
-                        </ModalProvider>
-                      </UserDataProvider>
-                    </ExercisesProvider>
-                  }
-                >
-                  <Route path="/" element={<Navigate to="/dashboard" />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/exercise" element={<Home />} />
-                  <Route path="/user-profile" element={<UserProfile />} />
-                  <Route path="/workout-plan" element={<WorkoutPlan />} />
-                </Route>
+            {/* Private / App routes (dashboard, settings, etc.) */}
+            <Route element={<ProtectedRoute />}>
+              <Route
+                element={
+                  <ExercisesProvider>
+                    <UserDataProvider>
+                      <ModalProvider>
+                        <AppLayout />
+                      </ModalProvider>
+                    </UserDataProvider>
+                  </ExercisesProvider>
+                }
+              >
+                <Route path="/" element={<Navigate to="/dashboard" />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/exercise" element={<Home />} />
+                <Route path="/user-profile" element={<UserProfile />} />
+                <Route path="/workout-plan" element={<WorkoutPlan />} />
               </Route>
-            </Routes>
-          </AuthProvider>
-        </BrowserRouter>
-      </div>
+            </Route>
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
     </div>
   );
 }

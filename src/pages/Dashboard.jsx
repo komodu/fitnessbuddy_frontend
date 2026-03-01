@@ -171,7 +171,14 @@ const Dashboard = () => {
             <h2 className="mb-3 text-center text-lg-start">
               Interactive Calendar
             </h2>
-            <Calendar onChange={onChange} value={value} exercises={exercises} />
+            {/* ! Calendar */}
+            <div>
+              <Calendar
+                onChange={onChange}
+                value={value}
+                exercises={exercises}
+              />
+            </div>
             {/* Chart 2: RadarChart */}
             <div className="d-flex flex-column">
               <FitnessRadar workoutSessions={workoutSessions} />
@@ -188,14 +195,11 @@ const Dashboard = () => {
               <h2> COMPONENT START WORKOUT</h2>
               <StartWorkoutComponent />
             </div>
-            {/* -------- Dropdown -------- */}
-            {/* -------- Dropdown -------- */}
             <div className="d-flex align-items-center justify-content-center my-2">
-              <div className="dropdown">
+              <div className="dropdown w-100" style={{ maxWidth: "300px" }}>
                 <button
-                  style={{ position: "relative", width: "300px" }}
                   id="select-exercise"
-                  className="btn btn-outline-secondary dropdown-toggle"
+                  className="btn btn-outline-secondary dropdown-toggle w-100"
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -206,13 +210,12 @@ const Dashboard = () => {
                 </button>
 
                 {dropdown && (
-                  <ul className="dropdown-menu dropdown-menu-end show">
+                  <ul className="dropdown-menu dropdown-menu-end show w-100">
                     {exercises.length > 0
                       ? exercises.map((exercise) => (
                           <li key={exercise._id}>
                             <button
-                              className="dropdown-item text-capitalize"
-                              style={{ width: "300px" }}
+                              className="dropdown-item text-capitalize w-100"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedExercise(exercise.title);

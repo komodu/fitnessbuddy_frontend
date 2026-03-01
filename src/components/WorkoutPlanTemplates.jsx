@@ -22,7 +22,7 @@ const WorkoutPlanTemplates = ({ template }) => {
   }
 
   return (
-    <div className="border mb-3 rounded">
+    <div className="border mb-3 rounded" style={{ maxWidth: "350px" }}>
       <button className="btn btn-light w-100 text-start" onClick={toggle}>
         {template.name}
       </button>
